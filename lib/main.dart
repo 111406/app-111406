@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
+import 'package:sport_app/chart_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +24,10 @@ class _MyAppState extends State<MyApp> {
   var _mode = "three";
   var _isAdded = false;
   var _displayAngle = 0;
+  var _timer = 10;
+  var _timerStart = false;
+  final List<ChartData> _angleList = [];
+  var _startTime = 0;
 
   @override
   void initState() {
@@ -36,6 +42,23 @@ class _MyAppState extends State<MyApp> {
   void setUpdateInterval(int interval) {
     motionSensors.accelerometerUpdateInterval = interval;
     setState(() {});
+  }
+
+  var period = const Duration(seconds: 1);
+
+  void setTimerEvent() {
+    _timerStart = true;
+    _timer--;
+    _startTime = DateTime.now().millisecondsSinceEpoch;
+    Timer.periodic(period, (timer) {
+      if (_timer < 1) {
+        timer.cancel();
+        _timerStart = false;
+      } else {
+        _timer--;
+      }
+      setState(() {});
+    });
   }
 
   @override
@@ -64,6 +87,13 @@ class _MyAppState extends State<MyApp> {
                   Text('$_displayAngle°'),
                 ],
               ),
+              const Text('剩餘時間'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text('$_timer'),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -71,8 +101,10 @@ class _MyAppState extends State<MyApp> {
                     style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 16)),
                     onPressed: () {
+                      setTimerEvent();
                       setState(() {
                         _mode = "three";
+                        _times = 0;
                       });
                     },
                     child: const Text('三角肌群'),
@@ -81,8 +113,10 @@ class _MyAppState extends State<MyApp> {
                     style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 16)),
                     onPressed: () {
+                      setTimerEvent();
                       setState(() {
                         _mode = "two";
+                        _times = 0;
                       });
                     },
                     child: const Text('二頭肌群'),
@@ -91,8 +125,10 @@ class _MyAppState extends State<MyApp> {
                     style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 16)),
                     onPressed: () {
+                      setTimerEvent();
                       setState(() {
                         _mode = "slide";
+                        _times = 0;
                       });
                     },
                     child: const Text('滑牆運動'),
@@ -179,6 +215,12 @@ class _MyAppState extends State<MyApp> {
         _deltaSum = 0;
       }
     }
+
+    if (_timerStart) {
+      int now = DateTime.now().millisecondsSinceEpoch;
+      double sec = (now - _startTime) / 1000;
+      var data = ChartData(sec, _displayAngle);
+      _angleList.add(data);
     }
   }
 }
