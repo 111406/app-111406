@@ -20,8 +20,8 @@ class _MyAppState extends State<MyApp> {
   var _deltaSum = 0;
   var _times = 0;
   var _mode = "three";
-  var _btnText = "二頭";
   var _isAdded = false;
+  var _displayAngle = 0;
 
   @override
   void initState() {
@@ -57,26 +57,47 @@ class _MyAppState extends State<MyApp> {
                   Text('$_times次'),
                 ],
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 20)),
-                onPressed: () {
-                  if (_mode == "three") {
-                    setState(() {
-                      _mode = "two";
-                      _btnText = "三角";
-                    });
-                  } else {
-                    setState(() {
-                      _mode = "three";
-                      _btnText = "二頭";
-                    });
-                  }
-                  setState(() {
-                    _times = 0;
-                  });
-                },
-                child: Text('切換測量$_btnText肌群'),
+              const Text('當前角度'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text('$_displayAngle°'),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 16)),
+                    onPressed: () {
+                      setState(() {
+                        _mode = "three";
+                      });
+                    },
+                    child: const Text('三角肌群'),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 16)),
+                    onPressed: () {
+                      setState(() {
+                        _mode = "two";
+                      });
+                    },
+                    child: const Text('二頭肌群'),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 16)),
+                    onPressed: () {
+                      setState(() {
+                        _mode = "slide";
+                      });
+                    },
+                    child: const Text('滑牆運動'),
+                  ),
+                ],
               ),
             ],
           ),
@@ -86,13 +107,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   void calcAngles(double accelX, double accelY, double accelZ) {
-    var deltaP = 0, deltaR = 0, pitch = 0, roll = 0;
+    var deltaP = 0, deltaR = 0;
+    var pitch =
+        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
+            .round();
+    var roll =
+        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
+            .round();
 
     if (_mode == "three") {
-      pitch =
-          (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
-              .round();
-
+      _displayAngle = pitch;
       deltaP = pitch - _angleP;
 
       if (deltaP <= 0) {
@@ -110,8 +134,6 @@ class _MyAppState extends State<MyApp> {
       _angleP = pitch.round();
 
       if (_deltaSum > 25 && deltaP < 20) {
-        debugPrint(
-            "---------------------------------------------------次數加一---------------------------------------------------現在次數: $_times");
         _times += 1;
         _deltaSum = 0;
         _isAdded = true;
@@ -121,10 +143,8 @@ class _MyAppState extends State<MyApp> {
       debugPrint("deltaP: $deltaP");
       debugPrint("_deltaSum: $_deltaSum");
       debugPrint("_isAdded: $_isAdded");
-    } else {
-      roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
-          .round();
-
+    } else if (_mode == "two") {
+      _displayAngle = roll;
       deltaR = roll - _angleR;
 
       if (deltaR >= 0) {
@@ -140,6 +160,25 @@ class _MyAppState extends State<MyApp> {
         _times += 1;
         _deltaSum = 0;
       }
+    } else if (_mode == "slide") {
+      _displayAngle = roll;
+      deltaR = roll - _angleR;
+
+      if (deltaR >= -5) {
+        deltaR = deltaR >= 0 ? deltaR : 0;
+        _deltaSum += deltaR;
+        deltaR = 0;
+      } else {
+        _deltaSum = 0;
+      }
+
+      _angleR = roll.round();
+
+      if (_deltaSum > 75) {
+        _times += 1;
+        _deltaSum = 0;
+      }
+    }
     }
   }
 }
