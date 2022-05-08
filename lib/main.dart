@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:sport_app/chart_data.dart';
@@ -17,6 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  FlutterTts flutterTts = FlutterTts();
   var _angleP = 0;
   var _angleR = 0;
   var _deltaSum = 0;
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   var _mode = "three";
   var _isAdded = false;
   var _displayAngle = 0;
-  var _timer = 10;
+  var _timer = 30;
   var _timerStart = false;
   final List<ChartData> _angleList = [];
   var _startTime = 0;
@@ -37,6 +38,10 @@ class _MyAppState extends State<MyApp> {
         calcAngles(event.x, event.y, event.z);
       });
     });
+  }
+
+  Future _s() async {
+    await flutterTts.speak('$_times');
   }
 
   void setUpdateInterval(int interval) {
@@ -105,6 +110,7 @@ class _MyAppState extends State<MyApp> {
                       setState(() {
                         _mode = "three";
                         _times = 0;
+                        _timer = 30;
                       });
                     },
                     child: const Text('三角肌群'),
@@ -117,6 +123,7 @@ class _MyAppState extends State<MyApp> {
                       setState(() {
                         _mode = "two";
                         _times = 0;
+                        _timer = 30;
                       });
                     },
                     child: const Text('二頭肌群'),
@@ -129,6 +136,7 @@ class _MyAppState extends State<MyApp> {
                       setState(() {
                         _mode = "slide";
                         _times = 0;
+                        _timer = 30;
                       });
                     },
                     child: const Text('滑牆運動'),
@@ -171,6 +179,7 @@ class _MyAppState extends State<MyApp> {
 
       if (_deltaSum > 25 && deltaP < 20) {
         _times += 1;
+        _s();
         _deltaSum = 0;
         _isAdded = true;
       }
@@ -194,6 +203,7 @@ class _MyAppState extends State<MyApp> {
 
       if (_deltaSum > 55) {
         _times += 1;
+        _s();
         _deltaSum = 0;
       }
     } else if (_mode == "slide") {
@@ -212,6 +222,7 @@ class _MyAppState extends State<MyApp> {
 
       if (_deltaSum > 75) {
         _times += 1;
+        _s();
         _deltaSum = 0;
       }
     }
