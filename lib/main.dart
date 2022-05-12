@@ -1,13 +1,20 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:camera/camera.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:sport_app/chart_data.dart';
-import 'mainpage.dart';
+// import 'mainpage.dart';
 
-void main() {
-  runApp(const MyApp());
+List<CameraDescription> cameras = [];
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  cameras = await availableCameras();
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,6 +30,15 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// 切換視覺頁面按鈕
+// child: RaisedButton(
+//             child: Text('Test'),
+//             onPressed: () {
+//               Navigator.push(context,
+//                   MaterialPageRoute(builder: (context) => PoseDetectorView()));
+//             },
+//           ),
+
 
 // class MyApp extends StatefulWidget {
 //   const MyApp({Key? key}) : super(key: key);
