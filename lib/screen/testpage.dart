@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
 
+  static const String routeName = "/test";
   @override
   State<TestPage> createState() => _TestPageState();
 }

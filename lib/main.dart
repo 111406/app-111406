@@ -5,6 +5,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:sport_app/chart_data.dart';
+import 'package:sport_app/screen/testpage.dart';
 // import 'mainpage.dart';
 
 List<CameraDescription> cameras = [];
@@ -24,10 +25,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: '肌動GO',
-      home: MainPage(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: '肌動GO',
+        home: const MainPage(),
+        routes: {TestPage.routeName: (context) => const TestPage()});
   }
 }
 // 切換視覺頁面按鈕
