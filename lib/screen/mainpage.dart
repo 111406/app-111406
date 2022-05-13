@@ -1,9 +1,13 @@
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'dart:math' as math;
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/enum/record_type.dart';
+import 'package:sport_app/enum/training_part.dart';
+import 'package:sport_app/screen/testpage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -279,7 +283,15 @@ class _MainPageState extends State<MainPage> {
               Column(
                 children: [
                   RawMaterialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setInt("part", TrainingPart.biceps.value);
+
+                      //待更改
+                      await prefs.setInt("type", RecordType.examination.value);
+                      Navigator.pushNamed(context, TestPage.routeName);
+                    },
                     elevation: 2.0,
                     fillColor: Colors.white,
                     child: Icon(

@@ -124,6 +124,7 @@ class _TestPageState extends State<TestPage> {
   @override
   void initState() {
     super.initState();
+    _loadPrefs();
     motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         calcAngles(event.x, event.y, event.z);
@@ -173,6 +174,10 @@ class _TestPageState extends State<TestPage> {
     );
   }
 
+  void _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    _part = (prefs.getInt("part") ?? 0);
+  }
 
   void calcAngles(double accelX, double accelY, double accelZ) {
     var deltaP = 0, deltaR = 0;
