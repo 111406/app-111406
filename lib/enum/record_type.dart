@@ -1,0 +1,1 @@
+enum RecordType { training, examination }
