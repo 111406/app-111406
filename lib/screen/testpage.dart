@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter_tts/flutter_tts.dart';
@@ -8,8 +9,9 @@ import 'package:motion_sensors/motion_sensors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
+import 'package:sport_app/utils/http_request.dart';
 
-int _part = 0;
+int _part = 0, _type = 0;
 
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
@@ -177,6 +179,7 @@ class _TestPageState extends State<TestPage> {
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     _part = (prefs.getInt("part") ?? 0);
+    _type = (prefs.getInt("type") ?? 0);
   }
 
   void calcAngles(double accelX, double accelY, double accelZ) {
@@ -278,11 +281,20 @@ class _TestPageState extends State<TestPage> {
   void setTimerEvent() {
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
-    Timer.periodic(period, (timer) {
+    Timer.periodic(period, (timer) async {
       if (_timer < 1) {
         timer.cancel();
         _timerStart = false;
-        
+        String reqeustData = """
+            {
+              "user_id": "zsda5858sda",
+              "part": $_part,
+              "type": $_type,
+              "times": "$_times",
+              "angles": ${jsonEncode(_angleList)}
+            }
+        """;
+        await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
       } else {
         _timer--;
       }
