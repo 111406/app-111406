@@ -320,7 +320,15 @@ class _MainPageState extends State<MainPage> {
               Column(
                 children: [
                   RawMaterialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setInt("part", TrainingPart.deltoid.value);
+
+                      //待更改
+                      await prefs.setInt("type", RecordType.examination.value);
+                      Navigator.pushNamed(context, TestPage.routeName);
+                    },
                     elevation: 2.0,
                     fillColor: Colors.white,
                     child: Icon(
@@ -349,7 +357,15 @@ class _MainPageState extends State<MainPage> {
               Column(
                 children: [
                   RawMaterialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setInt("part", TrainingPart.quadriceps.value);
+
+                      //待更改
+                      await prefs.setInt("type", RecordType.examination.value);
+                      Navigator.pushNamed(context, TestPage.routeName);
+                    },
                     elevation: 2.0,
                     fillColor: Colors.white,
                     child: Icon(
