@@ -118,21 +118,22 @@ class _TestPageState extends State<TestPage> {
       _times = 0,
       _isAdded = false,
       _displayAngle = 0,
-      _timer = 30,
+      _displayTimer = 30,
       _timerStart = false,
       _startTime = 0;
   final List<ChartData> _angleList = [];
+  final int _timer = 30;
 
   @override
   void initState() {
     super.initState();
+    _setTimerEvent();
     _loadPrefs();
     motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
-        calcAngles(event.x, event.y, event.z);
+        _calcAngles(event.x, event.y, event.z);
       });
     });
-    setTimerEvent();
   }
 
   @override
@@ -182,9 +183,9 @@ class _TestPageState extends State<TestPage> {
     _type = (prefs.getInt("type") ?? 0);
   }
 
-  void calcAngles(double accelX, double accelY, double accelZ) {
     var deltaP = 0, deltaR = 0;
   ///計算roll, pitch角度
+  void _calcAngles(double accelX, double accelY, double accelZ) {
     var pitch =
         (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
             .floor();
@@ -271,21 +272,28 @@ class _TestPageState extends State<TestPage> {
     }
   }
 
-  Future _s() async {
-    await flutterTts.speak('$_times');
   ///文字轉語音
+  Future _s(int times) async {
+    await flutterTts.speak('$times');
   }
 
   ///設置加速度器更新時間
   void setUpdateInterval(int interval) {
     motionSensors.accelerometerUpdateInterval = interval;
-    setState(() {});
+    setState(() {
+      if (_timerStart) {
+        int now = DateTime.now().millisecondsSinceEpoch;
+        double sec = (now - _startTime) / 1000;
+        var data = ChartData(sec, _displayAngle);
+        _angleList.add(data);
+      }
+    });
   }
 
   var period = const Duration(seconds: 1);
 
-  void setTimerEvent() {
   ///設定倒數計時器
+  void _setTimerEvent() {
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
     Timer.periodic(period, (timer) async {
