@@ -184,14 +184,17 @@ class _TestPageState extends State<TestPage> {
 
   void calcAngles(double accelX, double accelY, double accelZ) {
     var deltaP = 0, deltaR = 0;
+  ///計算roll, pitch角度
     var pitch =
         (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
             .floor();
     var roll =
         (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
             .floor();
+    //可能需要例外處理
     TrainingPart? part = TrainingPart.parse(_part);
 
+  ///區分訓練部位
     switch (part) {
       case TrainingPart.biceps:
         _displayAngle = roll;
@@ -258,6 +261,7 @@ class _TestPageState extends State<TestPage> {
         }
         break;
     }
+  ///判斷是否符合增加次數條件
 
     if (_timerStart) {
       int now = DateTime.now().millisecondsSinceEpoch;
@@ -269,8 +273,10 @@ class _TestPageState extends State<TestPage> {
 
   Future _s() async {
     await flutterTts.speak('$_times');
+  ///文字轉語音
   }
 
+  ///設置加速度器更新時間
   void setUpdateInterval(int interval) {
     motionSensors.accelerometerUpdateInterval = interval;
     setState(() {});
@@ -279,12 +285,14 @@ class _TestPageState extends State<TestPage> {
   var period = const Duration(seconds: 1);
 
   void setTimerEvent() {
+  ///設定倒數計時器
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
     Timer.periodic(period, (timer) async {
       if (_timer < 1) {
         timer.cancel();
         _timerStart = false;
+        //測試資料
         String reqeustData = """
             {
               "user_id": "zsda5858sda",

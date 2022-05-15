@@ -3,7 +3,10 @@ class RecordType {
   final int code;
   const RecordType._(this.string, this.code);
 
+  ///訓練模式
   static const training = RecordType._('training', 0);
+
+  ///檢測模式
   static const examination = RecordType._('examination', 1);
 
   static const values = [training, examination];
@@ -15,7 +18,7 @@ class RecordType {
       case 1:
         return RecordType.examination;
       default:
-        return null;
+        throw Exception("Invalid RecordType value");
     }
   }
 
