@@ -155,7 +155,7 @@ class _TestPageState extends State<TestPage> {
               SizedBox(
                 height: 30,
               ),
-              _SecondLeft(_timer),
+              _SecondLeft(_displayTimer),
               SizedBox(
                 height: 60,
               ),
@@ -297,7 +297,8 @@ class _TestPageState extends State<TestPage> {
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
     Timer.periodic(period, (timer) async {
-      if (_timer < 1) {
+      _displayTimer = _timer - timer.tick;
+      if (_displayTimer == 0) {
         timer.cancel();
         _timerStart = false;
         //測試資料
@@ -311,8 +312,6 @@ class _TestPageState extends State<TestPage> {
             }
         """;
         await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
-      } else {
-        _timer--;
       }
       setState(() {});
     });
