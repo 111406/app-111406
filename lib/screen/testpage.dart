@@ -112,15 +112,12 @@ Widget _EndBtn() {
 class _TestPageState extends State<TestPage> {
   Color primaryColor = HexColor("7C9C99");
   FlutterTts flutterTts = FlutterTts();
-  var _angleP = 0,
-      _angleR = 0,
-      _deltaSum = 0,
-      _times = 0,
-      _isAdded = false,
+  var _times = 0,
       _displayAngle = 0,
       _displayTimer = 30,
       _timerStart = false,
-      _startTime = 0;
+      _startTime = 0,
+      _checkAddNum = 0.0;
   final List<ChartData> _angleList = [];
   final int _timer = 30;
 
@@ -183,7 +180,6 @@ class _TestPageState extends State<TestPage> {
     _type = (prefs.getInt("type") ?? 0);
   }
 
-    var deltaP = 0, deltaR = 0;
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
     var pitch =
@@ -192,83 +188,50 @@ class _TestPageState extends State<TestPage> {
     var roll =
         (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
             .floor();
+
     //可能需要例外處理
     TrainingPart? part = TrainingPart.parse(_part);
 
+    _checkPart(part!, pitch, roll);
+  }
+
   ///區分訓練部位
+  void _checkPart(TrainingPart part, int pitch, int roll) {
+    bool isMinAngle = false, isMaxAngle = false;
     switch (part) {
       case TrainingPart.biceps:
         _displayAngle = roll;
-        deltaR = roll - _angleR;
+        isMinAngle = roll < 5;
+        isMaxAngle = roll > 60;
 
-        if (deltaR >= 0) {
-          _deltaSum += deltaR;
-          deltaR = 0;
-        } else {
-          _deltaSum = 0;
-        }
-
-        _angleR = roll.floor();
-
-        if (_deltaSum > 55) {
-          _times += 1;
-          _s();
-          _deltaSum = 0;
-        }
         break;
       case TrainingPart.deltoid:
         _displayAngle = pitch;
-        deltaP = pitch - _angleP;
+        isMinAngle = pitch < 10;
+        isMaxAngle = pitch > 75;
 
-        if (deltaP <= 0) {
-          _deltaSum = 0;
-          _isAdded = false;
-        }
-
-        if (!_isAdded) {
-          if (deltaP >= 0) {
-            _deltaSum += deltaP;
-            deltaP = 0;
-          }
-        }
-
-        _angleP = pitch.floor();
-
-        if (_deltaSum > 25 && deltaP < 20) {
-          _times += 1;
-          _s();
-          _deltaSum = 0;
-          _isAdded = true;
-        }
         break;
       case TrainingPart.quadriceps:
+        roll += 90;
         _displayAngle = roll;
-        deltaR = roll - _angleR;
+        isMinAngle = roll < 65;
+        isMaxAngle = roll > 87;
 
-        if (deltaR >= -5) {
-          deltaR = deltaR >= 0 ? deltaR : 0;
-          _deltaSum += deltaR;
-          deltaR = 0;
-        } else {
-          _deltaSum = 0;
-        }
-
-        _angleR = roll.floor();
-
-        if (_deltaSum > 75) {
-          _times += 1;
-          _s();
-          _deltaSum = 0;
-        }
         break;
     }
-  ///判斷是否符合增加次數條件
+    _addTimes(_displayAngle, isMinAngle, isMaxAngle);
+  }
 
-    if (_timerStart) {
-      int now = DateTime.now().millisecondsSinceEpoch;
-      double sec = (now - _startTime) / 1000;
-      var data = ChartData(sec, _displayAngle);
-      _angleList.add(data);
+  ///判斷是否符合增加次數條件
+  void _addTimes(int roll, bool isMin, bool isMax) {
+    if (_checkAddNum == 0 && isMin) _checkAddNum += .5;
+
+    if (_checkAddNum == 0.5 && isMax) _checkAddNum += .5;
+
+    if (_checkAddNum == 1) {
+      _times += 1;
+      _s(_times);
+      _checkAddNum = 0.0;
     }
   }
 
