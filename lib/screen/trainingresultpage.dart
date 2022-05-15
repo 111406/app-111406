@@ -50,7 +50,7 @@ Widget _ResultChart(BuildContext context) {
 Widget _ResultNumber() {
   Color primaryColor = HexColor("7C9C99");
   return Text(
-    '測試次數：47',
+    '測試次數: 47',
     style: TextStyle(
         color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );

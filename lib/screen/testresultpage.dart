@@ -50,7 +50,7 @@ Widget _ResultChart(BuildContext context) {
 Widget _ResultNumber() {
   Color primaryColor = HexColor("7C9C99");
   return Text(
-    '測試次數：47',
+    '測試次數: 47',
     style: TextStyle(
         color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );
@@ -59,7 +59,7 @@ Widget _ResultNumber() {
 Widget _MaxAngle() {
   Color primaryColor = HexColor("7C9C99");
   return Text(
-    '最大彎曲角度：108',
+    '最大彎曲角度: 108',
     style: TextStyle(
         color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
   );
