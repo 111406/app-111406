@@ -16,7 +16,110 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
+Widget _Drawer(BuildContext context) {
+  Color primaryColor = HexColor("7C9C99");
+  Color secondColor = HexColor("4E605E");
+  Color thirdColor = HexColor("AAD4D0");
+  return Container(
+    width: MediaQuery.of(context).size.width / 1.8,
+    child: Drawer(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
+      child: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 4,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 12),
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Image.asset(
+                          'assets/icon/logo01.png',
+                          width: 150,
+                        ),
+                        Text(
+                          "肌動GO",
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            // fontFamily: 'OpenSans',
+                            color: primaryColor,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                  child: ListView(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 8),
+                children: [
+                  SizedBox(
+                    height: 50,
+                  ),
+                  ListTile(
+                    title: Text(
+                      "使用須知",
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        // fontFamily: 'OpenSans',
+                        color: secondColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    title: Text(
+                      "關於我們",
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        // fontFamily: 'OpenSans',
+                        color: secondColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    title: Text(
+                      "修改密碼",
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        // fontFamily: 'OpenSans',
+                        color: secondColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                ],
+              ))
+            ],
+          )),
+    ),
+  );
+}
+
 class _MainPageState extends State<MainPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   Color primaryColor = HexColor("7C9C99");
   Color secondColor = HexColor("4E605E");
   Color thirdColor = HexColor("AAD4D0");
@@ -27,6 +130,8 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawerEnableOpenDragGesture: false,
+      key: _key,
       appBar: AppBar(
         backgroundColor: primaryColor,
         elevation: 0,
@@ -37,7 +142,7 @@ class _MainPageState extends State<MainPage> {
             Icons.menu,
             color: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () => _key.currentState!.openDrawer(),
         ),
         title: Text('肌動GO'),
         actions: [
@@ -442,6 +547,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
+      drawer: _Drawer(context),
     );
   }
 }

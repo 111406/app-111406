@@ -1,5 +1,6 @@
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({Key? key}) : super(key: key);
@@ -12,12 +13,28 @@ Widget _TutorialScreen(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+      ImageSlideshow(
         width: MediaQuery.of(context).size.width / 1.5,
         height: MediaQuery.of(context).size.height / 2.5,
-        child: Text('教學畫面'),
-        alignment: Alignment.center,
+        children: [
+          Image.network(
+            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            fit: BoxFit.cover,
+          ),
+          Image.network(
+            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            fit: BoxFit.cover,
+          ),
+          Image.network(
+            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            fit: BoxFit.cover,
+          ),
+        ],
+        onPageChanged: (value) {
+          print('Page changed: $value');
+        },
+        autoPlayInterval: 3000,
+        isLoop: true,
       ),
     ],
   );
