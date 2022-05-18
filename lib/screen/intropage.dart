@@ -181,6 +181,32 @@ Widget _StartBtn(BuildContext context) {
 }
 
 class _IntroPageState extends State<IntroPage> {
+  //判斷一般模式或視覺辨識
+  bool NormalMode = false;
+  //判斷上肢或下肢
+  bool UpMode = true;
+  //判斷二頭或三角
+  bool TwoHead = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _asyncMethod();
+  }
+
+  _asyncMethod() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? normalmode = prefs.getBool('normalmode');
+    bool? upmode = prefs.getBool('upmode');
+    bool? twohead = prefs.getBool('twohead');
+
+    setState(() {
+      NormalMode = normalmode!;
+      UpMode = upmode!;
+      TwoHead = twohead!;
+    });
+  }
+
   Color primaryColor = HexColor("7C9C99");
   Color secondColor = HexColor("4E605E");
   Color thirdColor = HexColor("AAD4D0");
