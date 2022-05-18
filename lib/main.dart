@@ -25,7 +25,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: '肌動GO',
         home: const MainPage(),
-        routes: {TestPage.routeName: (context) => const TestPage()});
+        routes: {
+          TestPage.routeName: (context) => const TestPage(),
+          "intro_page": (context) => IntroPage()
+        });
   }
 }
 // 切換視覺頁面按鈕

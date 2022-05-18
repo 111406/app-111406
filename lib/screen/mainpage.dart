@@ -391,10 +391,15 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () async {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
+                      //intropage判斷教學引導用
+                      await prefs.setBool('normalmode', _normalHasBeenPressed);
+                      await prefs.setBool('upmode', true);
+                      await prefs.setBool('twohead', true);
+                      //
                       await prefs.setInt("part", TrainingPart.biceps.value);
-
                       //待更改
                       await prefs.setInt("type", RecordType.examination.value);
+                      //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
                       Navigator.pushNamed(context, TestPage.routeName);
                     },
                     elevation: 2.0,
@@ -428,10 +433,16 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () async {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
+                      //intropage判斷教學引導用
+                      await prefs.setBool('normalmode', _normalHasBeenPressed);
+                      await prefs.setBool('upmode', true);
+                      await prefs.setBool('twohead', false);
+                      //
                       await prefs.setInt("part", TrainingPart.deltoid.value);
 
                       //待更改
                       await prefs.setInt("type", RecordType.examination.value);
+                      //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
                       Navigator.pushNamed(context, TestPage.routeName);
                     },
                     elevation: 2.0,
@@ -465,10 +476,16 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () async {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
+                      //intropage判斷教學引導用
+                      await prefs.setBool('normalmode', _normalHasBeenPressed);
+                      await prefs.setBool('upmode', false);
+                      await prefs.setBool('twohead', false);
+                      //
                       await prefs.setInt("part", TrainingPart.quadriceps.value);
 
                       //待更改
                       await prefs.setInt("type", RecordType.examination.value);
+                      //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
                       Navigator.pushNamed(context, TestPage.routeName);
                     },
                     elevation: 2.0,
