@@ -43,7 +43,7 @@ Widget _TutorialScreen(BuildContext context) {
 Widget _CurrentAngle() {
   Color primaryColor = HexColor("7C9C99");
   return Text(
-    '當前角度：3',
+    '當前角度: 3',
     style: TextStyle(
         color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
   );

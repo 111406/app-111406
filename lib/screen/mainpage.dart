@@ -229,7 +229,7 @@ class _MainPageState extends State<MainPage> {
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 15),
                           child: Text(
-                            '身高：170CM',
+                            '身高: 170CM',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: secondColor,
@@ -242,7 +242,7 @@ class _MainPageState extends State<MainPage> {
                         Container(
                           margin: EdgeInsets.only(),
                           child: Text(
-                            '體重：70KG',
+                            '體重: 70KG',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: secondColor,
@@ -254,7 +254,7 @@ class _MainPageState extends State<MainPage> {
                         ),
                         Container(
                           child: Text(
-                            'BMI：24.2',
+                            'BMI: 24.2',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: secondColor,
@@ -425,7 +425,15 @@ class _MainPageState extends State<MainPage> {
               Column(
                 children: [
                   RawMaterialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setInt("part", TrainingPart.deltoid.value);
+
+                      //待更改
+                      await prefs.setInt("type", RecordType.examination.value);
+                      Navigator.pushNamed(context, TestPage.routeName);
+                    },
                     elevation: 2.0,
                     fillColor: Colors.white,
                     child: Icon(
@@ -454,7 +462,15 @@ class _MainPageState extends State<MainPage> {
               Column(
                 children: [
                   RawMaterialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setInt("part", TrainingPart.quadriceps.value);
+
+                      //待更改
+                      await prefs.setInt("type", RecordType.examination.value);
+                      Navigator.pushNamed(context, TestPage.routeName);
+                    },
                     elevation: 2.0,
                     fillColor: Colors.white,
                     child: Icon(

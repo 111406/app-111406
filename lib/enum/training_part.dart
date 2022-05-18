@@ -3,8 +3,13 @@ class TrainingPart {
   final int code;
   const TrainingPart._(this.string, this.code);
 
+  ///二頭肌
   static const biceps = TrainingPart._('biceps', 0);
+
+  ///三角肌
   static const deltoid = TrainingPart._('deltoid', 1);
+
+  ///股四頭肌
   static const quadriceps = TrainingPart._('quadriceps', 2);
 
   static const values = [biceps, deltoid, quadriceps];
@@ -18,7 +23,7 @@ class TrainingPart {
       case 2:
         return TrainingPart.quadriceps;
       default:
-        return null;
+        throw Exception("Invalid TrainingPart value");
     }
   }
 
