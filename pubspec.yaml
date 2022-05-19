@@ -32,7 +32,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   motion_sensors: ^0.1.0
   flutter_tts: ^3.3.3
-  hexcolor: ^2.0.7
   flutter_svg: ^1.0.3
   assorted_layout_widgets: ^5.8.5
   camera: ^0.9.4+24

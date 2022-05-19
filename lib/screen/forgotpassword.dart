@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:sport_app/theme/color.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -10,22 +10,22 @@ class ForgotPassword extends StatefulWidget {
 
 Widget _forgotPsEmailTF() {
   //信箱框
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '信箱',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -59,22 +59,22 @@ Widget _forgotPsEmailTF() {
 
 Widget _forgotPsCodeTF() {
   //驗證碼框
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '驗證碼',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           //keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -108,14 +108,14 @@ Widget _forgotPsCodeTF() {
 
 Widget _forgotPsNext() {
   //下一步
-  Color primaryColor = HexColor("7C9C99");
+
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 20),
+    padding: const EdgeInsets.symmetric(vertical: 20),
     height: 90,
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () {},
-      child: Text(
+      child: const Text(
         '下一步',
         style: TextStyle(fontSize: 24),
       ),
@@ -128,15 +128,14 @@ Widget _forgotPsNext() {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   @override
-  Color primaryColor = HexColor("7C9C99");
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
         Container(
             height: double.infinity,
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(
                 horizontal: 40.0,
                 vertical: 80.0,
               ),
@@ -153,7 +152,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const Text(
                         '忘記密碼',
                         style: TextStyle(
                           decoration: TextDecoration.none,
@@ -164,15 +163,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     _forgotPsEmailTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     _forgotPsCodeTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Column(
@@ -184,9 +183,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             Container(
                               child: ElevatedButton(
                                 onPressed: () {},
-                                child: Text(
+                                child: const Text(
                                   "寄送驗證碼",
-                                  style: const TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 20),
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   primary: primaryColor,
@@ -198,7 +197,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     _forgotPsNext(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:sport_app/theme/color.dart';
 
 class RegisterPage02 extends StatefulWidget {
   const RegisterPage02({Key? key}) : super(key: key);
@@ -11,22 +10,22 @@ class RegisterPage02 extends StatefulWidget {
 
 Widget _RegisterHeightTF() {
   //身高
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '身高',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           //keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -60,22 +59,22 @@ Widget _RegisterHeightTF() {
 
 Widget _RegisterWeightTF() {
   //體重
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '體重',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           obscureText: true,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -109,22 +108,22 @@ Widget _RegisterWeightTF() {
 
 Widget _RegisterBirTF() {
   //生日
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '生日',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           obscureText: true,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -225,14 +224,13 @@ Widget _RegisterBirTF() {
 
 Widget _RegisterDoneBtn() {
   //完成註冊按鈕
-  Color primaryColor = HexColor("7C9C99");
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 20),
+    padding: const EdgeInsets.symmetric(vertical: 20),
     height: 90,
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () {},
-      child: Text(
+      child: const Text(
         '完成/返回登入',
         style: TextStyle(fontSize: 24),
       ),
@@ -244,12 +242,11 @@ Widget _RegisterDoneBtn() {
 }
 
 Widget _RegisterPreBtn() {
-  Color primaryColor = HexColor("7C9C99");
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
       onTap: () => print('123'),
-      child: Text(
+      child: const Text(
         '上一步',
         style: TextStyle(
             color: primaryColor,
@@ -263,8 +260,6 @@ Widget _RegisterPreBtn() {
 class _RegisterPage02State extends State<RegisterPage02> {
   bool _normalHasBeenPressed = true;
   bool _visionHasBeenPressed = false;
-  Color primaryColor = HexColor("7C9C99");
-  Color thirdColor = HexColor("AAD4D0");
 
   String? _selectedColor;
   @override
@@ -292,7 +287,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const Text(
                         '註冊',
                         style: TextStyle(
                           decoration: TextDecoration.none,
@@ -303,32 +298,32 @@ class _RegisterPage02State extends State<RegisterPage02> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     _RegisterHeightTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     _RegisterWeightTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     _RegisterBirTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           '性別選擇',
                           style: TextStyle(
                               color: primaryColor,
                               fontSize: 24,
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -342,9 +337,9 @@ class _RegisterPage02State extends State<RegisterPage02> {
                                     _visionHasBeenPressed = false;
                                   });
                                 },
-                                child: Text(
+                                child: const Text(
                                   "男生",
-                                  style: const TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 20),
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   primary: _normalHasBeenPressed
@@ -354,7 +349,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 35,
                             ),
                             Container(
@@ -365,9 +360,9 @@ class _RegisterPage02State extends State<RegisterPage02> {
                                     _visionHasBeenPressed = true;
                                   });
                                 },
-                                child: Text(
+                                child: const Text(
                                   "女生",
-                                  style: const TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 20),
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   primary: _visionHasBeenPressed

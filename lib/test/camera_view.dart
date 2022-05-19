@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:sport_app/theme/color.dart';
 
 import '../main.dart';
 
@@ -31,7 +31,6 @@ class CameraView extends StatefulWidget {
 }
 
 class _CameraViewState extends State<CameraView> {
-  Color primaryColor = HexColor("7C9C99");
   ScreenMode _mode = ScreenMode.liveFeed;
   CameraController? _controller;
   int _cameraIndex = 0;
