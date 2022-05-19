@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:sport_app/screen/intropage.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/testpage.dart';
 // import 'mainpage.dart';

@@ -123,7 +123,8 @@ class _MainPageState extends State<MainPage> {
   Color primaryColor = HexColor("7C9C99");
   Color secondColor = HexColor("4E605E");
   Color thirdColor = HexColor("AAD4D0");
-
+  bool _testHasBeenPressed = true;
+  bool _trainHasBeenPressed = false;
   bool _normalHasBeenPressed = true;
   bool _visionHasBeenPressed = false;
   // Color controllerColor = ;
@@ -149,7 +150,7 @@ class _MainPageState extends State<MainPage> {
           IconButton(
             onPressed: () {},
             icon: Icon(
-              Icons.ring_volume,
+              Icons.circle_notifications,
             ),
           ),
         ],
@@ -360,12 +361,8 @@ class _MainPageState extends State<MainPage> {
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            width: MediaQuery.of(context).size.width / 1.2,
-            height: MediaQuery.of(context).size.height / 11,
-            decoration:
-                BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+          SizedBox(
+            height: 20,
           ),
           Container(
             alignment: Alignment.centerLeft,
@@ -387,30 +384,41 @@ class _MainPageState extends State<MainPage> {
             children: [
               Column(
                 children: [
-                  RawMaterialButton(
-                    onPressed: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      //intropage判斷教學引導用
-                      await prefs.setBool('normalmode', _normalHasBeenPressed);
-                      await prefs.setBool('upmode', true);
-                      await prefs.setBool('twohead', true);
-                      //
-                      await prefs.setInt("part", TrainingPart.biceps.value);
-                      //待更改
-                      await prefs.setInt("type", RecordType.examination.value);
-                      //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
-                      Navigator.pushNamed(context, TestPage.routeName);
-                    },
-                    elevation: 2.0,
-                    fillColor: Colors.white,
-                    child: Icon(
-                      Icons.help_outline_sharp,
-                      size: 45,
-                      color: primaryColor,
+                  Ink(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 2,
+                          )
+                        ]),
+                    child: IconButton(
+                      padding: EdgeInsets.all(12),
+                      icon: Image.asset('assets/icon/one.png'),
+                      color: Colors.white,
+                      iconSize: 60,
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        //測試模式與訓練模式的傳值 待修改
+                        //await prefs.setBool('testortrain', _testHasBeenPressed);
+                        //intropage判斷教學引導用
+                        await prefs.setBool(
+                            'normalmode', _normalHasBeenPressed); //一般或視覺
+                        await prefs.setBool('upmode', true); //上肢或下肢
+                        await prefs.setBool('twohead', true); //上肢的二頭或三角
+                        //
+                        await prefs.setInt("part", TrainingPart.biceps.value);
+                        //待更改
+                        await prefs.setInt(
+                            "type", RecordType.examination.value);
+                        //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
+                        Navigator.pushNamed(context, TestPage.routeName);
+                      },
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
                   ),
                   Container(
                     child: Text(
@@ -429,31 +437,42 @@ class _MainPageState extends State<MainPage> {
               ),
               Column(
                 children: [
-                  RawMaterialButton(
-                    onPressed: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      //intropage判斷教學引導用
-                      await prefs.setBool('normalmode', _normalHasBeenPressed);
-                      await prefs.setBool('upmode', true);
-                      await prefs.setBool('twohead', false);
-                      //
-                      await prefs.setInt("part", TrainingPart.deltoid.value);
+                  Ink(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 2,
+                          )
+                        ]),
+                    child: IconButton(
+                      padding: EdgeInsets.all(12),
+                      icon: Image.asset('assets/icon/two.png'),
+                      color: Colors.white,
+                      iconSize: 60,
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        //測試模式與訓練模式的傳值 待修改
+                        //await prefs.setBool('testortrain', _testHasBeenPressed);
+                        //intropage判斷教學引導用
+                        await prefs.setBool(
+                            'normalmode', _normalHasBeenPressed);
+                        await prefs.setBool('upmode', true);
+                        await prefs.setBool('twohead', false);
+                        //
+                        await prefs.setInt("part", TrainingPart.deltoid.value);
 
-                      //待更改
-                      await prefs.setInt("type", RecordType.examination.value);
-                      //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
-                      Navigator.pushNamed(context, TestPage.routeName);
-                    },
-                    elevation: 2.0,
-                    fillColor: Colors.white,
-                    child: Icon(
-                      Icons.insert_chart_outlined_outlined,
-                      size: 45,
-                      color: primaryColor,
+                        //待更改
+                        await prefs.setInt(
+                            "type", RecordType.examination.value);
+                        //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
+                        Navigator.pushNamed(context, TestPage.routeName);
+                      },
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
                   ),
                   Container(
                     child: Text(
@@ -472,31 +491,43 @@ class _MainPageState extends State<MainPage> {
               ),
               Column(
                 children: [
-                  RawMaterialButton(
-                    onPressed: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      //intropage判斷教學引導用
-                      await prefs.setBool('normalmode', _normalHasBeenPressed);
-                      await prefs.setBool('upmode', false);
-                      await prefs.setBool('twohead', false);
-                      //
-                      await prefs.setInt("part", TrainingPart.quadriceps.value);
+                  Ink(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 2,
+                          )
+                        ]),
+                    child: IconButton(
+                      padding: EdgeInsets.all(12),
+                      icon: Image.asset('assets/icon/three.png'),
+                      color: Colors.white,
+                      iconSize: 60,
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        //測試模式與訓練模式的傳值 待修改
+                        //await prefs.setBool('testortrain', _testHasBeenPressed);
+                        //intropage判斷教學引導用
+                        await prefs.setBool(
+                            'normalmode', _normalHasBeenPressed);
+                        await prefs.setBool('upmode', false);
+                        await prefs.setBool('twohead', false);
+                        //
+                        await prefs.setInt(
+                            "part", TrainingPart.quadriceps.value);
 
-                      //待更改
-                      await prefs.setInt("type", RecordType.examination.value);
-                      //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
-                      Navigator.pushNamed(context, TestPage.routeName);
-                    },
-                    elevation: 2.0,
-                    fillColor: Colors.white,
-                    child: Icon(
-                      Icons.report_gmailerrorred_rounded,
-                      size: 45,
-                      color: primaryColor,
+                        //待更改
+                        await prefs.setInt(
+                            "type", RecordType.examination.value);
+                        //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
+                        Navigator.pushNamed(context, TestPage.routeName);
+                      },
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
                   ),
                   Container(
                     child: Text(
@@ -516,8 +547,58 @@ class _MainPageState extends State<MainPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 30,
+                padding: const EdgeInsets.only(
+                  top: 30,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _testHasBeenPressed = true;
+                      _trainHasBeenPressed = false;
+                    });
+                  },
+                  child: Text(
+                    "測試",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: _testHasBeenPressed ? primaryColor : thirdColor,
+                    elevation: 5,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 35,
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 30,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _testHasBeenPressed = false;
+                      _trainHasBeenPressed = true;
+                    });
+                  },
+                  child: Text(
+                    "訓練",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: _trainHasBeenPressed ? primaryColor : thirdColor,
+                    elevation: 5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 30,
                 ),
                 child: ElevatedButton(
                   onPressed: () {
@@ -540,8 +621,8 @@ class _MainPageState extends State<MainPage> {
                 width: 35,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 30,
+                padding: const EdgeInsets.only(
+                  top: 30,
                 ),
                 child: ElevatedButton(
                   onPressed: () {
