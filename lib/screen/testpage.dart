@@ -8,6 +8,7 @@ import 'package:motion_sensors/motion_sensors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
+import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 
@@ -16,6 +17,7 @@ int _part = 0, _type = 0;
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
   static const String routeName = "/test";
+
   @override
   State<TestPage> createState() => _TestPageState();
 }
@@ -84,11 +86,13 @@ Widget _AngleTitle() {
   );
 }
 
-Widget _EndBtn() {
+Widget _EndBtn(BuildContext context) {
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
-      onLongPress: () {},
+      onLongPress: () {
+        Navigator.pushNamed(context, MainPage.routeName);
+      },
       child: const Text(
         '長按結束',
         style: TextStyle(
@@ -131,30 +135,20 @@ class _TestPageState extends State<TestPage> {
         children: [
           Column(
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.width / 6,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.width / 6),
               _Title(),
-              const SizedBox(
-                height: 25,
-              ),
+              const SizedBox(height: 25),
               _SecondLeftTitle(),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               _SecondLeft(_displayTimer),
-              const SizedBox(
-                height: 60,
-              ),
+              const SizedBox(height: 60),
               _CountNumberTitle(),
               _CountNumber(_times),
               const SizedBox(height: 60),
               _Angle(_displayAngle),
               _AngleTitle(),
-              const SizedBox(
-                height: 50,
-              ),
-              _EndBtn(),
+              const SizedBox(height: 50),
+              _EndBtn(context),
             ],
           ),
         ],
