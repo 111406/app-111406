@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 class IntroPage extends StatefulWidget {
@@ -224,7 +225,9 @@ class _IntroPageState extends State<IntroPage> {
             size: 36,
             color: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, MainPage.routeName);
+          },
         ),
         title: const Text('教學引導'),
       ),
