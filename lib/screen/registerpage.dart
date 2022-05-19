@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:sport_app/theme/color.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -11,22 +10,21 @@ class RegisterPage extends StatefulWidget {
 
 Widget _RegisterNumberTF() {
   //帳號輸入框
-  Color primaryColor = HexColor("7C9C99");
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '帳號',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           //keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -60,22 +58,22 @@ Widget _RegisterNumberTF() {
 
 Widget _RegisterPasswordTF() {
   //密碼與輸入框
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '密碼',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           obscureText: true,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -109,22 +107,21 @@ Widget _RegisterPasswordTF() {
 
 Widget _RegisterConPasswordTF() {
   //確認密碼與輸入框
-  Color primaryColor = HexColor("7C9C99");
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '確認密碼',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           obscureText: true,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -158,22 +155,21 @@ Widget _RegisterConPasswordTF() {
 
 Widget _RegisterEmailTF() {
   //信箱框
-  Color primaryColor = HexColor("7C9C99");
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '信箱',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -207,14 +203,13 @@ Widget _RegisterEmailTF() {
 
 Widget _RegisterNextBtn() {
   //下一步
-  Color primaryColor = HexColor("7C9C99");
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 20),
+    padding: const EdgeInsets.symmetric(vertical: 20),
     height: 90,
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () {},
-      child: Text(
+      child: const Text(
         '下一步',
         style: TextStyle(fontSize: 24),
       ),
@@ -226,12 +221,11 @@ Widget _RegisterNextBtn() {
 }
 
 Widget _RegisterLoginBtn() {
-  Color primaryColor = HexColor("7C9C99");
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
       onTap: () => print('123'),
-      child: Text(
+      child: const Text(
         '我已有帳號',
         style: TextStyle(
             color: primaryColor,
@@ -243,7 +237,6 @@ Widget _RegisterLoginBtn() {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  Color primaryColor = HexColor("7C9C99");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -251,8 +244,8 @@ class _RegisterPageState extends State<RegisterPage> {
         Container(
             height: double.infinity,
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(
                 horizontal: 40.0,
                 vertical: 80.0,
               ),
@@ -269,7 +262,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const Text(
                         '註冊',
                         style: TextStyle(
                           decoration: TextDecoration.none,
@@ -280,23 +273,23 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     _RegisterNumberTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     _RegisterPasswordTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     _RegisterConPasswordTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     _RegisterEmailTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     _RegisterNextBtn(),

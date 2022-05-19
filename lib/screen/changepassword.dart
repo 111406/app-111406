@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:sport_app/theme/color.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -10,22 +10,22 @@ class ChangePassword extends StatefulWidget {
 
 Widget _forgotPsOldTF() {
   //舊密碼
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '舊密碼',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           //keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -59,22 +59,22 @@ Widget _forgotPsOldTF() {
 
 Widget _forgotPsNewTF() {
   //新密碼
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '新密碼',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           //keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -108,22 +108,22 @@ Widget _forgotPsNewTF() {
 
 Widget _forgotPsNewConfTF() {
   //確認密碼
-  Color primaryColor = HexColor("7C9C99");
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         '確認密碼',
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10.0,
       ),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: TextField(
+        child: const TextField(
           //keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
@@ -157,14 +157,14 @@ Widget _forgotPsNewConfTF() {
 
 Widget _forgotPsConfBtn() {
   //確認修改按鈕
-  Color primaryColor = HexColor("7C9C99");
+
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 20),
+    padding: const EdgeInsets.symmetric(vertical: 20),
     height: 90,
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () {},
-      child: Text(
+      child: const Text(
         '確認修改',
         style: TextStyle(fontSize: 24),
       ),
@@ -176,7 +176,6 @@ Widget _forgotPsConfBtn() {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  Color primaryColor = HexColor("7C9C99");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,8 +183,8 @@ class _ChangePasswordState extends State<ChangePassword> {
         Container(
             height: double.infinity,
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(
                 horizontal: 40.0,
                 vertical: 80.0,
               ),
@@ -202,7 +201,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const Text(
                         '修改密碼',
                         style: TextStyle(
                           decoration: TextDecoration.none,
@@ -213,19 +212,19 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     _forgotPsOldTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     _forgotPsNewTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     _forgotPsNewConfTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     _forgotPsConfBtn(),

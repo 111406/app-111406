@@ -1,5 +1,5 @@
-import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/material.dart';
+import 'package:sport_app/theme/color.dart';
 
 class TrainingPage extends StatefulWidget {
   const TrainingPage({Key? key}) : super(key: key);
@@ -9,11 +9,9 @@ class TrainingPage extends StatefulWidget {
 }
 
 Widget _Title() {
-  Color primaryColor = HexColor("7C9C99");
-
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: [
+    children: const [
       Opacity(
         opacity: 0.5,
         child: Text(
@@ -27,8 +25,7 @@ Widget _Title() {
 }
 
 Widget _SecondLeftTitle() {
-  Color primaryColor = HexColor("7C9C99");
-  return Text(
+  return const Text(
     '剩餘秒數',
     style: TextStyle(
         color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
@@ -36,8 +33,7 @@ Widget _SecondLeftTitle() {
 }
 
 Widget _SecondLeft() {
-  Color primaryColor = HexColor("7C9C99");
-  return Text(
+  return const Text(
     '47',
     style: TextStyle(
         color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
@@ -45,8 +41,7 @@ Widget _SecondLeft() {
 }
 
 Widget _CountNumberTitle() {
-  Color primaryColor = HexColor("7C9C99");
-  return Text(
+  return const Text(
     '次數',
     style: TextStyle(
         color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
@@ -54,8 +49,7 @@ Widget _CountNumberTitle() {
 }
 
 Widget _CountNumber() {
-  Color primaryColor = HexColor("7C9C99");
-  return Text(
+  return const Text(
     '13',
     style: TextStyle(
         color: primaryColor, fontSize: 72, fontWeight: FontWeight.bold),
@@ -63,8 +57,7 @@ Widget _CountNumber() {
 }
 
 Widget _Angle() {
-  Color primaryColor = HexColor("7C9C99");
-  return Text(
+  return const Text(
     '3',
     style: TextStyle(
         color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
@@ -72,8 +65,7 @@ Widget _Angle() {
 }
 
 Widget _AngleTitle() {
-  Color primaryColor = HexColor("7C9C99");
-  return Text(
+  return const Text(
     '角度',
     style: TextStyle(
         color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
@@ -81,12 +73,11 @@ Widget _AngleTitle() {
 }
 
 Widget _EndBtn() {
-  Color primaryColor = HexColor("7C9C99");
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
       onLongPress: () {},
-      child: Text(
+      child: const Text(
         '長按結束',
         style: TextStyle(
             color: primaryColor,
@@ -109,25 +100,25 @@ class _TrainingPageState extends State<TrainingPage> {
                 height: MediaQuery.of(context).size.width / 6,
               ),
               _Title(),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               _SecondLeftTitle(),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               _SecondLeft(),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               _CountNumberTitle(),
               _CountNumber(),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               _Angle(),
               _AngleTitle(),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               _EndBtn(),

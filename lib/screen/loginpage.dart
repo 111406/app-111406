@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:sport_app/theme/color.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,22 +12,22 @@ class _LoginPageState extends State<LoginPage> {
   bool _agree = false;
   Widget _loginEmailTF() {
     //登入與輸入框
-    Color primaryColor = HexColor("7C9C99");
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           '帳號',
           style: TextStyle(
               color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10.0,
         ),
         Container(
           alignment: Alignment.centerLeft,
           height: 50,
-          child: TextField(
+          child: const TextField(
             //keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -62,22 +61,21 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginPasswordTF() {
     //密碼與輸入框
-    Color primaryColor = HexColor("7C9C99");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           '密碼',
           style: TextStyle(
               color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10.0,
         ),
         Container(
           alignment: Alignment.centerLeft,
           height: 50,
-          child: TextField(
+          child: const TextField(
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -111,12 +109,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginForgetPasswordBtn() {
     //忘記密碼按鈕
-    Color primaryColor = HexColor("7C9C99");
     return Container(
         alignment: Alignment.centerRight,
         child: TextButton(
             onPressed: () {},
-            child: Text(
+            child: const Text(
               '忘記密碼',
               style: TextStyle(
                   decoration: TextDecoration.underline, color: primaryColor),
@@ -124,7 +121,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _loginCheckbox() {
-    Color primaryColor = HexColor("7C9C99");
     //免責聲明勾選按鈕
     return Container(
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -144,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
           onTap: () {
             showAlertDialog(context);
           },
-          child: Text(
+          child: const Text(
             '我已經詳閱並同意個人資料\n蒐集條款，與免責說明',
             style: TextStyle(
                 decoration: TextDecoration.underline, color: primaryColor),
@@ -156,14 +152,13 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginBtn() {
     //登入按鈕
-    Color primaryColor = HexColor("7C9C99");
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       height: 90,
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {},
-        child: Text(
+        child: const Text(
           '登入',
           style: TextStyle(fontSize: 24),
         ),
@@ -175,12 +170,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _loginRegisterBtn() {
-    Color primaryColor = HexColor("7C9C99");
     return Container(
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () => print('123'),
-        child: Text(
+        child: const Text(
           '尚未有帳號，註冊',
           style: TextStyle(
               color: primaryColor,
@@ -193,14 +187,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = HexColor("7C9C99");
     return Scaffold(
       body: Stack(children: [
         Container(
             height: double.infinity,
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(
                 horizontal: 40.0,
                 vertical: 80.0,
               ),
@@ -217,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const Text(
                         '登入',
                         style: TextStyle(
                           decoration: TextDecoration.none,
@@ -228,11 +221,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     _loginEmailTF(),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     _loginPasswordTF(),
@@ -249,11 +242,11 @@ class _LoginPageState extends State<LoginPage> {
   showAlertDialog(BuildContext context) {
     // Init
     AlertDialog dialog = AlertDialog(
-      title: Text("聲明說明"),
-      content: Text(('聲明敘述')),
+      title: const Text("聲明說明"),
+      content: const Text(('聲明敘述')),
       actions: [
         ElevatedButton(
-            child: Text("關閉"),
+            child: const Text("關閉"),
             onPressed: () {
               Navigator.pop(context);
             }),
@@ -276,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
           child: dialog,
         );
       },
-      transitionDuration: Duration(milliseconds: 400),
+      transitionDuration: const Duration(milliseconds: 400),
     );
   }
 }

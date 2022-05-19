@@ -1,7 +1,7 @@
-import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/theme/color.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({Key? key}) : super(key: key);
@@ -139,8 +139,7 @@ Widget _TutorialScreen03(BuildContext context) {
 }
 
 Widget _CurrentAngle() {
-  Color primaryColor = HexColor("7C9C99");
-  return Text(
+  return const Text(
     '當前角度: 3',
     style: TextStyle(
         color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
@@ -148,12 +147,11 @@ Widget _CurrentAngle() {
 }
 
 Widget _ResetZero(BuildContext context) {
-  Color primaryColor = HexColor("7C9C99");
   return Container(
     width: MediaQuery.of(context).size.width / 3,
     child: ElevatedButton(
       onPressed: () {},
-      child: Text(
+      child: const Text(
         '起始角度歸零',
         style: TextStyle(fontSize: 16),
       ),
@@ -165,12 +163,11 @@ Widget _ResetZero(BuildContext context) {
 }
 
 Widget _StartBtn(BuildContext context) {
-  Color primaryColor = HexColor("7C9C99");
   return Container(
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
       onPressed: () {},
-      child: Text(
+      child: const Text(
         '開始',
         style: TextStyle(fontSize: 24),
       ),
@@ -208,9 +205,6 @@ class _IntroPageState extends State<IntroPage> {
     });
   }
 
-  Color primaryColor = HexColor("7C9C99");
-  Color secondColor = HexColor("4E605E");
-  Color thirdColor = HexColor("AAD4D0");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -225,20 +219,20 @@ class _IntroPageState extends State<IntroPage> {
         centerTitle: true,
         toolbarHeight: 70 + 1,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             size: 36,
             color: Colors.white,
           ),
           onPressed: () {},
         ),
-        title: Text('教學引導'),
+        title: const Text('教學引導'),
       ),
       body: Stack(
         children: [
           Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               NormalMode
@@ -248,15 +242,15 @@ class _IntroPageState extends State<IntroPage> {
                           : _TutorialScreen01(context)
                       : _TutorialScreen02(context)
                   : _TutorialScreen03(context),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               _CurrentAngle(),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               _ResetZero(context),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               _StartBtn(context),

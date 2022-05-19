@@ -1,13 +1,13 @@
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'dart:math' as math;
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/enum/record_type.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/theme/color.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -17,9 +17,6 @@ class MainPage extends StatefulWidget {
 }
 
 Widget _Drawer(BuildContext context) {
-  Color primaryColor = HexColor("7C9C99");
-  Color secondColor = HexColor("4E605E");
-  Color thirdColor = HexColor("AAD4D0");
   return Container(
     width: MediaQuery.of(context).size.width / 1.8,
     child: Drawer(
@@ -46,9 +43,9 @@ Widget _Drawer(BuildContext context) {
                       children: [
                         Image.asset(
                           'assets/icon/logo01.png',
-                          width: 150,
+                          width: 100,
                         ),
-                        Text(
+                        const Text(
                           "肌動GO",
                           style: TextStyle(
                             decoration: TextDecoration.none,
@@ -68,11 +65,11 @@ Widget _Drawer(BuildContext context) {
                 padding: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width / 8),
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       "使用須知",
                       style: TextStyle(
                         decoration: TextDecoration.none,
@@ -85,7 +82,7 @@ Widget _Drawer(BuildContext context) {
                     onTap: () {},
                   ),
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       "關於我們",
                       style: TextStyle(
                         decoration: TextDecoration.none,
@@ -98,7 +95,7 @@ Widget _Drawer(BuildContext context) {
                     onTap: () {},
                   ),
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       "修改密碼",
                       style: TextStyle(
                         decoration: TextDecoration.none,
@@ -120,9 +117,6 @@ Widget _Drawer(BuildContext context) {
 
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  Color primaryColor = HexColor("7C9C99");
-  Color secondColor = HexColor("4E605E");
-  Color thirdColor = HexColor("AAD4D0");
   bool _testHasBeenPressed = true;
   bool _trainHasBeenPressed = false;
   bool _normalHasBeenPressed = true;
@@ -139,13 +133,13 @@ class _MainPageState extends State<MainPage> {
         centerTitle: true,
         toolbarHeight: 70 + 1,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.menu,
             color: Colors.white,
           ),
           onPressed: () => _key.currentState!.openDrawer(),
         ),
-        title: Text('肌動GO'),
+        title: const Text('肌動GO'),
         actions: [
           IconButton(
             onPressed: () {},
@@ -163,7 +157,7 @@ class _MainPageState extends State<MainPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height / 3,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 1),
                 ),
                 child: Stack(children: <Widget>[
@@ -178,7 +172,7 @@ class _MainPageState extends State<MainPage> {
                 ]),
               ),
               Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 0,
                   left: 0,
                 ),
@@ -194,23 +188,23 @@ class _MainPageState extends State<MainPage> {
                     Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 25, left: 40),
+                          margin: const EdgeInsets.only(top: 25, left: 40),
                           child: RawMaterialButton(
                             onPressed: () {},
                             elevation: 2.0,
                             fillColor: Colors.white,
-                            child: Icon(
+                            child: const Icon(
                               Icons.account_box_rounded,
                               size: 45,
                               color: secondColor,
                             ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(),
+                            padding: const EdgeInsets.all(15.0),
+                            shape: const CircleBorder(),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 5, left: 40),
-                          child: Text(
+                          margin: const EdgeInsets.only(top: 5, left: 40),
+                          child: const Text(
                             '個人資訊',
                             style: TextStyle(
                               fontSize: 20,
@@ -224,12 +218,12 @@ class _MainPageState extends State<MainPage> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 22,
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 15),
-                          child: Text(
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                          child: const Text(
                             '身高: 170CM',
                             style: TextStyle(
                                 fontSize: 20,
@@ -237,12 +231,12 @@ class _MainPageState extends State<MainPage> {
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Container(
-                          margin: EdgeInsets.only(),
-                          child: Text(
+                          margin: const EdgeInsets.only(),
+                          child: const Text(
                             '體重: 70KG',
                             style: TextStyle(
                                 fontSize: 20,
@@ -250,11 +244,11 @@ class _MainPageState extends State<MainPage> {
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Container(
-                          child: Text(
+                          child: const Text(
                             'BMI: 24.2',
                             style: TextStyle(
                                 fontSize: 20,
@@ -269,7 +263,7 @@ class _MainPageState extends State<MainPage> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Row(
@@ -281,16 +275,16 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () {},
                     elevation: 2.0,
                     fillColor: Colors.white,
-                    child: Icon(
+                    child: const Icon(
                       Icons.help_outline_sharp,
                       size: 45,
                       color: primaryColor,
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
+                    padding: const EdgeInsets.all(15.0),
+                    shape: const CircleBorder(),
                   ),
                   Container(
-                    child: Text(
+                    child: const Text(
                       '使用教學',
                       style: TextStyle(
                         fontSize: 20,
@@ -301,7 +295,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Column(
@@ -310,16 +304,16 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () {},
                     elevation: 2.0,
                     fillColor: Colors.white,
-                    child: Icon(
+                    child: const Icon(
                       Icons.insert_chart_outlined_outlined,
                       size: 45,
                       color: primaryColor,
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
+                    padding: const EdgeInsets.all(15.0),
+                    shape: const CircleBorder(),
                   ),
                   Container(
-                    child: Text(
+                    child: const Text(
                       '檢視資料',
                       style: TextStyle(
                         fontSize: 20,
@@ -339,16 +333,16 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () {},
                     elevation: 2.0,
                     fillColor: Colors.white,
-                    child: Icon(
+                    child: const Icon(
                       Icons.report_gmailerrorred_rounded,
                       size: 45,
                       color: primaryColor,
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
+                    padding: const EdgeInsets.all(15.0),
+                    shape: const CircleBorder(),
                   ),
                   Container(
-                    child: Text(
+                    child: const Text(
                       '健康資訊',
                       style: TextStyle(
                         fontSize: 20,
@@ -361,14 +355,14 @@ class _MainPageState extends State<MainPage> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(
                 top: 10, left: MediaQuery.of(context).size.width / 11),
-            child: Text(
+            child: const Text(
               '測試項目',
               style: TextStyle(
                   fontSize: 22,
@@ -376,7 +370,7 @@ class _MainPageState extends State<MainPage> {
                   color: secondColor),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -396,7 +390,7 @@ class _MainPageState extends State<MainPage> {
                           )
                         ]),
                     child: IconButton(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       icon: Image.asset('assets/icon/one.png'),
                       color: Colors.white,
                       iconSize: 60,
@@ -421,7 +415,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Container(
-                    child: Text(
+                    child: const Text(
                       '二頭肌',
                       style: TextStyle(
                         fontSize: 20,
@@ -432,7 +426,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Column(
@@ -475,7 +469,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Container(
-                    child: Text(
+                    child: const Text(
                       '三頭肌',
                       style: TextStyle(
                         fontSize: 20,
@@ -486,7 +480,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Column(
@@ -530,7 +524,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Container(
-                    child: Text(
+                    child: const Text(
                       '滑牆深蹲',
                       style: TextStyle(
                         fontSize: 20,
@@ -557,9 +551,9 @@ class _MainPageState extends State<MainPage> {
                       _trainHasBeenPressed = false;
                     });
                   },
-                  child: Text(
+                  child: const Text(
                     "測試",
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20),
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: _testHasBeenPressed ? primaryColor : thirdColor,
@@ -567,7 +561,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 35,
               ),
               Container(
@@ -581,9 +575,9 @@ class _MainPageState extends State<MainPage> {
                       _trainHasBeenPressed = true;
                     });
                   },
-                  child: Text(
+                  child: const Text(
                     "訓練",
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20),
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: _trainHasBeenPressed ? primaryColor : thirdColor,
@@ -607,9 +601,9 @@ class _MainPageState extends State<MainPage> {
                       _visionHasBeenPressed = false;
                     });
                   },
-                  child: Text(
+                  child: const Text(
                     "一般模式",
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20),
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: _normalHasBeenPressed ? primaryColor : thirdColor,
@@ -617,7 +611,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 35,
               ),
               Container(
@@ -631,9 +625,9 @@ class _MainPageState extends State<MainPage> {
                       _visionHasBeenPressed = true;
                     });
                   },
-                  child: Text(
+                  child: const Text(
                     "視覺辨識",
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20),
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: _visionHasBeenPressed ? primaryColor : thirdColor,
