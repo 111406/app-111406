@@ -7,6 +7,7 @@ import 'pose_painter.dart';
 
 class PoseDetectorView extends StatefulWidget {
   const PoseDetectorView({Key? key}) : super(key: key);
+  static const String routeName = "/pose_estimation";
 
   @override
   State<StatefulWidget> createState() => _PoseDetectorViewState();

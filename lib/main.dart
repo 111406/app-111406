@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:sport_app/screen/intropage.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/test/pose_detector_view.dart';
 // import 'mainpage.dart';
 
 List<CameraDescription> cameras = [];
@@ -11,32 +11,32 @@ List<CameraDescription> cameras = [];
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  cameras = await availableCameras();
+  try {
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    // ignore: avoid_print
+    print('Error: $e.code\nError Message: $e.message');
+  }
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: '肌動GO',
-        home: const MainPage(),
-        routes: {
-          TestPage.routeName: (context) => const TestPage(),
-          "intro_page": (context) => IntroPage()
-        });
+      debugShowCheckedModeBanner: false,
+      title: '肌動GO',
+      // home: const MainPage(),
+      initialRoute: MainPage.routeName,
+      routes: {
+        MainPage.routeName: (context) => const MainPage(),
+        // IntroPage.routeName: (context) => const IntroPage(),
+        TestPage.routeName: (context) => const TestPage(),
+        PoseDetectorView.routeName: (context) => const PoseDetectorView(),
+      },
+    );
   }
 }
-// 切換視覺頁面按鈕
-// child: RaisedButton(
-//             child: Text('Test'),
-//             onPressed: () {
-//               Navigator.push(context,
-//                   MaterialPageRoute(builder: (context) => PoseDetectorView()));
-//             },
-//           ),

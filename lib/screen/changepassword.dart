@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -155,7 +156,7 @@ Widget _forgotPsNewConfTF() {
   );
 }
 
-Widget _forgotPsConfBtn() {
+Widget _forgotPsConfBtn(BuildContext context) {
   //確認修改按鈕
 
   return Container(
@@ -163,7 +164,9 @@ Widget _forgotPsConfBtn() {
     height: 90,
     width: double.infinity,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, MainPage.routeName);
+      },
       child: const Text(
         '確認修改',
         style: TextStyle(fontSize: 24),
@@ -227,7 +230,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    _forgotPsConfBtn(),
+                    _forgotPsConfBtn(context),
                   ]),
             )),
       ]),

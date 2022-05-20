@@ -6,11 +6,15 @@ import 'dart:math' as math;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/enum/record_type.dart';
 import 'package:sport_app/enum/training_part.dart';
+import 'package:sport_app/screen/changepassword.dart';
+import 'package:sport_app/screen/intropage.dart';
 import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/test/pose_detector_view.dart';
 import 'package:sport_app/theme/color.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
+  static const String routeName = "/main";
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -105,7 +109,12 @@ Widget _Drawer(BuildContext context) {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ChangePassword()));
+                    },
                   ),
                 ],
               ))
@@ -272,7 +281,12 @@ class _MainPageState extends State<MainPage> {
               Column(
                 children: [
                   RawMaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const IntroPage()));
+                    },
                     elevation: 2.0,
                     fillColor: Colors.white,
                     child: const Icon(
@@ -620,6 +634,11 @@ class _MainPageState extends State<MainPage> {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
+                    Navigator.pushNamed(context, PoseDetectorView.routeName);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const PoseDetectorView()));
                     setState(() {
                       _normalHasBeenPressed = false;
                       _visionHasBeenPressed = true;
@@ -643,3 +662,13 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
+
+// 切換視覺頁面按鈕
+// child: RaisedButton(
+//             child: Text('Test'),
+//             onPressed: () {
+//               Navigator.push(context,
+//                   MaterialPageRoute(builder: (context) => PoseDetectorView()));
+//             },
+//           ),
