@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/testpage.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
-// import 'mainpage.dart';
 
 List<CameraDescription> cameras = [];
 
