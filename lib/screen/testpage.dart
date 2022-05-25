@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/mainpage.dart';
+import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 
@@ -246,6 +247,7 @@ class _TestPageState extends State<TestPage> {
       if (_displayTimer == 0) {
         timer.cancel();
         _timerStart = false;
+        Navigator.pushNamed(context, TestResultPage.routeName);
         //測試資料
         String reqeustData = """
             {

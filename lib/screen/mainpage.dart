@@ -423,8 +423,9 @@ class _MainPageState extends State<MainPage> {
                         //待更改
                         await prefs.setInt(
                             "type", RecordType.examination.value);
-                        //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
-                        Navigator.pushNamed(context, TestPage.routeName);
+                        Navigator.pushNamed(
+                            context, IntroPage.routeName); //此為跳轉至intropage
+                        //Navigator.pushNamed(context, TestPage.routeName);
                       },
                     ),
                   ),
@@ -477,8 +478,9 @@ class _MainPageState extends State<MainPage> {
                         //待更改
                         await prefs.setInt(
                             "type", RecordType.examination.value);
-                        //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
-                        Navigator.pushNamed(context, TestPage.routeName);
+                        Navigator.pushNamed(
+                            context, IntroPage.routeName); //此為跳轉至intropage
+                        //Navigator.pushNamed(context, TestPage.routeName);
                       },
                     ),
                   ),
@@ -532,8 +534,9 @@ class _MainPageState extends State<MainPage> {
                         //待更改
                         await prefs.setInt(
                             "type", RecordType.examination.value);
-                        //Navigator.of(context).pushNamed('intro_page'); //此為跳轉至intropage 我先不改哲寫的
-                        Navigator.pushNamed(context, TestPage.routeName);
+                        Navigator.pushNamed(
+                            context, IntroPage.routeName); //此為跳轉至intropage
+                        //Navigator.pushNamed(context, TestPage.routeName);
                       },
                     ),
                   ),
@@ -662,7 +665,6 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-
 
 // 切換視覺頁面按鈕
 // child: RaisedButton(

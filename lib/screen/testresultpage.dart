@@ -3,6 +3,7 @@ import 'package:sport_app/theme/color.dart';
 
 class TestResultPage extends StatefulWidget {
   const TestResultPage({Key? key}) : super(key: key);
+  static const String routeName = "/testresultpage";
 
   @override
   State<TestResultPage> createState() => _TestResultPageState();
