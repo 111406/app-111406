@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/mainpage.dart';
+import 'package:sport_app/screen/testpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({Key? key}) : super(key: key);
+  static const String routeName = "/intro";
 
   @override
   State<IntroPage> createState() => _IntroPageState();
@@ -167,7 +169,9 @@ Widget _StartBtn(BuildContext context) {
   return Container(
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, TestPage.routeName);
+      },
       child: const Text(
         '開始',
         style: TextStyle(fontSize: 24),

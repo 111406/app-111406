@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:sport_app/screen/intropage.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
 
 List<CameraDescription> cameras = [];
@@ -32,9 +34,10 @@ class MyApp extends StatelessWidget {
       initialRoute: MainPage.routeName,
       routes: {
         MainPage.routeName: (context) => const MainPage(),
-        // IntroPage.routeName: (context) => const IntroPage(),
+        IntroPage.routeName: (context) => const IntroPage(),
         TestPage.routeName: (context) => const TestPage(),
         PoseDetectorView.routeName: (context) => const PoseDetectorView(),
+        TestResultPage.routeName: (context) => const TestResultPage(),
       },
     );
   }
