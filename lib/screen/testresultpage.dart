@@ -23,10 +23,15 @@ Widget _Title() {
 }
 
 Widget _ResultTitle() {
-  return const Text(
-    '測試結果',
-    style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: const [
+      const Text(
+        '測試結果',
+        style: TextStyle(
+            color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+      ),
+    ],
   );
 }
 
@@ -45,35 +50,129 @@ Widget _ResultChart(BuildContext context) {
   );
 }
 
-Widget _ResultNumber() {
-  return const Text(
-    '測試次數: 47',
-    style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+Widget _ResultNumber(context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      SizedBox(
+        width: MediaQuery.of(context).size.width / 5,
+      ),
+      const Text(
+        '測試次數',
+        style: TextStyle(
+            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+      ),
+      SizedBox(
+        width: MediaQuery.of(context).size.width / 8,
+      ),
+      const Text(
+        '47',
+        style: TextStyle(
+            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+      )
+    ],
+  );
+}
+
+Widget _ResultAnalyze(context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      SizedBox(
+        width: MediaQuery.of(context).size.width / 5,
+      ),
+      const Text(
+        '結果分析',
+        style: TextStyle(
+            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+      ),
+      SizedBox(
+        width: MediaQuery.of(context).size.width / 10,
+      ),
+      const Text(
+        '待加強',
+        style: TextStyle(
+            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+      )
+    ],
+  );
+}
+
+Widget _ResultPR(context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      SizedBox(
+        width: MediaQuery.of(context).size.width / 3.5,
+      ),
+      const Text(
+        'PR值',
+        style: TextStyle(
+            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+      ),
+      SizedBox(width: MediaQuery.of(context).size.width / 5.3),
+      const Text(
+        '5',
+        style: TextStyle(
+            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+      )
+    ],
+  );
+}
+
+Widget _ResultGap(context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      SizedBox(
+        width: MediaQuery.of(context).size.width / 6,
+      ),
+      const Text(
+        '與上次相差',
+        style: TextStyle(
+            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+      ),
+      SizedBox(width: MediaQuery.of(context).size.width / 9),
+      const Text(
+        '5',
+        style: TextStyle(
+            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+      )
+    ],
   );
 }
 
 Widget _MaxAngle() {
-  return const Text(
-    '最大彎曲角度: 108',
-    style: TextStyle(
-        color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      const Text(
+        '最大角度',
+        style: TextStyle(
+            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+      )
+    ],
   );
 }
 
 Widget _EndBtn(BuildContext context) {
-  return Container(
-    width: MediaQuery.of(context).size.width / 1.5,
-    child: ElevatedButton(
-      onPressed: () {},
-      child: const Text(
-        '結束',
-        style: TextStyle(fontSize: 24),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: primaryColor,
-      ),
-    ),
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        width: MediaQuery.of(context).size.width / 1.5,
+        child: ElevatedButton(
+          onPressed: () {},
+          child: const Text(
+            '結束',
+            style: TextStyle(fontSize: 24),
+          ),
+          style: ElevatedButton.styleFrom(
+            primary: primaryColor,
+          ),
+        ),
+      )
+    ],
   );
 }
 
@@ -81,37 +180,46 @@ class _TestResultPageState extends State<TestResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.width / 6,
-              ),
-              _Title(),
-              const SizedBox(
-                height: 25,
-              ),
-              _ResultTitle(),
-              const SizedBox(
-                height: 10,
-              ),
-              _ResultChart(context),
-              const SizedBox(
-                height: 10,
-              ),
-              _ResultNumber(),
-              const SizedBox(
-                height: 10,
-              ),
-              _MaxAngle(),
-              const SizedBox(
-                height: 30,
-              ),
-              _EndBtn(context),
-            ],
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.width / 6,
+            ),
+            _Title(),
+            const SizedBox(
+              height: 25,
+            ),
+            _ResultTitle(),
+            const SizedBox(
+              height: 30,
+            ),
+            _ResultNumber(context),
+            const SizedBox(
+              height: 15,
+            ),
+            _ResultAnalyze(context),
+            const SizedBox(
+              height: 15,
+            ),
+            _ResultPR(context),
+            const SizedBox(
+              height: 15,
+            ),
+            _ResultGap(context),
+            const SizedBox(
+              height: 30,
+            ),
+            _ResultChart(context),
+            const SizedBox(
+              height: 30,
+            ),
+            _EndBtn(context),
+            const SizedBox(
+              height: 100,
+            ),
+          ],
+        ),
       ),
     );
   }
