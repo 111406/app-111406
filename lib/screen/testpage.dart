@@ -116,16 +116,24 @@ class _TestPageState extends State<TestPage> {
   final List<ChartData> _angleList = [];
   final int _timer = 30;
 
+  late StreamSubscription<AccelerometerEvent> subscription;
   @override
   void initState() {
     super.initState();
     _setTimerEvent();
     _loadPrefs();
-    motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription =
+        motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         _calcAngles(event.x, event.y, event.z);
       });
     });
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -247,7 +255,6 @@ class _TestPageState extends State<TestPage> {
       if (_displayTimer == 0) {
         timer.cancel();
         _timerStart = false;
-        Navigator.pushNamed(context, TestResultPage.routeName);
         //測試資料
         String reqeustData = """
             {
@@ -259,6 +266,7 @@ class _TestPageState extends State<TestPage> {
             }
         """;
         await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
+        Navigator.pushReplacementNamed(context, TestResultPage.routeName);
       }
       setState(() {});
     });
