@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 class TestResultPage extends StatefulWidget {
   const TestResultPage({Key? key}) : super(key: key);
   static const String routeName = "/testresultpage";
-
   @override
   State<TestResultPage> createState() => _TestResultPageState();
 }
@@ -50,7 +50,7 @@ Widget _ResultChart(BuildContext context) {
   );
 }
 
-Widget _ResultNumber(context) {
+Widget _ResultNumber(context, times) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -65,8 +65,8 @@ Widget _ResultNumber(context) {
       SizedBox(
         width: MediaQuery.of(context).size.width / 8,
       ),
-      const Text(
-        '47',
+      Text(
+        '$times',
         style: TextStyle(
             color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
       )
@@ -74,7 +74,7 @@ Widget _ResultNumber(context) {
   );
 }
 
-Widget _ResultAnalyze(context) {
+Widget _ResultAnalyze(context, testResult) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -89,16 +89,16 @@ Widget _ResultAnalyze(context) {
       SizedBox(
         width: MediaQuery.of(context).size.width / 10,
       ),
-      const Text(
-        '待加強',
-        style: TextStyle(
+      Text(
+        '$testResult',
+        style: const TextStyle(
             color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
       )
     ],
   );
 }
 
-Widget _ResultPR(context) {
+Widget _ResultPR(context, pr) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -111,16 +111,16 @@ Widget _ResultPR(context) {
             color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
       ),
       SizedBox(width: MediaQuery.of(context).size.width / 5.3),
-      const Text(
-        '5',
-        style: TextStyle(
+      Text(
+        '$pr',
+        style: const TextStyle(
             color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
       )
     ],
   );
 }
 
-Widget _ResultGap(context) {
+Widget _ResultGap(context, difference) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -133,9 +133,9 @@ Widget _ResultGap(context) {
             color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
       ),
       SizedBox(width: MediaQuery.of(context).size.width / 9),
-      const Text(
-        '5',
-        style: TextStyle(
+      Text(
+        '$difference',
+        style: const TextStyle(
             color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
       )
     ],
@@ -162,7 +162,9 @@ Widget _EndBtn(BuildContext context) {
       Container(
         width: MediaQuery.of(context).size.width / 1.5,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, MainPage.routeName);
+          },
           child: const Text(
             '結束',
             style: TextStyle(fontSize: 24),
@@ -179,6 +181,10 @@ Widget _EndBtn(BuildContext context) {
 class _TestResultPageState extends State<TestResultPage> {
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    dynamic analyzeData = arguments["data"];
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -194,19 +200,19 @@ class _TestResultPageState extends State<TestResultPage> {
             const SizedBox(
               height: 30,
             ),
-            _ResultNumber(context),
+            _ResultNumber(context, analyzeData["times"]),
             const SizedBox(
               height: 15,
             ),
-            _ResultAnalyze(context),
+            _ResultAnalyze(context, analyzeData["test_result"]),
             const SizedBox(
               height: 15,
             ),
-            _ResultPR(context),
+            _ResultPR(context, analyzeData["pr"]),
             const SizedBox(
               height: 15,
             ),
-            _ResultGap(context),
+            _ResultGap(context, analyzeData["difference"].round()),
             const SizedBox(
               height: 30,
             ),

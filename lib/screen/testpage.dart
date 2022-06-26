@@ -265,10 +265,20 @@ class _TestPageState extends State<TestPage> {
               "angles": ${jsonEncode(_angleList)}
             }
         """;
+        dynamic response = await HttpRequest()
+            .post("${HttpURL.host}/api/standard/analyze", """{
+              "user_id": "zsda5858sda",
+              "gender": 0,
+              "part": $_part,
+              "age": 100,
+              "times": $_times
+          }""");
         await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
-        Navigator.pushReplacementNamed(context, TestResultPage.routeName);
+        Navigator.pushReplacementNamed(context, TestResultPage.routeName,
+            arguments: {
+              'data': response["data"],
+            });
       }
-      setState(() {});
     });
   }
 }
