@@ -13,8 +13,25 @@ class HttpRequest {
         .then((response) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
       result = responseJson;
-      if (responseJson["code"] == "1") {
-        throw Exception(responseJson["message"]);
+      if (response.statusCode == 500) {
+        throw Exception(result["message"]);
+      }
+    });
+    return result;
+  }
+
+  Future<dynamic> get(String url) async {
+    dynamic result;
+    await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+    ).then((response) {
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
+      result = responseJson;
+      if (response.statusCode == 500) {
+        throw Exception(result["message"]);
       }
     });
     return result;
