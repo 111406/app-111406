@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/loginpage.dart';
+import 'package:sport_app/screen/registerpage.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/http_request.dart';
 
 class RegisterPage02 extends StatefulWidget {
   const RegisterPage02({Key? key}) : super(key: key);
+  static const String routeName = "/register02";
 
   @override
   State<RegisterPage02> createState() => _RegisterPage02State();
 }
 
-Widget _RegisterHeightTF() {
+Widget _RegisterHeightTF(heightController) {
   //身高
 
   return Column(
@@ -25,10 +32,10 @@ Widget _RegisterHeightTF() {
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: const TextField(
+        child: TextField(
           //keyboardType: TextInputType.emailAddress,
-          style: TextStyle(color: Colors.black),
-          decoration: InputDecoration(
+          style: const TextStyle(color: Colors.black),
+          decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
             prefixIcon: Icon(
               Icons.account_box_rounded,
@@ -51,13 +58,18 @@ Widget _RegisterHeightTF() {
               ),
             ),
           ),
+          controller: heightController,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
+          ],
+          keyboardType: TextInputType.number,
         ),
       ),
     ],
   );
 }
 
-Widget _RegisterWeightTF() {
+Widget _RegisterWeightTF(weightController) {
   //體重
 
   return Column(
@@ -74,10 +86,9 @@ Widget _RegisterWeightTF() {
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: const TextField(
-          obscureText: true,
-          style: TextStyle(color: Colors.black),
-          decoration: InputDecoration(
+        child: TextField(
+          style: const TextStyle(color: Colors.black),
+          decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
             prefixIcon: Icon(
               Icons.account_box_rounded,
@@ -100,13 +111,18 @@ Widget _RegisterWeightTF() {
               ),
             ),
           ),
+          controller: weightController,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
+          ],
+          keyboardType: TextInputType.number,
         ),
       ),
     ],
   );
 }
 
-Widget _RegisterBirTF() {
+Widget _RegisterBirTF(birthdayController, context) {
   //生日
 
   return Column(
@@ -123,10 +139,9 @@ Widget _RegisterBirTF() {
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
-        child: const TextField(
-          obscureText: true,
-          style: TextStyle(color: Colors.black),
-          decoration: InputDecoration(
+        child: TextField(
+          style: const TextStyle(color: Colors.black),
+          decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
             prefixIcon: Icon(
               Icons.account_box_rounded,
@@ -149,6 +164,8 @@ Widget _RegisterBirTF() {
               ),
             ),
           ),
+          controller: birthdayController,
+          inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
         ),
       ),
     ],
@@ -222,30 +239,13 @@ Widget _RegisterBirTF() {
 //   );
 // }
 
-Widget _RegisterDoneBtn() {
-  //完成註冊按鈕
-  return Container(
-    padding: const EdgeInsets.symmetric(vertical: 20),
-    height: 90,
-    width: double.infinity,
-    child: ElevatedButton(
-      onPressed: () {},
-      child: const Text(
-        '完成/返回登入',
-        style: TextStyle(fontSize: 24),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: primaryColor,
-      ),
-    ),
-  );
-}
-
-Widget _RegisterPreBtn() {
+Widget _RegisterPreBtn(context) {
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
-      onTap: () => print('123'),
+      onTap: () {
+        Navigator.pushReplacementNamed(context, RegisterPage.routeName);
+      },
       child: const Text(
         '上一步',
         style: TextStyle(
@@ -258,8 +258,28 @@ Widget _RegisterPreBtn() {
 }
 
 class _RegisterPage02State extends State<RegisterPage02> {
-  bool _normalHasBeenPressed = true;
-  bool _visionHasBeenPressed = false;
+  bool _malePressed = true;
+  bool _femalePressed = false;
+
+  late String userId, password, email;
+
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+  final birthdayController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  @override
+  void dispose() {
+    heightController.dispose();
+    weightController.dispose();
+    birthdayController.dispose();
+    super.dispose();
+  }
 
   String? _selectedColor;
   @override
@@ -301,15 +321,15 @@ class _RegisterPage02State extends State<RegisterPage02> {
                     const SizedBox(
                       height: 5,
                     ),
-                    _RegisterHeightTF(),
+                    _RegisterHeightTF(heightController),
                     const SizedBox(
                       height: 10,
                     ),
-                    _RegisterWeightTF(),
+                    _RegisterWeightTF(weightController),
                     const SizedBox(
                       height: 10,
                     ),
-                    _RegisterBirTF(),
+                    _RegisterBirTF(birthdayController, context),
                     const SizedBox(
                       height: 20,
                     ),
@@ -317,7 +337,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          '性別選擇',
+                          '性別',
                           style: TextStyle(
                               color: primaryColor,
                               fontSize: 24,
@@ -333,18 +353,17 @@ class _RegisterPage02State extends State<RegisterPage02> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    _normalHasBeenPressed = true;
-                                    _visionHasBeenPressed = false;
+                                    _malePressed = true;
+                                    _femalePressed = false;
                                   });
                                 },
                                 child: const Text(
-                                  "男生",
+                                  "男",
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: _normalHasBeenPressed
-                                      ? primaryColor
-                                      : thirdColor,
+                                  primary:
+                                      _malePressed ? primaryColor : thirdColor,
                                   elevation: 5,
                                 ),
                               ),
@@ -356,16 +375,16 @@ class _RegisterPage02State extends State<RegisterPage02> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    _normalHasBeenPressed = false;
-                                    _visionHasBeenPressed = true;
+                                    _malePressed = false;
+                                    _femalePressed = true;
                                   });
                                 },
                                 child: const Text(
-                                  "女生",
+                                  "女",
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: _visionHasBeenPressed
+                                  primary: _femalePressed
                                       ? primaryColor
                                       : thirdColor,
                                   elevation: 5,
@@ -376,11 +395,74 @@ class _RegisterPage02State extends State<RegisterPage02> {
                         ),
                       ],
                     ),
-                    _RegisterDoneBtn(),
-                    _RegisterPreBtn(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      height: 90,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final height = heightController.text,
+                              weight = weightController.text,
+                              birthday = birthdayController.text;
+                          String reqeustData = """{
+                            "user_id": "$userId",
+                            "password": "$password",
+                            "email": "$email",
+                            "gender": ${_malePressed ? 0 : 1},
+                            "role": "N",
+                            "height": $height,
+                            "weight": $weight,
+                            "birthday": "$birthday"
+                          }""";
+                          await HttpRequest()
+                              .post('${HttpURL.host}/api/user/signup',
+                                  reqeustData)
+                              .then((response) {
+                            _showAlertDialog(context, response['message']);
+                          });
+                        },
+                        child: const Text(
+                          '完成/返回登入',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: primaryColor,
+                        ),
+                      ),
+                    ),
+                    _RegisterPreBtn(context),
                   ]),
             )),
       ]),
     );
+  }
+
+  void _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString("userId") ?? "";
+    password = prefs.getString("password") ?? "";
+    email = prefs.getString("email") ?? "";
+  }
+
+  // Show AlertDialog
+  void _showAlertDialog(context, message) {
+    // Init
+    AlertDialog dialog = AlertDialog(
+      title: Text(message),
+      actions: [
+        ElevatedButton(
+            child: const Text("確認"),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, LoginPage.routeName);
+            }),
+      ],
+    );
+
+    // Show the dialog
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return dialog;
+        });
   }
 }
