@@ -22,5 +22,6 @@ class HttpRequest {
 }
 
 class HttpURL {
-  static const String host = "https://vaulted-epigram-349713.de.r.appspot.com";
+  // static const String host = "https://vaulted-epigram-349713.de.r.appspot.com";
+  static const String host = "https://backend-111406.herokuapp.com";
 }
