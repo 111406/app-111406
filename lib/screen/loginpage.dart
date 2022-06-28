@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/mainpage.dart';
+import 'package:sport_app/screen/registerpage.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/http_request.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+  static const String routeName = "/login";
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final userIdController = TextEditingController();
+  final passwordController = TextEditingController();
   bool _agree = false;
+
   Widget _loginEmailTF() {
     //登入與輸入框
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,10 +34,10 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           alignment: Alignment.centerLeft,
           height: 50,
-          child: const TextField(
+          child: TextField(
             //keyboardType: TextInputType.emailAddress,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
+            style: const TextStyle(color: Colors.black),
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10),
               prefixIcon: Icon(
                 Icons.account_box_rounded,
@@ -53,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            controller: userIdController,
           ),
         ),
       ],
@@ -75,10 +83,10 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           alignment: Alignment.centerLeft,
           height: 50,
-          child: const TextField(
+          child: TextField(
             obscureText: true,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
+            style: const TextStyle(color: Colors.black),
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10),
               prefixIcon: Icon(
                 Icons.lock,
@@ -101,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            controller: passwordController,
           ),
         ),
       ],
@@ -138,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         GestureDetector(
           onTap: () {
-            showAlertDialog(context);
+            showAlertDialog(context, "免責聲明", "免責聲明");
           },
           child: const Text(
             '我已經詳閱並同意個人資料\n蒐集條款，與免責說明',
@@ -157,7 +166,24 @@ class _LoginPageState extends State<LoginPage> {
       height: 90,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () async {
+          if (!_agree) {
+            showAlertDialog(context, "登入失敗", "請勾選同意條款聲明");
+          } else {
+            String userId = userIdController.text;
+            String requestData = """{
+              "user_id": "$userId",
+              "password": "${passwordController.text}"
+            }""";
+            await HttpRequest()
+                .post('${HttpURL.host}/api/user/login', requestData)
+                .then((response) async {
+              final prefs = await SharedPreferences.getInstance();
+              prefs.setString("loginUser", userId);
+              Navigator.pushReplacementNamed(context, MainPage.routeName);
+            });
+          }
+        },
         child: const Text(
           '登入',
           style: TextStyle(fontSize: 24),
@@ -173,7 +199,9 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       alignment: Alignment.center,
       child: GestureDetector(
-        onTap: () => print('123'),
+        onTap: () {
+          Navigator.pushNamed(context, RegisterPage.routeName);
+        },
         child: const Text(
           '尚未有帳號，註冊',
           style: TextStyle(
@@ -183,6 +211,13 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    userIdController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -239,11 +274,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  showAlertDialog(BuildContext context) {
+  showAlertDialog(context, title, message) {
     // Init
     AlertDialog dialog = AlertDialog(
-      title: const Text("聲明說明"),
-      content: const Text(('聲明敘述')),
+      title: Text(title),
+      content: Text(message),
       actions: [
         ElevatedButton(
             child: const Text("關閉"),

@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:sport_app/screen/intropage.dart';
+import 'package:sport_app/screen/loginpage.dart';
 import 'package:sport_app/screen/mainpage.dart';
+import 'package:sport_app/screen/registerpage.dart';
+import 'package:sport_app/screen/registerpage02.dart';
 import 'package:sport_app/screen/testpage.dart';
 import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
@@ -33,6 +36,9 @@ class MyApp extends StatelessWidget {
       // home: const MainPage(),
       initialRoute: MainPage.routeName,
       routes: {
+        LoginPage.routeName: (context) => const LoginPage(),
+        RegisterPage.routeName: (context) => const RegisterPage(),
+        RegisterPage02.routeName: (context) => const RegisterPage02(),
         MainPage.routeName: (context) => const MainPage(),
         IntroPage.routeName: (context) => const IntroPage(),
         TestPage.routeName: (context) => const TestPage(),
