@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:sport_app/screen/forgotpassword.dart';
 import 'package:sport_app/screen/intropage.dart';
+import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/loginpage.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/registerpage.dart';
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
       // home: const MainPage(),
       initialRoute: MainPage.routeName,
       routes: {
+        ForgotPassword.routeName: (context) => const ForgotPassword(),
+        LoadingPage.routeName: (context) => const LoadingPage(),
         LoginPage.routeName: (context) => const LoginPage(),
         RegisterPage.routeName: (context) => const RegisterPage(),
         RegisterPage02.routeName: (context) => const RegisterPage02(),

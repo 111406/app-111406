@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/registerpage.dart';
 import 'package:sport_app/theme/color.dart';
@@ -180,7 +181,8 @@ class _LoginPageState extends State<LoginPage> {
                 .then((response) async {
               final prefs = await SharedPreferences.getInstance();
               prefs.setString("loginUser", userId);
-              Navigator.pushReplacementNamed(context, MainPage.routeName);
+              Navigator.pushReplacementNamed(context, LoadingPage.routeName);
+              prefs.setBool('loginloadingpage', true);
             });
           }
         },
