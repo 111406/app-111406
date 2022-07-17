@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sport_app/theme/color.dart';
+import 'dart:async';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
+  static const String routeName = "/forgotpassword";
 
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
@@ -127,6 +129,14 @@ Widget _forgotPsNext() {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  Timer? timer;
+  int _countdownTime = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,10 +192,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           children: [
                             Container(
                               child: ElevatedButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  "寄送驗證碼",
-                                  style: TextStyle(fontSize: 20),
+                                onPressed: () {
+                                  setState(() {
+                                    _countdownTime = 60;
+                                  });
+                                  startCountdownTimer();
+                                },
+                                child: Text(
+                                  _countdownTime > 0
+                                      ? '$_countdownTime後重新獲取'
+                                      : '獲取驗證碼',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: _countdownTime > 0
+                                        ? Color.fromARGB(255, 183, 184, 195)
+                                        : Colors.white,
+                                  ),
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   primary: primaryColor,
@@ -205,5 +227,21 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             )),
       ]),
     );
+  }
+
+  void startCountdownTimer() {
+    const oneSec = const Duration(seconds: 1);
+
+    var callback = (timer) => {
+          setState(() {
+            if (_countdownTime < 1) {
+              timer.cancel();
+            } else {
+              _countdownTime = _countdownTime - 1;
+            }
+          })
+        };
+
+    timer = Timer.periodic(oneSec, callback);
   }
 }
