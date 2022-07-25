@@ -8,4 +8,8 @@ class ChartData {
         'sec': sec,
         'angle': angle,
       };
+
+  ChartData.fromJson(Map<String, dynamic> json)
+      : sec = json['sec'],
+        angle = json['angle'];
 }

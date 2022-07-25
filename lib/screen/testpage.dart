@@ -278,6 +278,7 @@ class _TestPageState extends State<TestPage> {
         Navigator.pushReplacementNamed(context, TestResultPage.routeName,
             arguments: {
               'data': response["data"],
+              'angles': jsonEncode(_angleList)
             });
       }
     });

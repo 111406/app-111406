@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestResultPage extends StatefulWidget {
   const TestResultPage({Key? key}) : super(key: key);
@@ -35,7 +39,8 @@ Widget _ResultTitle() {
   );
 }
 
-Widget _ResultChart(BuildContext context) {
+Widget _ResultChart(context, chartData) {
+  debugPrint(jsonEncode(chartData));
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -43,7 +48,21 @@ Widget _ResultChart(BuildContext context) {
         decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
         width: MediaQuery.of(context).size.width / 1.5,
         height: MediaQuery.of(context).size.height / 2.5,
-        child: const Text('圖表畫面'),
+        child: SfCartesianChart(
+            // Initialize category axis
+            primaryXAxis: NumericAxis(
+              interval: 5,
+              minimum: 0,
+              maximum: 30,
+            ),
+            series: <ChartSeries>[
+              // Initialize line series
+              LineSeries<ChartData, double>(
+                dataSource: chartData,
+                xValueMapper: (ChartData data, _) => data.sec,
+                yValueMapper: (ChartData data, _) => data.angle,
+              )
+            ]),
         alignment: Alignment.center,
       ),
     ],
@@ -184,6 +203,9 @@ class _TestResultPageState extends State<TestResultPage> {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     dynamic analyzeData = arguments["data"];
+    Iterable anglesJson = json.decode(arguments["angles"]);
+    final List<ChartData> chartData = List<ChartData>.from(
+        anglesJson.map((model) => ChartData.fromJson(model)));
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -216,7 +238,7 @@ class _TestResultPageState extends State<TestResultPage> {
             const SizedBox(
               height: 30,
             ),
-            _ResultChart(context),
+            _ResultChart(context, chartData),
             const SizedBox(
               height: 30,
             ),
