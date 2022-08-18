@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           alignment: Alignment.centerLeft,
           height: 50,
+          // width: 600,
           child: TextField(
             //keyboardType: TextInputType.emailAddress,
             style: const TextStyle(color: Colors.black),
@@ -85,24 +86,31 @@ class _LoginPageState extends State<LoginPage> {
           alignment: Alignment.centerLeft,
           height: 50,
           child: TextField(
+            //是否隱藏輸入文字
             obscureText: true,
+            //輸入文字的顏色
             style: const TextStyle(color: Colors.black),
             decoration: const InputDecoration(
+              //輸入文字位置
               contentPadding: EdgeInsets.only(top: 10),
+              //icon的樣式
               prefixIcon: Icon(
                 Icons.lock,
                 color: primaryColor,
               ),
+              //提示字
               hintText: '請輸入密碼',
               hintStyle: TextStyle(
                 color: primaryColor,
               ),
+              //框框
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: primaryColor,
                   width: 1,
                 ),
               ),
+              //輸入時框框的樣式
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: primaryColor,
@@ -231,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(
-                horizontal: 40.0,
+                horizontal: 20.0,
                 vertical: 80.0,
               ),
               child: Column(

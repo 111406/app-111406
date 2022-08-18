@@ -291,7 +291,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.symmetric(
-                horizontal: 40.0,
+                horizontal: 20.0,
                 vertical: 80.0,
               ),
               child: Column(
