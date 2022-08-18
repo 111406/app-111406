@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: '肌動GO',
       // home: const MainPage(),
-      initialRoute: MainPage.routeName,
+      initialRoute: RegisterPage.routeName,
       routes: {
         ForgotPassword.routeName: (context) => const ForgotPassword(),
         LoadingPage.routeName: (context) => const LoadingPage(),

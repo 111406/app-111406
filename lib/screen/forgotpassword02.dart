@@ -135,7 +135,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(
-                horizontal: 40.0,
+                horizontal: 20.0,
                 vertical: 80.0,
               ),
               child: Column(
