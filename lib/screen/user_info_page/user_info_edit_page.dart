@@ -21,6 +21,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: appBar(),
       body: Column(
         children: [
