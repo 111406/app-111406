@@ -13,6 +13,7 @@ class _OtherPageState extends State<OtherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: appBar(),
       body: Column(
         children: [
@@ -27,7 +28,6 @@ class _OtherPageState extends State<OtherPage> {
             onTap: () {},
             child: Ink(
               height: 48,
-              // color: Colors.white,
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.grey),
