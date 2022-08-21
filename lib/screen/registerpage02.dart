@@ -284,6 +284,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
   String? _selectedColor;
   @override
   Widget build(BuildContext context) {
+    String dropdownValue = '男';
     return Scaffold(
       body: Stack(children: [
         Container(
@@ -334,7 +335,8 @@ class _RegisterPage02State extends State<RegisterPage02> {
                       height: 20,
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           '性別',
@@ -346,53 +348,46 @@ class _RegisterPage02State extends State<RegisterPage02> {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _malePressed = true;
-                                    _femalePressed = false;
-                                  });
-                                },
-                                child: const Text(
-                                  "男",
-                                  style: TextStyle(fontSize: 20),
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            height: 62.5,
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.account_box_rounded,
+                                  color: primaryColor,
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  primary:
-                                      _malePressed ? primaryColor : thirdColor,
-                                  elevation: 5,
+                                enabledBorder: OutlineInputBorder(
+                                  //<-- SEE HERE
+                                  borderSide:
+                                      BorderSide(color: primaryColor, width: 2),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 35,
-                            ),
-                            Container(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _malePressed = false;
-                                    _femalePressed = true;
-                                  });
-                                },
-                                child: const Text(
-                                  "女",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: _femalePressed
-                                      ? primaryColor
-                                      : thirdColor,
-                                  elevation: 5,
+                                focusedBorder: OutlineInputBorder(
+                                  //<-- SEE HERE
+                                  borderSide:
+                                      BorderSide(color: primaryColor, width: 2),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
+                              value: dropdownValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownValue = newValue!;
+                                });
+                              },
+                              items: <String>[
+                                '男',
+                                '女',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                        color: primaryColor, fontSize: 18),
+                                  ),
+                                );
+                              }).toList(),
+                            )),
                       ],
                     ),
                     Container(
