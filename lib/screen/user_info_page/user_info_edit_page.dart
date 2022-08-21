@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:sport_app/screen/user_info_page/user_info_page.dart';
 import 'package:sport_app/theme/color.dart';
 
+const textColor = Color(0xff7E7E7E);
+
 class UserInfoEditPage extends StatefulWidget {
   const UserInfoEditPage({Key? key}) : super(key: key);
   static const String routeName = "/userinfo/edit";
