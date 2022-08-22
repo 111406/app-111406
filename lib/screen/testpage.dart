@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
@@ -249,6 +250,8 @@ class _TestPageState extends State<TestPage> {
 
   ///設定倒數計時器
   void _setTimerEvent() {
+    Timer? _timer1;
+    late double _progress;
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
     Timer.periodic(period, (timer) async {
@@ -274,6 +277,30 @@ class _TestPageState extends State<TestPage> {
               "age": 100,
               "times": $_times
           }""");
+        EasyLoading.instance
+          ..backgroundColor = primaryColor
+          ..textColor = Colors.white
+          ..progressColor = Colors.white
+          ..maskColor = Colors.white70
+          ..displayDuration = const Duration(milliseconds: 1500)
+          ..loadingStyle = EasyLoadingStyle.custom
+          ..indicatorType = EasyLoadingIndicatorType.wave
+          ..maskType = EasyLoadingMaskType.custom
+          ..userInteractions = false;
+
+        _progress = 0;
+        _timer1?.cancel();
+        _timer1 =
+            Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
+          EasyLoading.showProgress(_progress,
+              status: '${(_progress * 100).toStringAsFixed(0)}%');
+          _progress += 0.04;
+
+          if (_progress >= 1) {
+            _timer1?.cancel();
+            EasyLoading.dismiss();
+          }
+        });
         await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
         Navigator.pushReplacementNamed(context, TestResultPage.routeName,
             arguments: {
