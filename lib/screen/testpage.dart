@@ -256,25 +256,18 @@ class _TestPageState extends State<TestPage> {
       if (_displayTimer == 0) {
         timer.cancel();
         _timerStart = false;
-        //測試資料
+        // TODO 需載入登入資訊，待修改
         String reqeustData = """
             {
               "user_id": "zsda5858sda",
               "part": $_part,
-              "type": $_type,
-              "times": "$_times",
+              "times": $_times,
+              "age": 100,
+              "gender": 0,
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-        dynamic response = await HttpRequest()
-            .post("${HttpURL.host}/api/standard/analyze", """{
-              "user_id": "zsda5858sda",
-              "gender": 0,
-              "part": $_part,
-              "age": 100,
-              "times": $_times
-          }""");
-        await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
+        dynamic response = await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
         Navigator.pushReplacementNamed(context, TestResultPage.routeName,
             arguments: {
               'data': response["data"],

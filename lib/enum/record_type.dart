@@ -4,14 +4,14 @@ class RecordType {
   const RecordType._(this.string, this.code);
 
   ///訓練模式
-  static const training = RecordType._('training', 0);
+  static const training = RecordType._('訓練', 0);
 
   ///檢測模式
-  static const examination = RecordType._('examination', 1);
+  static const examination = RecordType._('檢測', 1);
 
   static const values = [training, examination];
 
-  static RecordType? parse(int value) {
+  static RecordType parse(int value) {
     switch (value) {
       case 0:
         return RecordType.training;
@@ -26,6 +26,6 @@ class RecordType {
 
   @override
   String toString() {
-    return 'RecordType.$string';
+    return string;
   }
 }
