@@ -259,49 +259,18 @@ class _TestPageState extends State<TestPage> {
       if (_displayTimer == 0) {
         timer.cancel();
         _timerStart = false;
-        //測試資料
+        // TODO 需載入登入資訊，待修改
         String reqeustData = """
             {
               "user_id": "zsda5858sda",
               "part": $_part,
-              "type": $_type,
-              "times": "$_times",
+              "times": $_times,
+              "age": 100,
+              "gender": 0,
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-        dynamic response = await HttpRequest()
-            .post("${HttpURL.host}/api/standard/analyze", """{
-              "user_id": "zsda5858sda",
-              "gender": 0,
-              "part": $_part,
-              "age": 100,
-              "times": $_times
-          }""");
-        EasyLoading.instance
-          ..backgroundColor = primaryColor
-          ..textColor = Colors.white
-          ..progressColor = Colors.white
-          ..maskColor = Colors.white70
-          ..displayDuration = const Duration(milliseconds: 1500)
-          ..loadingStyle = EasyLoadingStyle.custom
-          ..indicatorType = EasyLoadingIndicatorType.wave
-          ..maskType = EasyLoadingMaskType.custom
-          ..userInteractions = false;
-
-        _progress = 0;
-        _timer1?.cancel();
-        _timer1 =
-            Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
-          EasyLoading.showProgress(_progress,
-              status: '${(_progress * 100).toStringAsFixed(0)}%');
-          _progress += 0.04;
-
-          if (_progress >= 1) {
-            _timer1?.cancel();
-            EasyLoading.dismiss();
-          }
-        });
-        await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
+        dynamic response = await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
         Navigator.pushReplacementNamed(context, TestResultPage.routeName,
             arguments: {
               'data': response["data"],
