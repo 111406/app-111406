@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
+
+import '../main_page.dart';
 
 class ChoosingPage extends StatefulWidget {
   const ChoosingPage({Key? key}) : super(key: key);
@@ -14,7 +17,27 @@ class _ChoosingPageState extends State<ChoosingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: buildAppBar(),
+      appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
+        backgroundColor: primaryColor,
+        elevation: 0,
+        centerTitle: true,
+        toolbarHeight: 70 + 1,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 36,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, Main.routeName);
+          },
+        ),
+      ),
       body: Column(
         children: [
           const SizedBox(height: 70),
