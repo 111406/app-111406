@@ -3,6 +3,7 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/screen/warmuppage.dart';
 import 'package:sport_app/theme/color.dart';
 
 class IntroPage extends StatefulWidget {
@@ -170,7 +171,7 @@ Widget _StartBtn(BuildContext context) {
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, TestPage.routeName);
+        Navigator.pushNamed(context, WarmupPage.routeName);
       },
       child: const Text(
         '開始',
