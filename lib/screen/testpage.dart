@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
@@ -249,6 +250,8 @@ class _TestPageState extends State<TestPage> {
 
   ///設定倒數計時器
   void _setTimerEvent() {
+    Timer? _timer1;
+    late double _progress;
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
     Timer.periodic(period, (timer) async {

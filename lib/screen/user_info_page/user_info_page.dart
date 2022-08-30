@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sport_app/screen/user_info_page/user_info_edit_page.dart';
-import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/theme/color.dart' as colors;
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: colors.backgroundColor,
       appBar: appBar(),
       body: Column(
         children: [
@@ -193,7 +193,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
               height: 36,
               width: 280,
               decoration: BoxDecoration(
-                color: primaryColor,
+                color: colors.primaryColor,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: Colors.grey),
               ),
@@ -211,7 +211,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   AppBar appBar() {
     return AppBar(
-      backgroundColor: secondColor,
+      backgroundColor: colors.secondColor,
       centerTitle: true,
       elevation: 0,
       title: const Text('個人資訊'),

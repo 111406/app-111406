@@ -45,6 +45,7 @@ dependencies:
   flutter_native_splash: ^2.1.6
   syncfusion_flutter_charts: ^19.4.56
   intl: ^0.17.0
+  flutter_easyloading: ^3.0.5
 
 flutter_native_splash:
   color: "#ffffff"
@@ -90,6 +91,7 @@ flutter:
     - assets/icon/tangle.svg
     - assets/icon/one.png
     - assets/icon/two.png
+    - assets/icon/warmup.gif
     - assets/icon/three.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

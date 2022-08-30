@@ -15,11 +15,13 @@ import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/screen/user_info_page/user_info_edit_page.dart';
 import 'package:sport_app/screen/user_info_page/user_info_page.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 List<CameraDescription> cameras = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  configLoading();
 
   try {
     cameras = await availableCameras();
@@ -31,6 +33,22 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -39,9 +57,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: '肌動GO',
-
       home: const Main(),
-      // initialRoute: MainPage.routeName,
+      //initialRoute: MainPage.routeName,
       routes: {
         Main.routeName: (context) => const Main(),
         ChoosingPage.routeName: (context) => const ChoosingPage(),
@@ -58,6 +75,7 @@ class MyApp extends StatelessWidget {
         PoseDetectorView.routeName: (context) => const PoseDetectorView(),
         TestResultPage.routeName: (context) => const TestResultPage(),
       },
+      builder: EasyLoading.init(),
     );
   }
 }
