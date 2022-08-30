@@ -90,6 +90,7 @@ flutter:
     - assets/icon/tangle.svg
     - assets/icon/one.png
     - assets/icon/two.png
+    - assets/icon/warmup.gif
     - assets/icon/three.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
