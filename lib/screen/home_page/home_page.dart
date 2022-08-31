@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sport_app/theme/color.dart';
-
+import 'package:sport_app/screen/intropage.dart';
 import '../choosing_page/choosing_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
             margin: const EdgeInsets.symmetric(horizontal: 25),
             child: InkWell(
               onTap: () {
-                Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
+                Navigator.pushReplacementNamed(context, IntroPage.routeName);
               },
               child: Ink(child: testingBtn()),
             ),

@@ -3,6 +3,7 @@ import 'package:sport_app/theme/color.dart';
 
 class TrainingPage extends StatefulWidget {
   const TrainingPage({Key? key}) : super(key: key);
+  static const String routeName = "/train";
 
   @override
   State<TrainingPage> createState() => _TrainingPageState();
@@ -24,25 +25,33 @@ Widget _Title() {
   );
 }
 
-Widget _SecondLeftTitle() {
+Widget _PoseTitle() {
   return const Text(
-    '剩餘秒數',
+    '二頭肌',
     style: TextStyle(
         color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );
 }
 
-Widget _SecondLeft() {
+Widget _TargetNumberTitle() {
   return const Text(
-    '47',
+    '剩餘組數',
     style: TextStyle(
-        color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
+        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+  );
+}
+
+Widget _TargetNumber() {
+  return const Text(
+    '2',
+    style: TextStyle(
+        color: primaryColor, fontSize: 72, fontWeight: FontWeight.bold),
   );
 }
 
 Widget _CountNumberTitle() {
   return const Text(
-    '次數',
+    '剩餘次數',
     style: TextStyle(
         color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );
@@ -53,22 +62,6 @@ Widget _CountNumber() {
     '13',
     style: TextStyle(
         color: primaryColor, fontSize: 72, fontWeight: FontWeight.bold),
-  );
-}
-
-Widget _Angle() {
-  return const Text(
-    '3',
-    style: TextStyle(
-        color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
-  );
-}
-
-Widget _AngleTitle() {
-  return const Text(
-    '角度',
-    style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );
 }
 
@@ -103,11 +96,12 @@ class _TrainingPageState extends State<TrainingPage> {
               const SizedBox(
                 height: 25,
               ),
-              _SecondLeftTitle(),
+              _PoseTitle(),
               const SizedBox(
-                height: 30,
+                height: 60,
               ),
-              _SecondLeft(),
+              _TargetNumberTitle(),
+              _TargetNumber(),
               const SizedBox(
                 height: 60,
               ),
@@ -115,11 +109,6 @@ class _TrainingPageState extends State<TrainingPage> {
               _CountNumber(),
               const SizedBox(
                 height: 60,
-              ),
-              _Angle(),
-              _AngleTitle(),
-              const SizedBox(
-                height: 50,
               ),
               _EndBtn(),
             ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
-
+import 'package:sport_app/screen/trainingpage.dart';
 import '../main_page.dart';
 
 class ChoosingPage extends StatefulWidget {
@@ -45,7 +45,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.symmetric(horizontal: 35),
             child: const Text(
-              '選擇測試部位',
+              '選擇訓練部位',
               style: TextStyle(
                 fontSize: 28,
                 color: Colors.black,
@@ -70,7 +70,9 @@ class _ChoosingPageState extends State<ChoosingPage> {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 25),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, TrainingPage.routeName);
+              },
               child: Ink(child: bicepsBtn()),
             ),
           ),
