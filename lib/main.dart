@@ -11,11 +11,16 @@ import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/registerpage.dart';
 import 'package:sport_app/screen/registerpage02.dart';
 import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/screen/testpage2.dart';
 import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/screen/user_info_page/user_info_edit_page.dart';
 import 'package:sport_app/screen/user_info_page/user_info_page.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sport_app/screen/prepare.dart';
+import 'package:sport_app/screen/prepare2.dart';
+import 'package:sport_app/screen/warmuppage.dart';
+import 'package:sport_app/screen/trainingpage.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -66,14 +71,19 @@ class MyApp extends StatelessWidget {
         UserInfoEditPage.routeName: (context) => const UserInfoEditPage(),
         ForgotPassword.routeName: (context) => const ForgotPassword(),
         LoadingPage.routeName: (context) => const LoadingPage(),
+        Prepare.routeName: (context) => const Prepare(),
+        Prepare2.routeName: (context) => const Prepare2(),
         LoginPage.routeName: (context) => const LoginPage(),
         RegisterPage.routeName: (context) => const RegisterPage(),
         RegisterPage02.routeName: (context) => const RegisterPage02(),
         MainPage.routeName: (context) => const MainPage(),
         IntroPage.routeName: (context) => const IntroPage(),
         TestPage.routeName: (context) => const TestPage(),
+        TestPage2.routeName: (context) => const TestPage2(),
         PoseDetectorView.routeName: (context) => const PoseDetectorView(),
         TestResultPage.routeName: (context) => const TestResultPage(),
+        TrainingPage.routeName: (context) => const TrainingPage(),
+        WarmupPage.routeName: (context) => const WarmupPage(),
       },
       builder: EasyLoading.init(),
     );
