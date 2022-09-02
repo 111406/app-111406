@@ -10,18 +10,18 @@ import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/mainpage.dart';
-import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/screen/testpage2.dart';
 import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
-class Prepare extends StatefulWidget {
-  const Prepare({Key? key}) : super(key: key);
-  static const String routeName = "/prepare";
+class Prepare2 extends StatefulWidget {
+  const Prepare2({Key? key}) : super(key: key);
+  static const String routeName = "/prepare2";
 
   @override
-  State<Prepare> createState() => _PrepareState();
+  State<Prepare2> createState() => _PrepareState2();
 }
 
 Widget _Title() {
@@ -50,14 +50,14 @@ Widget _CountNumberTitle() {
 
 Widget _PoseTitle() {
   return const Text(
-    '二頭肌彎舉',
+    '座椅深蹲',
     style: TextStyle(
         color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
   );
 }
 
 Widget _TutorialScreen(BuildContext context) {
-  //一般模式 二頭肌教學
+  //一般模式 深蹲教學
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -66,15 +66,15 @@ Widget _TutorialScreen(BuildContext context) {
         height: MediaQuery.of(context).size.height / 2.5,
         children: [
           Image.network(
-            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            'https://img.edh.tw/c1/1/734/22770752080_b243f771c7.jpg',
             fit: BoxFit.cover,
           ),
           Image.network(
-            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            'https://img.edh.tw/c2/6/5748/22770749660_e00feb3e74.jpg',
             fit: BoxFit.cover,
           ),
           Image.network(
-            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            'https://img.edh.tw/c1/1/734/22770752080_b243f771c7.jpg',
             fit: BoxFit.cover,
           ),
         ],
@@ -93,7 +93,7 @@ Widget _StartBtn(BuildContext context) {
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, TestPage.routeName);
+        Navigator.pushNamed(context, TestPage2.routeName);
       },
       child: const Text(
         '開始',
@@ -106,7 +106,7 @@ Widget _StartBtn(BuildContext context) {
   );
 }
 
-class _PrepareState extends State<Prepare> {
+class _PrepareState2 extends State<Prepare2> {
   FlutterTts flutterTts = FlutterTts();
   final List<ChartData> _angleList = [];
   late StreamSubscription<AccelerometerEvent> subscription;

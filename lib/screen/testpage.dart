@@ -10,12 +10,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/loadingpage.dart';
-import 'package:sport_app/screen/mainpage.dart';
+import 'package:sport_app/screen/prepare2.dart';
+import 'package:sport_app/screen/main_page.dart';
+
 import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 
 int _part = 0, _type = 0;
+var _timerStart = false;
+var _ss = 0;
 
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
@@ -94,7 +98,8 @@ Widget _EndBtn(BuildContext context) {
     alignment: Alignment.center,
     child: GestureDetector(
       onLongPress: () {
-        Navigator.pushNamed(context, MainPage.routeName);
+        _ss = 1;
+        Navigator.pushNamed(context, Main.routeName);
       },
       child: const Text(
         '長按結束',
@@ -112,7 +117,6 @@ class _TestPageState extends State<TestPage> {
   var _times = 0,
       _displayAngle = 0,
       _displayTimer = 30,
-      _timerStart = false,
       _startTime = 0,
       _checkAddNum = 0.0;
   final List<ChartData> _angleList = [];
@@ -191,27 +195,9 @@ class _TestPageState extends State<TestPage> {
   ///區分訓練部位
   void _checkPart(TrainingPart part, int pitch, int roll) {
     bool isMinAngle = false, isMaxAngle = false;
-    switch (part) {
-      case TrainingPart.biceps:
-        _displayAngle = roll;
-        isMinAngle = roll < 5;
-        isMaxAngle = roll > 60;
-
-        break;
-      case TrainingPart.deltoid:
-        _displayAngle = pitch;
-        isMinAngle = pitch < 10;
-        isMaxAngle = pitch > 75;
-
-        break;
-      case TrainingPart.quadriceps:
-        roll += 90;
-        _displayAngle = roll;
-        isMinAngle = roll < 65;
-        isMaxAngle = roll > 87;
-
-        break;
-    }
+    _displayAngle = roll;
+    isMinAngle = roll < 5;
+    isMaxAngle = roll > 60;
     _addTimes(_displayAngle, isMinAngle, isMaxAngle);
   }
 
@@ -270,12 +256,18 @@ class _TestPageState extends State<TestPage> {
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-        dynamic response = await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
-        Navigator.pushReplacementNamed(context, TestResultPage.routeName,
-            arguments: {
-              'data': response["data"],
-              'angles': jsonEncode(_angleList)
-            });
+        Navigator.pushNamed(context, Prepare2.routeName);
+        // dynamic response =
+        //     await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
+        // Navigator.pushReplacementNamed(context, Prepare2.routeName, arguments: {
+        //   'data': response["data"],
+        //   'angles': jsonEncode(_angleList)
+        // });
+      }
+      if (_ss == 1) {
+        timer.cancel();
+        _timerStart = false;
+        _ss = 0;
       }
     });
   }
