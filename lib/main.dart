@@ -7,7 +7,6 @@ import 'package:sport_app/screen/intropage.dart';
 import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/loginpage.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/registerpage.dart';
 import 'package:sport_app/screen/registerpage02.dart';
 import 'package:sport_app/screen/testpage.dart';
@@ -62,7 +61,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: '肌動GO',
-      home: const Main(),
+      home: const LoginPage(),
       //initialRoute: MainPage.routeName,
       routes: {
         Main.routeName: (context) => const Main(),
@@ -76,7 +75,6 @@ class MyApp extends StatelessWidget {
         LoginPage.routeName: (context) => const LoginPage(),
         RegisterPage.routeName: (context) => const RegisterPage(),
         RegisterPage02.routeName: (context) => const RegisterPage02(),
-        MainPage.routeName: (context) => const MainPage(),
         IntroPage.routeName: (context) => const IntroPage(),
         TestPage.routeName: (context) => const TestPage(),
         TestPage2.routeName: (context) => const TestPage2(),

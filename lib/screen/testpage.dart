@@ -2,20 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
-import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/prepare2.dart';
 import 'package:sport_app/screen/main_page.dart';
-
-import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
-import 'package:sport_app/utils/http_request.dart';
 
 int _part = 0, _type = 0;
 var _timerStart = false;
@@ -29,7 +24,7 @@ class TestPage extends StatefulWidget {
   State<TestPage> createState() => _TestPageState();
 }
 
-Widget _Title() {
+Widget _title() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: const [
@@ -38,62 +33,83 @@ Widget _Title() {
         child: Text(
           '肌動GO',
           style: TextStyle(
-              color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+            color: primaryColor,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       )
     ],
   );
 }
 
-Widget _SecondLeftTitle() {
+Widget _secondLeftTitle() {
   return const Text(
     '剩餘秒數',
     style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
-Widget _SecondLeft(int timer) {
+Widget _secondLeft(int timer) {
   return Text(
     timer.toString(),
     style: const TextStyle(
-        color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 42,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
-Widget _CountNumberTitle() {
+Widget _countNumberTitle() {
   return const Text(
     '次數',
     style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
-Widget _CountNumber(int times) {
+Widget _countNumber(int times) {
   return Text(
     '$times次',
     style: const TextStyle(
-        color: primaryColor, fontSize: 72, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 72,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
-Widget _Angle(int displayAngle) {
+Widget _angle(int displayAngle) {
   return Text(
     '$displayAngle°',
     style: const TextStyle(
-        color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 42,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
-Widget _AngleTitle() {
+Widget _angleTitle() {
   return const Text(
     '角度',
     style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
-Widget _EndBtn(BuildContext context) {
+Widget _endBtn(BuildContext context) {
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
@@ -104,9 +120,10 @@ Widget _EndBtn(BuildContext context) {
       child: const Text(
         '長按結束',
         style: TextStyle(
-            color: primaryColor,
-            fontSize: 20,
-            decoration: TextDecoration.underline),
+          color: primaryColor,
+          fontSize: 20,
+          decoration: TextDecoration.underline,
+        ),
       ),
     ),
   );
@@ -151,19 +168,19 @@ class _TestPageState extends State<TestPage> {
           Column(
             children: [
               SizedBox(height: MediaQuery.of(context).size.width / 6),
-              _Title(),
+              _title(),
               const SizedBox(height: 25),
-              _SecondLeftTitle(),
+              _secondLeftTitle(),
               const SizedBox(height: 30),
-              _SecondLeft(_displayTimer),
+              _secondLeft(_displayTimer),
               const SizedBox(height: 60),
-              _CountNumberTitle(),
-              _CountNumber(_times),
+              _countNumberTitle(),
+              _countNumber(_times),
               const SizedBox(height: 60),
-              _Angle(_displayAngle),
-              _AngleTitle(),
+              _angle(_displayAngle),
+              _angleTitle(),
               const SizedBox(height: 50),
-              _EndBtn(context),
+              _endBtn(context),
             ],
           ),
         ],
@@ -240,13 +257,15 @@ class _TestPageState extends State<TestPage> {
     late double _progress;
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
-    Timer.periodic(period, (timer) async {
-      _displayTimer = _timer - timer.tick;
-      if (_displayTimer == 0) {
-        timer.cancel();
-        _timerStart = false;
-        // TODO 需載入登入資訊，待修改
-        String reqeustData = """
+    Timer.periodic(
+      period,
+      (timer) async {
+        _displayTimer = _timer - timer.tick;
+        if (_displayTimer == 0) {
+          timer.cancel();
+          _timerStart = false;
+          // TODO 需載入登入資訊，待修改
+          String reqeustData = """
             {
               "user_id": "zsda5858sda",
               "part": $_part,
@@ -256,19 +275,20 @@ class _TestPageState extends State<TestPage> {
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-        Navigator.pushNamed(context, Prepare2.routeName);
-        // dynamic response =
-        //     await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
-        // Navigator.pushReplacementNamed(context, Prepare2.routeName, arguments: {
-        //   'data': response["data"],
-        //   'angles': jsonEncode(_angleList)
-        // });
-      }
-      if (_ss == 1) {
-        timer.cancel();
-        _timerStart = false;
-        _ss = 0;
-      }
-    });
+          Navigator.pushNamed(context, Prepare2.routeName);
+          // dynamic response =
+          //     await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
+          // Navigator.pushReplacementNamed(context, Prepare2.routeName, arguments: {
+          //   'data': response["data"],
+          //   'angles': jsonEncode(_angleList)
+          // });
+        }
+        if (_ss == 1) {
+          timer.cancel();
+          _timerStart = false;
+          _ss = 0;
+        }
+      },
+    );
   }
 }

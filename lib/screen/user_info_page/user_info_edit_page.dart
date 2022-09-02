@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sport_app/screen/user_info_page/user_info_page.dart';
-import 'package:sport_app/theme/color.dart' as colors;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/theme/color.dart';
 
 import '../main_page.dart';
-
-const textColor = Color(0xff7E7E7E);
 
 class UserInfoEditPage extends StatefulWidget {
   const UserInfoEditPage({Key? key}) : super(key: key);
@@ -26,7 +23,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colors.backgroundColor,
+      backgroundColor: backgroundColor,
       appBar: appBar(),
       body: Column(
         children: [
@@ -204,7 +201,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
               height: 36,
               width: 280,
               decoration: BoxDecoration(
-                color: colors.primaryColor,
+                color: primaryColor,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: Colors.grey),
               ),
@@ -222,7 +219,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
 
   AppBar appBar() {
     return AppBar(
-      backgroundColor: colors.secondColor,
+      backgroundColor: secondColor,
       centerTitle: true,
       elevation: 0,
       title: const Text('編輯 個人資訊'),

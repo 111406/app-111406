@@ -7,7 +7,7 @@ import 'package:sport_app/theme/color.dart';
 
 class Main extends StatefulWidget {
   const Main({Key? key}) : super(key: key);
-  static const String routeName = "/main01";
+  static const String routeName = "/main";
 
   @override
   State<Main> createState() => _MainState();

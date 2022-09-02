@@ -13,7 +13,7 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
-Widget _RegisterNumberTF(userIdController) {
+Widget _registerNumberTF(userIdController) {
   //帳號輸入框
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,11 +21,12 @@ Widget _RegisterNumberTF(userIdController) {
       const Text(
         '帳號',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      const SizedBox(
-        height: 10.0,
-      ),
+      const SizedBox(height: 10.0),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
@@ -34,25 +35,14 @@ Widget _RegisterNumberTF(userIdController) {
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.account_box_rounded,
-              color: primaryColor,
-            ),
+            prefixIcon: Icon(Icons.account_box_rounded, color: primaryColor),
             hintText: '請輸入帳號',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
+            hintStyle: TextStyle(color: primaryColor),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
           ),
           controller: userIdController,
@@ -65,7 +55,7 @@ Widget _RegisterNumberTF(userIdController) {
   );
 }
 
-Widget _RegisterPasswordTF(passwordController) {
+Widget _registerPasswordTF(passwordController) {
   //密碼與輸入框
 
   return Column(
@@ -74,11 +64,12 @@ Widget _RegisterPasswordTF(passwordController) {
       const Text(
         '密碼',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      const SizedBox(
-        height: 10.0,
-      ),
+      const SizedBox(height: 10.0),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
@@ -87,25 +78,14 @@ Widget _RegisterPasswordTF(passwordController) {
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.lock,
-              color: primaryColor,
-            ),
+            prefixIcon: Icon(Icons.lock, color: primaryColor),
             hintText: '請輸入密碼',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
+            hintStyle: TextStyle(color: primaryColor),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
           ),
           controller: passwordController,
@@ -118,7 +98,7 @@ Widget _RegisterPasswordTF(passwordController) {
   );
 }
 
-Widget _RegisterConPasswordTF(cpasswordController) {
+Widget _registerConPasswordTF(cpasswordController) {
   //確認密碼與輸入框
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,11 +106,12 @@ Widget _RegisterConPasswordTF(cpasswordController) {
       const Text(
         '確認密碼',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      const SizedBox(
-        height: 10.0,
-      ),
+      const SizedBox(height: 10.0),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
@@ -139,25 +120,14 @@ Widget _RegisterConPasswordTF(cpasswordController) {
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.lock,
-              color: primaryColor,
-            ),
+            prefixIcon: Icon(Icons.lock, color: primaryColor),
             hintText: '確認密碼',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
+            hintStyle: TextStyle(color: primaryColor),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
           ),
           controller: cpasswordController,
@@ -170,7 +140,7 @@ Widget _RegisterConPasswordTF(cpasswordController) {
   );
 }
 
-Widget _RegisterEmailTF(emailController) {
+Widget _registerEmailTF(emailController) {
   //信箱框
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,11 +148,12 @@ Widget _RegisterEmailTF(emailController) {
       const Text(
         '信箱',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      const SizedBox(
-        height: 10.0,
-      ),
+      const SizedBox(height: 10.0),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
@@ -191,25 +162,14 @@ Widget _RegisterEmailTF(emailController) {
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.email_rounded,
-              color: primaryColor,
-            ),
+            prefixIcon: Icon(Icons.email_rounded, color: primaryColor),
             hintText: '請輸入信箱',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
+            hintStyle: TextStyle(color: primaryColor),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
           ),
           controller: emailController,
@@ -222,7 +182,7 @@ Widget _RegisterEmailTF(emailController) {
   );
 }
 
-Widget _RegisterLoginBtn(context) {
+Widget _registerLoginBtn(context) {
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
@@ -232,9 +192,10 @@ Widget _RegisterLoginBtn(context) {
       child: const Text(
         '我已有帳號',
         style: TextStyle(
-            color: primaryColor,
-            fontSize: 20,
-            decoration: TextDecoration.underline),
+          color: primaryColor,
+          fontSize: 20,
+          decoration: TextDecoration.underline,
+        ),
       ),
     ),
   );
@@ -258,90 +219,80 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
-          body: Stack(children: [
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: Stack(
+          children: [
             SizedBox(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 80.0,
-                  ),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          child: Image.asset(
-                            'assets/icon/logo01.png',
-                            fit: BoxFit.contain,
-                            width: 150,
-                          ),
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 80.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        'assets/icon/logo01.png',
+                        fit: BoxFit.contain,
+                        width: 150,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        '註冊',
+                        style: TextStyle(
+                          decoration: TextDecoration.none,
+                          color: primaryColor,
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: const Text(
-                            '註冊',
-                            style: TextStyle(
-                              decoration: TextDecoration.none,
-                              // fontFamily: 'OpenSans',
-                              color: primaryColor,
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        _RegisterNumberTF(userIdController),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _RegisterPasswordTF(passwordController),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _RegisterConPasswordTF(cpasswordController),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _RegisterEmailTF(emailController),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          height: 90,
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              String userId = userIdController.text;
-                              String password = passwordController.text;
-                              String email = emailController.text;
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setString("userId", userId);
-                              prefs.setString("password", password);
-                              prefs.setString("email", email);
-                              Navigator.pushNamed(
-                                  context, RegisterPage02.routeName);
-                            },
-                            child: const Text(
-                              '下一步',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              primary: primaryColor,
-                            ),
-                          ),
-                        ),
-                        _RegisterLoginBtn(context),
-                      ]),
-                )),
-          ]),
-        ));
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    _registerNumberTF(userIdController),
+                    const SizedBox(height: 10),
+                    _registerPasswordTF(passwordController),
+                    const SizedBox(height: 10),
+                    _registerConPasswordTF(cpasswordController),
+                    const SizedBox(height: 10),
+                    _registerEmailTF(emailController),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      height: 90,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          String userId = userIdController.text;
+                          String password = passwordController.text;
+                          String email = emailController.text;
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString("userId", userId);
+                          prefs.setString("password", password);
+                          prefs.setString("email", email);
+                          Navigator.pushNamed(
+                              context, RegisterPage02.routeName);
+                        },
+                        child:
+                            const Text('下一步', style: TextStyle(fontSize: 24)),
+                        style: ElevatedButton.styleFrom(primary: primaryColor),
+                      ),
+                    ),
+                    _registerLoginBtn(context),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

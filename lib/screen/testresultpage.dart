@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/db/model/target.dart';
-import 'package:sport_app/screen/mainpage.dart';
+import 'package:sport_app/screen/OLDMAINPAGE.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -16,33 +16,39 @@ class TestResultPage extends StatefulWidget {
   State<TestResultPage> createState() => _TestResultPageState();
 }
 
-Widget _Title() {
+Widget _title() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: const [
       Text(
         '肌動GO',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ],
   );
 }
 
-Widget _ResultTitle() {
+Widget _resultTitle() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: const [
-      const Text(
+      Text(
         '測試結果',
         style: TextStyle(
-            color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ],
   );
 }
 
-Widget _ResultChart(context, chartData) {
+Widget _resultChart(context, chartData) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -51,27 +57,28 @@ Widget _ResultChart(context, chartData) {
         width: MediaQuery.of(context).size.width / 1.5,
         height: MediaQuery.of(context).size.height / 2.5,
         child: SfCartesianChart(
-            // Initialize category axis
-            primaryXAxis: NumericAxis(
-              interval: 5,
-              minimum: 0,
-              maximum: 30,
-            ),
-            series: <ChartSeries>[
-              // Initialize line series
-              LineSeries<ChartData, double>(
-                dataSource: chartData,
-                xValueMapper: (ChartData data, _) => data.sec,
-                yValueMapper: (ChartData data, _) => data.angle,
-              )
-            ]),
+          // Initialize category axis
+          primaryXAxis: NumericAxis(
+            interval: 5,
+            minimum: 0,
+            maximum: 30,
+          ),
+          series: <ChartSeries>[
+            // Initialize line series
+            LineSeries<ChartData, double>(
+              dataSource: chartData,
+              xValueMapper: (ChartData data, _) => data.sec,
+              yValueMapper: (ChartData data, _) => data.angle,
+            )
+          ],
+        ),
         alignment: Alignment.center,
       ),
     ],
   );
 }
 
-Widget _ResultNumber(context, times) {
+Widget _resultNumber(context, times) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -81,21 +88,27 @@ Widget _ResultNumber(context, times) {
       const Text(
         '測試次數',
         style: TextStyle(
-            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       SizedBox(
         width: MediaQuery.of(context).size.width / 8,
       ),
       Text(
         '$times',
-        style: TextStyle(
-            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          color: primaryColor,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       )
     ],
   );
 }
 
-Widget _ResultAnalyze(context, testResult) {
+Widget _resultAnalyze(context, testResult) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -105,7 +118,10 @@ Widget _ResultAnalyze(context, testResult) {
       const Text(
         '結果分析',
         style: TextStyle(
-            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       SizedBox(
         width: MediaQuery.of(context).size.width / 10,
@@ -113,13 +129,16 @@ Widget _ResultAnalyze(context, testResult) {
       Text(
         '$testResult',
         style: const TextStyle(
-            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       )
     ],
   );
 }
 
-Widget _ResultPR(context, pr) {
+Widget _resultPR(context, pr) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -129,19 +148,25 @@ Widget _ResultPR(context, pr) {
       const Text(
         'PR值',
         style: TextStyle(
-            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       SizedBox(width: MediaQuery.of(context).size.width / 5.3),
       Text(
         '$pr',
         style: const TextStyle(
-            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       )
     ],
   );
 }
 
-Widget _ResultGap(context, difference) {
+Widget _resultGap(context, difference) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -151,36 +176,45 @@ Widget _ResultGap(context, difference) {
       const Text(
         '與上次相差',
         style: TextStyle(
-            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       SizedBox(width: MediaQuery.of(context).size.width / 9),
       Text(
         '$difference',
         style: const TextStyle(
-            color: primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       )
     ],
   );
 }
 
-Widget _MaxAngle() {
+Widget _maxAngle() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      const Text(
+    children: const [
+      Text(
         '最大角度',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       )
     ],
   );
 }
 
-Widget _EndBtn(BuildContext context) {
+Widget _endBtn(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Container(
+      SizedBox(
         width: MediaQuery.of(context).size.width / 1.5,
         child: ElevatedButton(
           onPressed: () async {
@@ -215,16 +249,13 @@ Widget _EndBtn(BuildContext context) {
             );
             await HttpRequest().post(
                 "${HttpURL.host}/api/target", jsonEncode(target.toJson()));
-
             Navigator.pushReplacementNamed(context, MainPage.routeName);
           },
           child: const Text(
             '結束',
             style: TextStyle(fontSize: 24),
           ),
-          style: ElevatedButton.styleFrom(
-            primary: primaryColor,
-          ),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
         ),
       )
     ],
@@ -249,37 +280,23 @@ class _TestResultPageState extends State<TestResultPage> {
             SizedBox(
               height: MediaQuery.of(context).size.width / 6,
             ),
-            _Title(),
-            const SizedBox(
-              height: 25,
-            ),
-            _ResultTitle(),
-            const SizedBox(
-              height: 30,
-            ),
-            _ResultNumber(context, analyzeData["times"]),
-            const SizedBox(
-              height: 15,
-            ),
-            _ResultAnalyze(context, analyzeData["test_result"]),
-            const SizedBox(
-              height: 15,
-            ),
-            _ResultPR(context, analyzeData["pr"]),
-            const SizedBox(
-              height: 15,
-            ),
+            _title(),
+            const SizedBox(height: 25),
+            _resultTitle(),
+            const SizedBox(height: 30),
+            _resultNumber(context, analyzeData["times"]),
+            const SizedBox(height: 15),
+            _resultAnalyze(context, analyzeData["test_result"]),
+            const SizedBox(height: 15),
+            _resultPR(context, analyzeData["pr"]),
+            const SizedBox(height: 15),
             if (!isHasDiff)
-              _ResultGap(context, analyzeData["difference"].round()),
+              _resultGap(context, analyzeData["difference"].round()),
             if (!isHasDiff) const SizedBox(height: 30),
-            _ResultChart(context, chartData),
-            const SizedBox(
-              height: 30,
-            ),
-            _EndBtn(context),
-            const SizedBox(
-              height: 100,
-            ),
+            _resultChart(context, chartData),
+            const SizedBox(height: 30),
+            _endBtn(context),
+            const SizedBox(height: 100),
           ],
         ),
       ),

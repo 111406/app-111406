@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/screen/mainpage.dart';
-import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/warmuppage.dart';
 import 'package:sport_app/theme/color.dart';
 
@@ -14,7 +13,7 @@ class IntroPage extends StatefulWidget {
   State<IntroPage> createState() => _IntroPageState();
 }
 
-Widget _TutorialScreen(BuildContext context) {
+Widget _tutorialScreen(BuildContext context) {
   //一般模式 二頭肌教學
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -46,8 +45,8 @@ Widget _TutorialScreen(BuildContext context) {
   );
 }
 
-Widget _TutorialScreen01(BuildContext context) {
-  ////一般模式 三角肌教學
+Widget _tutorialScreen01(BuildContext context) {
+  //一般模式 三角肌教學
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -78,8 +77,8 @@ Widget _TutorialScreen01(BuildContext context) {
   );
 }
 
-Widget _TutorialScreen02(BuildContext context) {
-  ////一般模式 滑牆教學
+Widget _tutorialScreen02(BuildContext context) {
+  //一般模式 滑牆教學
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -110,8 +109,8 @@ Widget _TutorialScreen02(BuildContext context) {
   );
 }
 
-Widget _TutorialScreen03(BuildContext context) {
-  ////視覺模式 統一教學
+Widget _tutorialScreen03(BuildContext context) {
+  //視覺模式 統一教學
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -166,20 +165,15 @@ Widget _TutorialScreen03(BuildContext context) {
 //   );
 // }
 
-Widget _StartBtn(BuildContext context) {
-  return Container(
+Widget _startBtn(BuildContext context) {
+  return SizedBox(
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, WarmupPage.routeName);
+        Navigator.pushReplacementNamed(context, WarmupPage.routeName);
       },
-      child: const Text(
-        '開始熱身',
-        style: TextStyle(fontSize: 24),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: primaryColor,
-      ),
+      child: const Text('開始熱身', style: TextStyle(fontSize: 24)),
+      style: ElevatedButton.styleFrom(primary: primaryColor),
     ),
   );
 }
@@ -204,62 +198,49 @@ class _IntroPageState extends State<IntroPage> {
     bool? upmode = prefs.getBool('upmode');
     bool? twohead = prefs.getBool('twohead');
 
-    setState(() {
-      NormalMode = normalmode!;
-      UpMode = upmode!;
-      TwoHead = twohead!;
-    });
+    setState(
+      () {
+        NormalMode = normalmode!;
+        UpMode = upmode!;
+        TwoHead = twohead!;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
-        ),
-        backgroundColor: primaryColor,
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: 70 + 1,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 36,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, MainPage.routeName);
-          },
-        ),
-        title: const Text('測試流程'),
-      ),
+      appBar: buildAppBar(),
       body: Stack(
         children: [
           Column(
             children: [
-              const SizedBox(
-                height: 70,
-              ),
-              _TutorialScreen(context),
-
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 70),
+              _tutorialScreen(context),
+              const SizedBox(height: 30),
               // _CurrentAngle(),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               // _ResetZero(context),
-              const SizedBox(
-                height: 70,
-              ),
-              _StartBtn(context),
+              const SizedBox(height: 70),
+              _startBtn(context),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: secondColor,
+      centerTitle: true,
+      elevation: 0,
+      title: const Text('測試流程'),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () {
+          Navigator.pushNamed(context, Main.routeName);
+        },
       ),
     );
   }

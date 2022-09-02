@@ -1,20 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/db/model/chart_data.dart';
-import 'package:sport_app/enum/training_part.dart';
-import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/prepare.dart';
-import 'package:sport_app/screen/testpage.dart';
-import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
-import 'package:sport_app/utils/http_request.dart';
 
 var _timerStart = false;
 var _displayTimer = 60;
@@ -28,7 +20,7 @@ class WarmupPage extends StatefulWidget {
   State<WarmupPage> createState() => _WarmupPageState();
 }
 
-Widget _Title() {
+Widget _title() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: const [
@@ -37,48 +29,58 @@ Widget _Title() {
         child: Text(
           '肌動GO',
           style: TextStyle(
-              color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+            color: primaryColor,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       )
     ],
   );
 }
 
-Widget _SecondLeftTitle() {
+Widget _secondLeftTitle() {
   return const Text(
     '剩餘秒數',
     style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
-  );
-}
-
-Widget _SecondLeft(int timer) {
-  return Text(
-    timer.toString(),
-    style: const TextStyle(
-        color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
-  );
-}
-
-Widget _CountNumberTitle() {
-  return const Text(
-    '暖身時間',
-    style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
-  );
-}
-
-Widget _WarmUpGit() {
-  return Container(
-    child: FadeInImage.assetNetwork(
-      placeholder: 'assets/icon/warmup.gif',
-      image:
-          'https://www.heyueptc.com/heyueptc/6-education/edu_stretch/edu_sports_warm_up/_imagecache/edu_sports%20warm%20up%2003.gif',
+      color: primaryColor,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
     ),
   );
 }
 
-Widget _EndBtn(BuildContext context) {
+Widget _secondLeft(int timer) {
+  return Text(
+    timer.toString(),
+    style: const TextStyle(
+      color: primaryColor,
+      fontSize: 42,
+      fontWeight: FontWeight.bold,
+    ),
+  );
+}
+
+Widget _countNumberTitle() {
+  return const Text(
+    '暖身時間',
+    style: TextStyle(
+      color: primaryColor,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
+  );
+}
+
+Widget _warmUpGit() {
+  return FadeInImage.assetNetwork(
+    placeholder: 'assets/icon/warmup.gif',
+    image:
+        'https://www.heyueptc.com/heyueptc/6-education/edu_stretch/edu_sports_warm_up/_imagecache/edu_sports%20warm%20up%2003.gif',
+  );
+}
+
+Widget _endBtn(BuildContext context) {
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
@@ -89,9 +91,10 @@ Widget _EndBtn(BuildContext context) {
       child: const Text(
         '長按結束',
         style: TextStyle(
-            color: primaryColor,
-            fontSize: 20,
-            decoration: TextDecoration.underline),
+          color: primaryColor,
+          fontSize: 20,
+          decoration: TextDecoration.underline,
+        ),
       ),
     ),
   );
@@ -103,7 +106,7 @@ class _WarmupPageState extends State<WarmupPage> {
   final List<ChartData> _angleList = [];
   final int _timer = 60;
   late StreamSubscription<AccelerometerEvent> subscription;
-  @override
+
   @override
   void initState() {
     super.initState();
@@ -125,17 +128,17 @@ class _WarmupPageState extends State<WarmupPage> {
           Column(
             children: [
               SizedBox(height: MediaQuery.of(context).size.width / 6),
-              _Title(),
+              _title(),
               const SizedBox(height: 20),
-              _CountNumberTitle(),
+              _countNumberTitle(),
               const SizedBox(height: 30),
-              _WarmUpGit(),
+              _warmUpGit(),
               const SizedBox(height: 30),
-              _SecondLeftTitle(),
+              _secondLeftTitle(),
               const SizedBox(height: 30),
-              _SecondLeft(_displayTimer),
+              _secondLeft(_displayTimer),
               const SizedBox(height: 35),
-              _EndBtn(context),
+              _endBtn(context),
             ],
           ),
         ],

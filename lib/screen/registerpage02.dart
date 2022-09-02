@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/loginpage.dart';
 import 'package:sport_app/screen/registerpage.dart';
@@ -15,7 +14,7 @@ class RegisterPage02 extends StatefulWidget {
   State<RegisterPage02> createState() => _RegisterPage02State();
 }
 
-Widget _RegisterHeightTF(heightController) {
+Widget _registerHeightTF(heightController) {
   //身高
 
   return Column(
@@ -26,9 +25,7 @@ Widget _RegisterHeightTF(heightController) {
         style: TextStyle(
             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      const SizedBox(
-        height: 10.0,
-      ),
+      const SizedBox(height: 10.0),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
@@ -59,8 +56,9 @@ Widget _RegisterHeightTF(heightController) {
             ),
           ),
           controller: heightController,
+
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
           ],
           keyboardType: TextInputType.number,
         ),
@@ -69,7 +67,7 @@ Widget _RegisterHeightTF(heightController) {
   );
 }
 
-Widget _RegisterWeightTF(weightController) {
+Widget _registerWeightTF(weightController) {
   //體重
 
   return Column(
@@ -78,11 +76,12 @@ Widget _RegisterWeightTF(weightController) {
       const Text(
         '體重',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      const SizedBox(
-        height: 10.0,
-      ),
+      const SizedBox(height: 10.0),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
@@ -90,25 +89,14 @@ Widget _RegisterWeightTF(weightController) {
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.account_box_rounded,
-              color: primaryColor,
-            ),
+            prefixIcon: Icon(Icons.account_box_rounded, color: primaryColor),
             hintText: '公斤',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
+            hintStyle: TextStyle(color: primaryColor),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
           ),
           controller: weightController,
@@ -148,20 +136,12 @@ Widget _RegisterBirTF(birthdayController, context) {
               color: primaryColor,
             ),
             hintText: '民國年/月/日',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
+            hintStyle: TextStyle(color: primaryColor),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
           ),
           controller: birthdayController,
@@ -172,74 +152,7 @@ Widget _RegisterBirTF(birthdayController, context) {
   );
 }
 
-// Widget _RegisterGenderTF() {
-//   //性別 目前用不到
-//   bool _normalHasBeenPressed = true;
-//   bool _visionHasBeenPressed = false;
-//   //登入與輸入框
-//   Color primaryColor = HexColor("7C9C99");
-//   Color thirdColor = HexColor("AAD4D0");
-//   return Column(
-//     children: [
-//       Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Container(
-//             padding: const EdgeInsets.symmetric(
-//               vertical: 30,
-//             ),
-//             child: ElevatedButton(
-//               onPressed: () {
-//                 setState() {
-//                   _normalHasBeenPressed = true;
-//                   _visionHasBeenPressed = false;
-//                 }
-
-//                 ;
-//               },
-//               child: Text(
-//                 "一般模式",
-//                 style: const TextStyle(fontSize: 20),
-//               ),
-//               style: ElevatedButton.styleFrom(
-//                 primary: _normalHasBeenPressed ? primaryColor : thirdColor,
-//                 elevation: 5,
-//               ),
-//             ),
-//           ),
-//           SizedBox(
-//             width: 35,
-//           ),
-//           Container(
-//             padding: const EdgeInsets.symmetric(
-//               vertical: 30,
-//             ),
-//             child: ElevatedButton(
-//               onPressed: () {
-//                 setState() {
-//                   _normalHasBeenPressed = false;
-//                   _visionHasBeenPressed = true;
-//                 }
-
-//                 ;
-//               },
-//               child: Text(
-//                 "視覺辨識",
-//                 style: const TextStyle(fontSize: 20),
-//               ),
-//               style: ElevatedButton.styleFrom(
-//                 primary: _visionHasBeenPressed ? primaryColor : thirdColor,
-//                 elevation: 5,
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     ],
-//   );
-// }
-
-Widget _RegisterPreBtn(context) {
+Widget _registerPreBtn(context) {
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
@@ -249,17 +162,17 @@ Widget _RegisterPreBtn(context) {
       child: const Text(
         '上一步',
         style: TextStyle(
-            color: primaryColor,
-            fontSize: 20,
-            decoration: TextDecoration.underline),
+          color: primaryColor,
+          fontSize: 20,
+          decoration: TextDecoration.underline,
+        ),
       ),
     ),
   );
 }
 
 class _RegisterPage02State extends State<RegisterPage02> {
-  bool _malePressed = true;
-  bool _femalePressed = false;
+  String dropdownValue = '男';
 
   late String userId, password, email;
 
@@ -281,154 +194,139 @@ class _RegisterPage02State extends State<RegisterPage02> {
     super.dispose();
   }
 
-  String? _selectedColor;
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = '男';
     return Scaffold(
-      body: Stack(children: [
-        Container(
+      body: Stack(
+        children: [
+          SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 80.0,
-              ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        'assets/icon/logo01.png',
-                        fit: BoxFit.contain,
-                        width: 150,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      'assets/icon/logo01.png',
+                      fit: BoxFit.contain,
+                      width: 150,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      '註冊',
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        color: primaryColor,
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        '註冊',
+                  ),
+                  const SizedBox(height: 5),
+                  _registerHeightTF(heightController),
+                  const SizedBox(height: 10),
+                  _registerWeightTF(weightController),
+                  const SizedBox(height: 10),
+                  _RegisterBirTF(birthdayController, context),
+                  const SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        '性別',
                         style: TextStyle(
-                          decoration: TextDecoration.none,
-                          // fontFamily: 'OpenSans',
                           color: primaryColor,
-                          fontSize: 30.0,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    _RegisterHeightTF(heightController),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    _RegisterWeightTF(weightController),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    _RegisterBirTF(birthdayController, context),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      // crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '性別',
-                          style: TextStyle(
-                              color: primaryColor,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            height: 62.5,
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.account_box_rounded,
-                                  color: primaryColor,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  //<-- SEE HERE
-                                  borderSide:
-                                      BorderSide(color: primaryColor, width: 2),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  //<-- SEE HERE
-                                  borderSide:
-                                      BorderSide(color: primaryColor, width: 2),
-                                ),
-                              ),
-                              value: dropdownValue,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownValue = newValue!;
-                                });
-                              },
-                              items: <String>[
-                                '男',
-                                '女',
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(
-                                        color: primaryColor, fontSize: 18),
+                      const SizedBox(height: 10.0),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 62.5,
+                        child: DropdownButtonFormField(
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.account_box_rounded,
+                                color: primaryColor),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: primaryColor, width: 1),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: primaryColor, width: 1),
+                            ),
+                          ),
+                          value: dropdownValue,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue!;
+                            });
+                          },
+                          items:
+                              <String>['男', '女'].map<DropdownMenuItem<String>>(
+                            (String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(
+                                    color: primaryColor,
+                                    fontSize: 18,
                                   ),
-                                );
-                              }).toList(),
-                            )),
-                      ],
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      height: 90,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final height = heightController.text,
-                              weight = weightController.text,
-                              birthday = birthdayController.text;
-                          String reqeustData = """{
+                                ),
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    height: 90,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final height = heightController.text,
+                            weight = weightController.text,
+                            birthday = birthdayController.text;
+                        String reqeustData = """{
                             "user_id": "$userId",
                             "password": "$password",
                             "email": "$email",
-                            "gender": ${_malePressed ? 0 : 1},
+                            "gender": ${(dropdownValue == '男') ? 0 : 1},
                             "role": "N",
                             "height": $height,
                             "weight": $weight,
                             "birthday": "$birthday"
                           }""";
-                          await HttpRequest()
-                              .post('${HttpURL.host}/api/user/signup',
-                                  reqeustData)
-                              .then((response) {
-                            _showAlertDialog(context, response['message']);
-                          });
-                        },
-                        child: const Text(
-                          '完成/返回登入',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: primaryColor,
-                        ),
+                        await HttpRequest()
+                            .post(
+                                '${HttpURL.host}/api/user/signup', reqeustData)
+                            .then((response) {
+                          _showAlertDialog(context, response['message']);
+                        });
+                      },
+                      child: const Text(
+                        '完成 / 返回登入',
+                        style: TextStyle(fontSize: 24),
                       ),
+                      style: ElevatedButton.styleFrom(primary: primaryColor),
                     ),
-                    _RegisterPreBtn(context),
-                  ]),
-            )),
-      ]),
+                  ),
+                  _registerPreBtn(context),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -446,18 +344,20 @@ class _RegisterPage02State extends State<RegisterPage02> {
       title: Text(message),
       actions: [
         ElevatedButton(
-            child: const Text("確認"),
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, LoginPage.routeName);
-            }),
+          child: const Text("確認"),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, LoginPage.routeName);
+          },
+        ),
       ],
     );
 
     // Show the dialog
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return dialog;
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return dialog;
+      },
+    );
   }
 }
