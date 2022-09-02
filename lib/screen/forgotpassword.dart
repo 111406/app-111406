@@ -17,13 +17,14 @@ Widget _forgotPsEmailTF() {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const Text(
-        '信箱',
+        '電子郵件信箱',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      const SizedBox(
-        height: 10.0,
-      ),
+      const SizedBox(height: 10.0),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
@@ -32,25 +33,14 @@ Widget _forgotPsEmailTF() {
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.email_rounded,
-              color: primaryColor,
-            ),
-            hintText: '請輸入信箱',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
+            prefixIcon: Icon(Icons.email_rounded, color: primaryColor),
+            hintText: '請輸入電子郵件信箱',
+            hintStyle: TextStyle(color: primaryColor),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
           ),
         ),
@@ -61,45 +51,33 @@ Widget _forgotPsEmailTF() {
 
 Widget _forgotPsCodeTF() {
   //驗證碼框
-
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const Text(
         '驗證碼',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      const SizedBox(
-        height: 10.0,
-      ),
+      const SizedBox(height: 10.0),
       Container(
         alignment: Alignment.centerLeft,
         height: 50,
         child: const TextField(
-          //keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.lock,
-              color: primaryColor,
-            ),
-            hintText: '驗證碼認證',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
+            prefixIcon: Icon(Icons.lock, color: primaryColor),
+            hintText: '輸入驗證碼',
+            hintStyle: TextStyle(color: primaryColor),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: primaryColor, width: 1),
             ),
           ),
         ),
@@ -117,13 +95,8 @@ Widget _forgotPsNext() {
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () {},
-      child: const Text(
-        '下一步',
-        style: TextStyle(fontSize: 24),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: primaryColor,
-      ),
+      child: const Text('下一步', style: TextStyle(fontSize: 24)),
+      style: ElevatedButton.styleFrom(primary: primaryColor),
     ),
   );
 }
@@ -140,8 +113,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        Container(
+      body: Stack(
+        children: [
+          SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -150,96 +124,85 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 vertical: 80.0,
               ),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        'assets/icon/logo01.png',
-                        fit: BoxFit.contain,
-                        width: 150,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: Image.asset('assets/icon/logo01.png',
+                        fit: BoxFit.contain, width: 150),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      '忘記密碼',
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        color: primaryColor,
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        '忘記密碼',
-                        style: TextStyle(
-                          decoration: TextDecoration.none,
-                          // fontFamily: 'OpenSans',
-                          color: primaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    _forgotPsEmailTF(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    _forgotPsCodeTF(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _countdownTime = 60;
-                                  });
-                                  startCountdownTimer();
-                                },
-                                child: Text(
-                                  _countdownTime > 0
-                                      ? '$_countdownTime後重新獲取'
-                                      : '獲取驗證碼',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: _countdownTime > 0
-                                        ? Color.fromARGB(255, 183, 184, 195)
-                                        : Colors.white,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: primaryColor,
-                                  elevation: 5,
-                                ),
+                  ),
+                  const SizedBox(height: 20),
+                  _forgotPsEmailTF(),
+                  const SizedBox(height: 20),
+                  _forgotPsCodeTF(),
+                  const SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _countdownTime = 60;
+                              });
+                              startCountdownTimer();
+                            },
+                            child: Text(
+                              _countdownTime > 0
+                                  ? '$_countdownTime後重新獲取'
+                                  : '獲取驗證碼',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: _countdownTime > 0
+                                    ? const Color.fromARGB(255, 183, 184, 195)
+                                    : Colors.white,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    _forgotPsNext(),
-                  ]),
-            )),
-      ]),
+                            style: ElevatedButton.styleFrom(
+                                primary: primaryColor, elevation: 5),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  _forgotPsNext(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   void startCountdownTimer() {
-    const oneSec = const Duration(seconds: 1);
+    const oneSec = Duration(seconds: 1);
 
     var callback = (timer) => {
-          setState(() {
-            if (_countdownTime < 1) {
-              timer.cancel();
-            } else {
-              _countdownTime = _countdownTime - 1;
-            }
-          })
+          setState(
+            () {
+              if (_countdownTime < 1) {
+                timer.cancel();
+              } else {
+                _countdownTime = _countdownTime - 1;
+              }
+            },
+          ),
         };
 
     timer = Timer.periodic(oneSec, callback);

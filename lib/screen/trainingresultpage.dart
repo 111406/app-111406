@@ -8,28 +8,34 @@ class TrainingResultPage extends StatefulWidget {
   State<TrainingResultPage> createState() => _TrainingResultPageState();
 }
 
-Widget _Title() {
+Widget _title() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: const [
       Text(
         '肌動GO',
         style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          color: primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ],
   );
 }
 
-Widget _ResultTitle() {
+Widget _resultTitle() {
   return const Text(
     '測試結果',
     style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
-Widget _ResultChart(BuildContext context) {
+Widget _resultChart(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -44,26 +50,24 @@ Widget _ResultChart(BuildContext context) {
   );
 }
 
-Widget _ResultNumber() {
+Widget _resultNumber() {
   return const Text(
     '測試次數: 47',
     style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
-Widget _EndBtn(BuildContext context) {
-  return Container(
+Widget _endBtn(BuildContext context) {
+  return SizedBox(
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
       onPressed: () {},
-      child: const Text(
-        '結束',
-        style: TextStyle(fontSize: 24),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: primaryColor,
-      ),
+      child: const Text('結束', style: TextStyle(fontSize: 24)),
+      style: ElevatedButton.styleFrom(primary: primaryColor),
     ),
   );
 }
@@ -76,26 +80,16 @@ class _TrainingResultPageState extends State<TrainingResultPage> {
         children: [
           Column(
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.width / 6,
-              ),
-              _Title(),
-              const SizedBox(
-                height: 25,
-              ),
-              _ResultTitle(),
-              const SizedBox(
-                height: 10,
-              ),
-              _ResultChart(context),
-              const SizedBox(
-                height: 10,
-              ),
-              _ResultNumber(),
-              const SizedBox(
-                height: 50,
-              ),
-              _EndBtn(context),
+              SizedBox(height: MediaQuery.of(context).size.width / 6),
+              _title(),
+              const SizedBox(height: 25),
+              _resultTitle(),
+              const SizedBox(height: 10),
+              _resultChart(context),
+              const SizedBox(height: 10),
+              _resultNumber(),
+              const SizedBox(height: 50),
+              _endBtn(context),
             ],
           ),
         ],

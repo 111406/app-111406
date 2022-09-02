@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:sport_app/screen/mainpage.dart';
-import 'package:sport_app/screen/testresultpage.dart';
+import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +34,7 @@ class _LoadingPageState extends State<LoadingPage> {
       if (currentTimer >= 3000) {
         timer.cancel();
         if (loginloadingpage == true) {
-          Navigator.pushNamed(context, MainPage.routeName);
+          Navigator.pushNamed(context, Main.routeName);
           prefs.setBool('loginloadingpage', false);
           setState(() {
             loginloadingpage = false;
@@ -63,31 +60,28 @@ class _LoadingPageState extends State<LoadingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         width: double.infinity,
         height: double.infinity,
         child: Column(
           children: [
-            SizedBox(
-              height: 100,
-            ),
+            const SizedBox(height: 100),
             SizedBox(
               height: 100,
               width: 100,
               child: CircularProgressIndicator(
                 backgroundColor: Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation(primaryColor),
+                valueColor: const AlwaysStoppedAnimation(primaryColor),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               '讀取中',
               style: TextStyle(
-                  color: secondColor,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+                color: secondColor,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

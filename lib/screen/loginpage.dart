@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/screen/mainpage.dart';
+import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/registerpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:async';
+
+import 'forgotpassword.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -32,9 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(
               color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(
-          height: 10.0,
-        ),
+        const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
           height: 50,
@@ -44,25 +44,14 @@ class _LoginPageState extends State<LoginPage> {
             style: const TextStyle(color: Colors.black),
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10),
-              prefixIcon: Icon(
-                Icons.account_box_rounded,
-                color: primaryColor,
-              ),
+              prefixIcon: Icon(Icons.account_box_rounded, color: primaryColor),
               hintText: '請輸入帳號',
-              hintStyle: TextStyle(
-                color: primaryColor,
-              ),
+              hintStyle: TextStyle(color: primaryColor),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: primaryColor,
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: primaryColor, width: 1),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: primaryColor,
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: primaryColor, width: 1),
               ),
             ),
             controller: userIdController,
@@ -82,9 +71,7 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(
               color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(
-          height: 10.0,
-        ),
+        const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
           height: 50,
@@ -97,28 +84,17 @@ class _LoginPageState extends State<LoginPage> {
               //輸入文字位置
               contentPadding: EdgeInsets.only(top: 10),
               //icon的樣式
-              prefixIcon: Icon(
-                Icons.lock,
-                color: primaryColor,
-              ),
+              prefixIcon: Icon(Icons.lock, color: primaryColor),
               //提示字
               hintText: '請輸入密碼',
-              hintStyle: TextStyle(
-                color: primaryColor,
-              ),
+              hintStyle: TextStyle(color: primaryColor),
               //框框
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: primaryColor,
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: primaryColor, width: 1),
               ),
               //輸入時框框的樣式
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: primaryColor,
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: primaryColor, width: 1),
               ),
             ),
             controller: passwordController,
@@ -131,31 +107,39 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginForgetPasswordBtn() {
     //忘記密碼按鈕
     return Container(
-        alignment: Alignment.centerRight,
-        child: TextButton(
-            onPressed: () {},
-            child: const Text(
-              '忘記密碼',
-              style: TextStyle(
-                  decoration: TextDecoration.underline, color: primaryColor),
-            )));
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () {
+          Navigator.pushNamed(context, ForgotPassword.routeName);
+        },
+        child: const Text(
+          '忘記密碼',
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+            color: primaryColor,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _loginCheckbox() {
     //免責聲明勾選按鈕
-    return Container(
-      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
         Theme(
           data: ThemeData(unselectedWidgetColor: primaryColor),
           child: Checkbox(
-              value: _agree,
-              checkColor: Colors.white,
-              activeColor: primaryColor,
-              onChanged: (value) {
-                setState(() {
-                  _agree = value!;
-                });
-              }),
+            value: _agree,
+            checkColor: Colors.white,
+            activeColor: primaryColor,
+            onChanged: (value) {
+              setState(() {
+                _agree = value!;
+              });
+            },
+          ),
         ),
         GestureDetector(
           onTap: () {
@@ -164,10 +148,12 @@ class _LoginPageState extends State<LoginPage> {
           child: const Text(
             '我已經詳閱並同意個人資料\n蒐集條款，與免責說明',
             style: TextStyle(
-                decoration: TextDecoration.underline, color: primaryColor),
+              decoration: TextDecoration.underline,
+              color: primaryColor,
+            ),
           ),
         )
-      ]),
+      ],
     );
   }
 
@@ -189,6 +175,7 @@ class _LoginPageState extends State<LoginPage> {
               "user_id": "$userId",
               "password": "${passwordController.text}"
             }""";
+
             EasyLoading.instance
               ..backgroundColor = primaryColor
               ..textColor = Colors.white
@@ -202,33 +189,32 @@ class _LoginPageState extends State<LoginPage> {
 
             _progress = 0;
             _timer1?.cancel();
-            _timer1 = Timer.periodic(const Duration(milliseconds: 100),
-                (Timer timer) {
-              EasyLoading.showProgress(_progress,
-                  status: '${(_progress * 100).toStringAsFixed(0)}%');
-              _progress += 0.04;
+            _timer1 = Timer.periodic(
+              const Duration(milliseconds: 100),
+              (Timer timer) {
+                EasyLoading.showProgress(_progress,
+                    status: '${(_progress * 100).toStringAsFixed(0)}%');
+                _progress += 0.04;
 
-              if (_progress >= 1) {
-                _timer1?.cancel();
-                EasyLoading.dismiss();
-              }
-            });
+                if (_progress >= 1) {
+                  _timer1?.cancel();
+                  EasyLoading.dismiss();
+                }
+              },
+            );
             await HttpRequest()
                 .post('${HttpURL.host}/api/user/login', requestData)
-                .then((response) async {
-              final prefs = await SharedPreferences.getInstance();
-              prefs.setString("loginUser", userId);
-              Navigator.pushNamed(context, MainPage.routeName);
-            });
+                .then(
+              (response) async {
+                final prefs = await SharedPreferences.getInstance();
+                prefs.setString("loginUser", userId);
+                Navigator.pushReplacementNamed(context, Main.routeName);
+              },
+            );
           }
         },
-        child: const Text(
-          '登入',
-          style: TextStyle(fontSize: 24),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: primaryColor,
-        ),
+        child: const Text('登入', style: TextStyle(fontSize: 24)),
+        style: ElevatedButton.styleFrom(primary: primaryColor),
       ),
     );
   }
@@ -238,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, RegisterPage.routeName);
+          Navigator.pushReplacementNamed(context, RegisterPage.routeName);
         },
         child: const Text(
           '尚未有帳號，註冊',
@@ -266,8 +252,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        Container(
+      body: Stack(
+        children: [
+          SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -276,44 +263,43 @@ class _LoginPageState extends State<LoginPage> {
                 vertical: 80.0,
               ),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        'assets/icon/logo01.png',
-                        fit: BoxFit.contain,
-                        width: 150,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      'assets/icon/logo01.png',
+                      fit: BoxFit.contain,
+                      width: 150,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      '登入',
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        // fontFamily: 'OpenSans',
+                        color: primaryColor,
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        '登入',
-                        style: TextStyle(
-                          decoration: TextDecoration.none,
-                          // fontFamily: 'OpenSans',
-                          color: primaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    _loginEmailTF(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    _loginPasswordTF(),
-                    _loginForgetPasswordBtn(),
-                    _loginCheckbox(),
-                    _loginBtn(),
-                    _loginRegisterBtn(),
-                  ]),
-            )),
-      ]),
+                  ),
+                  const SizedBox(height: 20.0),
+                  _loginEmailTF(),
+                  const SizedBox(height: 20),
+                  _loginPasswordTF(),
+                  _loginForgetPasswordBtn(),
+                  _loginCheckbox(),
+                  _loginBtn(),
+                  _loginRegisterBtn(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -324,10 +310,11 @@ class _LoginPageState extends State<LoginPage> {
       content: Text(message),
       actions: [
         ElevatedButton(
-            child: const Text("關閉"),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
+          child: const Text("關閉"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ],
     );
 

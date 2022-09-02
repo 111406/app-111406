@@ -1,19 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/db/model/chart_data.dart';
-import 'package:sport_app/enum/training_part.dart';
-import 'package:sport_app/screen/loadingpage.dart';
-import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/testpage2.dart';
-import 'package:sport_app/screen/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
-import 'package:sport_app/utils/http_request.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class Prepare2 extends StatefulWidget {
@@ -24,7 +15,7 @@ class Prepare2 extends StatefulWidget {
   State<Prepare2> createState() => _PrepareState2();
 }
 
-Widget _Title() {
+Widget _title() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: const [
@@ -40,7 +31,7 @@ Widget _Title() {
   );
 }
 
-Widget _CountNumberTitle() {
+Widget _countNumberTitle() {
   return const Text(
     '下一個動作',
     style: TextStyle(
@@ -48,7 +39,7 @@ Widget _CountNumberTitle() {
   );
 }
 
-Widget _PoseTitle() {
+Widget _poseTitle() {
   return const Text(
     '座椅深蹲',
     style: TextStyle(
@@ -56,7 +47,7 @@ Widget _PoseTitle() {
   );
 }
 
-Widget _TutorialScreen(BuildContext context) {
+Widget _tutorialScreen(BuildContext context) {
   //一般模式 深蹲教學
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -88,20 +79,15 @@ Widget _TutorialScreen(BuildContext context) {
   );
 }
 
-Widget _StartBtn(BuildContext context) {
-  return Container(
+Widget _startBtn(BuildContext context) {
+  return SizedBox(
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
       onPressed: () {
         Navigator.pushNamed(context, TestPage2.routeName);
       },
-      child: const Text(
-        '開始',
-        style: TextStyle(fontSize: 24),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: primaryColor,
-      ),
+      child: const Text('開始', style: TextStyle(fontSize: 24)),
+      style: ElevatedButton.styleFrom(primary: primaryColor),
     ),
   );
 }
@@ -110,7 +96,7 @@ class _PrepareState2 extends State<Prepare2> {
   FlutterTts flutterTts = FlutterTts();
   final List<ChartData> _angleList = [];
   late StreamSubscription<AccelerometerEvent> subscription;
-  @override
+
   @override
   void initState() {
     super.initState();
@@ -130,16 +116,16 @@ class _PrepareState2 extends State<Prepare2> {
           Column(
             children: [
               SizedBox(height: MediaQuery.of(context).size.width / 6),
-              _Title(),
+              _title(),
               const SizedBox(height: 20),
-              _CountNumberTitle(),
+              _countNumberTitle(),
               const SizedBox(height: 30),
-              _PoseTitle(),
+              _poseTitle(),
               const SizedBox(height: 30),
               // _WarmUpGit(),
-              _TutorialScreen(context),
+              _tutorialScreen(context),
               const SizedBox(height: 30),
-              _StartBtn(context),
+              _startBtn(context),
             ],
           ),
         ],
