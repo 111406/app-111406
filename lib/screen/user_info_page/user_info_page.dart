@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sport_app/screen/user_info_page/user_info_edit_page.dart';
 import 'package:sport_app/theme/color.dart' as colors;
+import 'package:sport_app/theme/color.dart';
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({Key? key}) : super(key: key);
