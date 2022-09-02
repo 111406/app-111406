@@ -30,19 +30,20 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Positioned(
-                    bottom: 10,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 25),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, ChoosingPage.routeName);
-                        },
-                        child: Ink(child: trainingBtn()),
-                      ),
-                    ))
+                  bottom: 10,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, ChoosingPage.routeName);
+                      },
+                      child: Ink(child: trainingBtn()),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -158,19 +159,20 @@ class _HomePageState extends State<HomePage> {
 
   AppBar buildAppBar() {
     return AppBar(
-        backgroundColor: secondColor,
-        centerTitle: false,
-        elevation: 0,
-        title: const Text('肌動Go'),
-        leading: Container(
-          margin: const EdgeInsets.only(left: 10),
-          child: Image.asset('assets/icon/logo_white.png'),
+      backgroundColor: secondColor,
+      centerTitle: false,
+      elevation: 0,
+      title: const Text('肌動Go'),
+      leading: Container(
+        margin: const EdgeInsets.only(left: 10),
+        child: Image.asset('assets/icon/logo_white.png'),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.notifications_none),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none),
-          ),
-        ]);
+      ],
+    );
   }
 }

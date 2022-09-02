@@ -17,27 +17,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
-        ),
-        backgroundColor: primaryColor,
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: 70 + 1,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 36,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, Main.routeName);
-          },
-        ),
-      ),
+      appBar: buildAppBar(),
       body: Column(
         children: [
           const SizedBox(height: 70),
@@ -260,6 +240,12 @@ class _ChoosingPageState extends State<ChoosingPage> {
       centerTitle: true,
       elevation: 0,
       title: const Text('開始測試'),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () {
+          Navigator.pushNamed(context, Main.routeName);
+        },
+      ),
     );
   }
 }

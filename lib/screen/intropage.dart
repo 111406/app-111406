@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/mainpage.dart';
 import 'package:sport_app/screen/testpage.dart';
 import 'package:sport_app/screen/warmuppage.dart';
@@ -204,62 +205,49 @@ class _IntroPageState extends State<IntroPage> {
     bool? upmode = prefs.getBool('upmode');
     bool? twohead = prefs.getBool('twohead');
 
-    setState(() {
-      NormalMode = normalmode!;
-      UpMode = upmode!;
-      TwoHead = twohead!;
-    });
+    setState(
+      () {
+        NormalMode = normalmode!;
+        UpMode = upmode!;
+        TwoHead = twohead!;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
-        ),
-        backgroundColor: primaryColor,
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: 70 + 1,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 36,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, MainPage.routeName);
-          },
-        ),
-        title: const Text('測試流程'),
-      ),
+      appBar: buildAppBar(),
       body: Stack(
         children: [
           Column(
             children: [
-              const SizedBox(
-                height: 70,
-              ),
+              const SizedBox(height: 70),
               _TutorialScreen(context),
-
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               // _CurrentAngle(),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               // _ResetZero(context),
-              const SizedBox(
-                height: 70,
-              ),
+              const SizedBox(height: 70),
               _StartBtn(context),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: secondColor,
+      centerTitle: true,
+      elevation: 0,
+      title: const Text('測試流程'),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () {
+          Navigator.pushNamed(context, Main.routeName);
+        },
       ),
     );
   }
