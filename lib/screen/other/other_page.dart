@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/theme/color.dart';
 
 class OtherPage extends StatefulWidget {
@@ -80,7 +82,13 @@ class _OtherPageState extends State<OtherPage> {
           ),
           const SizedBox(height: 248),
           InkWell(
-            onTap: () {},
+            onTap: () async {
+              Navigator.pushReplacementNamed(context, LoginPage.routeName);
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString("userId", '');
+              prefs.setString("token", '');
+              prefs.clear();
+            },
             child: Ink(
               height: 48,
               // color: Colors.white,
