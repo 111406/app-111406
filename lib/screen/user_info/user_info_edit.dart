@@ -16,7 +16,7 @@ class UserInfoEditPage extends StatefulWidget {
 class _UserInfoEditPageState extends State<UserInfoEditPage> {
   var userName = 'User';
   var birth = DateTime(1960, 1, 1);
-  var gender = true;
+  // var gender = true;
   var height = '172';
   var weight = '70';
 
@@ -164,41 +164,41 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                       color: const Color.fromARGB(255, 225, 225, 225)),
                 ),
               ),
-              const SizedBox(height: 10),
-              Container(
-                child: Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        '性別',
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: textColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      child: const Text('男'),
-                      onPressed: () {},
-                    ),
-                    TextButton(
-                      child: const Text('女'),
-                      onPressed: () {},
-                    )
-                  ],
-                ),
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 20, right: 15),
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                constraints: const BoxConstraints(maxHeight: 56),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 225, 225, 225)),
-                ),
-              ),
+              // const SizedBox(height: 10),
+              // Container(
+              //   child: Row(
+              //     children: [
+              //       const Expanded(
+              //         child: Text(
+              //           '性別',
+              //           style: TextStyle(
+              //             fontSize: 22,
+              //             color: textColor,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //         ),
+              //       ),
+              //       TextButton(
+              //         child: const Text('男'),
+              //         onPressed: () {},
+              //       ),
+              //       TextButton(
+              //         child: const Text('女'),
+              //         onPressed: () {},
+              //       )
+              //     ],
+              //   ),
+              //   alignment: Alignment.centerLeft,
+              //   padding: const EdgeInsets.only(left: 20, right: 15),
+              //   margin: const EdgeInsets.only(left: 20, right: 20),
+              //   constraints: const BoxConstraints(maxHeight: 56),
+              //   decoration: BoxDecoration(
+              //     color: Colors.white,
+              //     borderRadius: BorderRadius.circular(5),
+              //     border: Border.all(
+              //         color: const Color.fromARGB(255, 225, 225, 225)),
+              //   ),
+              // ),
               const SizedBox(height: 10),
               Container(
                 child: Row(

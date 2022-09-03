@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sport_app/screen/user_info_page/user_info_edit_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:sport_app/theme/color.dart' as colors;
 import 'package:sport_app/theme/color.dart';
 
@@ -11,12 +12,26 @@ class UserInfoPage extends StatefulWidget {
   State<UserInfoPage> createState() => _UserInfoPageState();
 }
 
+var userId = 'user';
+
 class _UserInfoPageState extends State<UserInfoPage> {
-  var userName = 'User';
+  // var userId = 'User';
   var birth = '1960/01/01';
-  var gender = true;
+  // var gender = true;
   var height = '172';
   var weight = '70';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  void _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString("userId") ?? "noob";
+    debugPrint(userId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +51,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
           ),
           const SizedBox(height: 10),
           Text(
-            userName,
+            userId,
             style: const TextStyle(
               fontSize: 30,
               color: textColor,
@@ -79,41 +94,41 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
             ),
           ),
-          const SizedBox(height: 10),
-          Container(
-            child: Row(
-              children: [
-                const Expanded(
-                  child: Text(
-                    '性別',
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: textColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  child: const Text('男'),
-                  onPressed: () {},
-                ),
-                TextButton(
-                  child: const Text('女'),
-                  onPressed: () {},
-                )
-              ],
-            ),
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(left: 20, right: 15),
-            margin: const EdgeInsets.only(left: 20, right: 20),
-            constraints: const BoxConstraints(maxHeight: 56),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              border:
-                  Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
-            ),
-          ),
+          // const SizedBox(height: 10),
+          // Container(
+          //   child: Row(
+          //     children: [
+          //       const Expanded(
+          //         child: Text(
+          //           '性別',
+          //           style: TextStyle(
+          //             fontSize: 22,
+          //             color: textColor,
+          //             fontWeight: FontWeight.bold,
+          //           ),
+          //         ),
+          //       ),
+          //       TextButton(
+          //         child: const Text('男'),
+          //         onPressed: () {},
+          //       ),
+          //       TextButton(
+          //         child: const Text('女'),
+          //         onPressed: () {},
+          //       )
+          //     ],
+          //   ),
+          //   alignment: Alignment.centerLeft,
+          //   padding: const EdgeInsets.only(left: 20, right: 15),
+          //   margin: const EdgeInsets.only(left: 20, right: 20),
+          //   constraints: const BoxConstraints(maxHeight: 56),
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.circular(5),
+          //     border:
+          //         Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+          //   ),
+          // ),
           const SizedBox(height: 10),
           Container(
             child: Row(
@@ -216,6 +231,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
       centerTitle: true,
       elevation: 0,
       title: const Text('個人資訊'),
+      leading: Container(),
     );
   }
 }
