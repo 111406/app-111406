@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:sport_app/screen/choosing_page/choosing_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/choosing/choosing.dart';
 import 'package:sport_app/screen/forgotpassword.dart';
 import 'package:sport_app/screen/intropage.dart';
 import 'package:sport_app/screen/loadingpage.dart';
-import 'package:sport_app/screen/loginpage.dart';
+import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/registerpage.dart';
-import 'package:sport_app/screen/registerpage02.dart';
+import 'package:sport_app/screen/regitster/register.dart';
+import 'package:sport_app/screen/regitster/register_next.dart';
 import 'package:sport_app/screen/testpage.dart';
 import 'package:sport_app/screen/testpage2.dart';
 import 'package:sport_app/screen/testresultpage.dart';
-import 'package:sport_app/screen/user_info_page/user_info_edit_page.dart';
-import 'package:sport_app/screen/user_info_page/user_info_page.dart';
+import 'package:sport_app/screen/user_info/user_info.dart';
+import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sport_app/screen/prepare.dart';
@@ -27,6 +28,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configLoading();
 
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String userId = prefs.getString('userId') ?? '';
+  String token = prefs.getString('token') ?? '';
+
   try {
     cameras = await availableCameras();
   } on CameraException catch (e) {
@@ -34,7 +39,9 @@ Future<void> main() async {
     print('Error: $e.code\nError Message: $e.message');
   }
 
-  runApp(const MyApp());
+  runApp((userId != '' && token != '')
+      ? MyApp(userId: userId, token: token)
+      : const MyApp(userId: '', token: ''));
 }
 
 void configLoading() {
@@ -54,7 +61,14 @@ void configLoading() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String userId;
+  final String token;
+
+  const MyApp({
+    Key? key,
+    required this.userId,
+    required this.token,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +77,8 @@ class MyApp extends StatelessWidget {
       title: '肌動GO',
       home: const LoginPage(),
       //initialRoute: MainPage.routeName,
+      initialRoute:
+          (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
       routes: {
         Main.routeName: (context) => const Main(),
         ChoosingPage.routeName: (context) => const ChoosingPage(),

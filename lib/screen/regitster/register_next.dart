@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/screen/loginpage.dart';
-import 'package:sport_app/screen/registerpage.dart';
+import 'package:sport_app/screen/components/app_logo.dart';
+import 'package:sport_app/screen/components/page_title.dart';
+import 'package:sport_app/screen/components/textfield_inputbox.dart';
+import 'package:sport_app/screen/login/login.dart';
+import 'package:sport_app/screen/regitster/register.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 
@@ -197,95 +200,82 @@ class _RegisterPage02State extends State<RegisterPage02> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SizedBox(
-            height: double.infinity,
-            child: SingleChildScrollView(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+          child: Column(
+            children: [
+              appLogo(),
+              pageTitle('註冊'),
+              const SizedBox(height: 5),
+              textField(
+                textFieldName: '身高',
+                hintText: '請輸入身高 (公分)',
+                icon: Icons.account_box_rounded,
+                controller: heightController,
+              ),
+              const SizedBox(height: 20),
+              textField(
+                textFieldName: '體重',
+                hintText: '請輸入體重 (公斤)',
+                icon: Icons.account_box_rounded,
+                controller: weightController,
+              ),
+              const SizedBox(height: 20),
+              textField(
+                textFieldName: '生日',
+                hintText: '西元年/月/日',
+                icon: Icons.account_box_rounded,
+                controller: birthdayController,
+              ),
+              const SizedBox(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      'assets/icon/logo01.png',
-                      fit: BoxFit.contain,
-                      width: 150,
+                  const Text(
+                    '性別',
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Container(
-                    alignment: Alignment.center,
-                    child: const Text(
-                      '註冊',
-                      style: TextStyle(
-                        decoration: TextDecoration.none,
-                        color: primaryColor,
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
+                    alignment: Alignment.centerLeft,
+                    height: 62.5,
+                    child: DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.account_box_rounded,
+                            color: primaryColor),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: primaryColor, width: 1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: primaryColor, width: 1),
+                        ),
                       ),
+                      value: dropdownValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                        });
+                      },
+                      items: <String>['男', '女'].map<DropdownMenuItem<String>>(
+                        (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: const TextStyle(
+                                color: primaryColor,
+                                fontSize: 18,
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  _registerHeightTF(heightController),
-                  const SizedBox(height: 10),
-                  _registerWeightTF(weightController),
-                  const SizedBox(height: 10),
-                  _RegisterBirTF(birthdayController, context),
-                  const SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Text(
-                        '性別',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10.0),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        height: 62.5,
-                        child: DropdownButtonFormField(
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.account_box_rounded,
-                                color: primaryColor),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor, width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor, width: 1),
-                            ),
-                          ),
-                          value: dropdownValue,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValue = newValue!;
-                            });
-                          },
-                          items:
-                              <String>['男', '女'].map<DropdownMenuItem<String>>(
-                            (String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(
-                                    color: primaryColor,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              );
-                            },
-                          ).toList(),
-                        ),
-                      ),
-                    ],
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 20),
@@ -301,7 +291,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
                             "password": "$password",
                             "email": "$email",
                             "gender": ${(dropdownValue == '男') ? 0 : 1},
-                            "role": "N",
+                            "role": 100,
                             "height": $height,
                             "weight": $weight,
                             "birthday": "$birthday"
@@ -323,9 +313,9 @@ class _RegisterPage02State extends State<RegisterPage02> {
                   _registerPreBtn(context),
                 ],
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

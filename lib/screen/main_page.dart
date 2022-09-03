@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/screen/home_page/home_page.dart';
-import 'package:sport_app/screen/other_page/other_page.dart';
-import 'package:sport_app/screen/user_info_page/user_info_page.dart';
+import 'package:sport_app/screen/home/home.dart';
+import 'package:sport_app/screen/other/other_page.dart';
+import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/theme/color.dart';
 
 class Main extends StatefulWidget {

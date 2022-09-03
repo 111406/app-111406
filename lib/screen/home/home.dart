@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sport_app/screen/choosing/choosing.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/screen/intropage.dart';
-import '../choosing_page/choosing_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
