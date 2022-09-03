@@ -20,6 +20,7 @@ class _MainState extends State<Main> {
   @override
   void initState() {
     super.initState();
+    _currentIndex = 0;
     _asyncMethod();
   }
 
@@ -33,6 +34,7 @@ class _MainState extends State<Main> {
         returnMainPage = 0;
       });
     }
+    prefs.remove('returnMainPage');
   }
 
   @override
