@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/screen/loginpage.dart';
-import 'package:sport_app/screen/registerpage02.dart';
+import 'package:sport_app/screen/components/app_logo.dart';
+import 'package:sport_app/screen/components/page_title.dart';
+import 'package:sport_app/screen/components/textfield_inputbox.dart';
+import 'package:sport_app/screen/login/login.dart';
+import 'package:sport_app/screen/regitster/register_next.dart';
 import 'package:sport_app/theme/color.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -218,81 +221,79 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: Stack(
-          children: [
-            SizedBox(
-              height: double.infinity,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 80.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        'assets/icon/logo01.png',
-                        fit: BoxFit.contain,
-                        width: 150,
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        '註冊',
-                        style: TextStyle(
-                          decoration: TextDecoration.none,
-                          color: primaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    _registerNumberTF(userIdController),
-                    const SizedBox(height: 10),
-                    _registerPasswordTF(passwordController),
-                    const SizedBox(height: 10),
-                    _registerConPasswordTF(cpasswordController),
-                    const SizedBox(height: 10),
-                    _registerEmailTF(emailController),
-                    const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      height: 90,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          String userId = userIdController.text;
-                          String password = passwordController.text;
-                          String email = emailController.text;
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          prefs.setString("userId", userId);
-                          prefs.setString("password", password);
-                          prefs.setString("email", email);
-                          Navigator.pushNamed(
-                              context, RegisterPage02.routeName);
-                        },
-                        child:
-                            const Text('下一步', style: TextStyle(fontSize: 24)),
-                        style: ElevatedButton.styleFrom(primary: primaryColor),
-                      ),
-                    ),
-                    _registerLoginBtn(context),
-                  ],
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+          child: Column(
+            children: [
+              appLogo(),
+              pageTitle('註冊'),
+              const SizedBox(height: 5),
+              textField(
+                textFieldName: '帳號',
+                hintText: '請輸入帳號',
+                icon: Icons.account_box_rounded,
+                controller: userIdController,
+              ),
+              const SizedBox(height: 20),
+              textField(
+                textFieldName: '密碼',
+                hintText: '請輸入密碼',
+                obscureText: true,
+                icon: Icons.lock,
+                controller: passwordController,
+              ),
+              const SizedBox(height: 20),
+              textField(
+                textFieldName: '確認密碼',
+                hintText: '確認密碼',
+                obscureText: true,
+                icon: Icons.lock,
+                controller: cpasswordController,
+              ),
+              const SizedBox(height: 20),
+              textField(
+                textFieldName: '信箱',
+                hintText: '請輸入信箱',
+                icon: Icons.email,
+                controller: emailController,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                height: 90,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    String userId = userIdController.text;
+                    String password = passwordController.text;
+                    String email = emailController.text;
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setString("userId", userId);
+                    prefs.setString("password", password);
+                    prefs.setString("email", email);
+                    Navigator.pushNamed(context, RegisterPage02.routeName);
+                  },
+                  child: const Text('下一步', style: TextStyle(fontSize: 24)),
+                  style: ElevatedButton.styleFrom(primary: primaryColor),
                 ),
               ),
-            ),
-          ],
+              _registerLoginBtn(context),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+// return Scaffold(
+//       body: SafeArea(
+//         child: Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 40),
+//           child: Column(),
+//         ),
+//       ),
+//     );
