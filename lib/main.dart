@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
 import 'package:sport_app/screen/forgot_password/forgotpassword.dart';
+import 'package:sport_app/screen/forgot_password/forgotpassword02.dart';
 import 'package:sport_app/screen/intropage.dart';
 import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/login/login.dart';
@@ -86,6 +87,7 @@ class MyApp extends StatelessWidget {
         UserInfoPage.routeName: (context) => const UserInfoPage(),
         UserInfoEditPage.routeName: (context) => const UserInfoEditPage(),
         ForgotPassword.routeName: (context) => const ForgotPassword(),
+        ForgotPassword02.routeName: (context) => const ForgotPassword02(),
         LoadingPage.routeName: (context) => const LoadingPage(),
         Prepare.routeName: (context) => const Prepare(),
         Prepare2.routeName: (context) => const Prepare2(),
