@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/db/model/user_todo.dart';
 import 'package:sport_app/screen/home/home.dart';
 import 'package:sport_app/screen/other/other_page.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
@@ -45,6 +48,16 @@ class _MainState extends State<Main> {
     //   prefs.setString("birth", birth);
     //   prefs.setString("gender", gender);
     // });
+    final prefs = await SharedPreferences.getInstance();
+    final todoList = <String>[];
+    final userId = prefs.getString("userId");
+    await HttpRequest().get('${HttpURL.host}/api/target/$userId').then((response) {
+      for (var data in response['data']) {
+        var todo = UserTodo.fromJson(data);
+        todoList.add(json.encode(todo));
+      }
+    });
+    prefs.setStringList("todoList", todoList);
   }
 
   _asyncMethod() async {
