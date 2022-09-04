@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
 import 'package:sport_app/screen/components/button.dart';
@@ -8,6 +8,7 @@ import 'package:sport_app/screen/components/textfield_inputbox.dart';
 import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/regitster/register.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
 
 class RegisterPage02 extends StatefulWidget {
@@ -157,10 +158,10 @@ class _RegisterPage02State extends State<RegisterPage02> {
   String dropdownValue = '男';
 
   late String userId, password, email;
-
+  bool initBirth = false;
+  DateTime birth = DateTime(1960, 1, 1);
   final heightController = TextEditingController();
   final weightController = TextEditingController();
-  final birthdayController = TextEditingController();
 
   @override
   void initState() {
@@ -172,7 +173,6 @@ class _RegisterPage02State extends State<RegisterPage02> {
   void dispose() {
     heightController.dispose();
     weightController.dispose();
-    birthdayController.dispose();
     super.dispose();
   }
 
@@ -187,70 +187,112 @@ class _RegisterPage02State extends State<RegisterPage02> {
               appLogo(),
               pageTitle('註冊'),
               const SizedBox(height: 5),
-              textField(
-                textFieldName: '身高',
-                hintText: '請輸入身高 (公分)',
-                icon: Icons.account_box_rounded,
-                controller: heightController,
-              ),
-              const SizedBox(height: 10),
-              textField(
-                textFieldName: '體重',
-                hintText: '請輸入體重 (公斤)',
-                icon: Icons.account_box_rounded,
-                controller: weightController,
-              ),
-              const SizedBox(height: 10),
-              textField(
-                textFieldName: '生日',
-                hintText: '西元年/月/日',
-                icon: Icons.account_box_rounded,
-                controller: birthdayController,
-              ),
-              const SizedBox(height: 10),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    '性別',
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  textField(
+                    textFieldName: '身高',
+                    hintText: '請輸入身高 (公分)',
+                    icon: Icons.account_box_rounded,
+                    controller: heightController,
                   ),
                   const SizedBox(height: 10),
-                  DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                      prefixIcon:
-                          Icon(Icons.account_box_rounded, color: primaryColor),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primaryColor, width: 1),
+                  textField(
+                    textFieldName: '體重',
+                    hintText: '請輸入體重 (公斤)',
+                    icon: Icons.account_box_rounded,
+                    controller: weightController,
+                  ),
+                  const SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '性別',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primaryColor, width: 1),
-                      ),
-                    ),
-                    value: dropdownValue,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
-                    },
-                    items: <String>['男', '女'].map<DropdownMenuItem<String>>(
-                      (String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: const TextStyle(
-                              color: textColor,
-                              // fontSize: 18,
-                            ),
+                      const SizedBox(height: 10),
+                      DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.account_box_rounded,
+                              color: primaryColor),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: primaryColor, width: 1),
                           ),
-                        );
-                      },
-                    ).toList(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: primaryColor, width: 1),
+                          ),
+                        ),
+                        value: dropdownValue,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        items: <String>['男', '女'].map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: const TextStyle(
+                                  color: textColor,
+                                  // fontSize: 18,
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '生日',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      InkWell(
+                        onTap: _datePicker,
+                        child: Container(
+                          height: 50,
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: primaryColor),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.account_box_rounded,
+                                  color: primaryColor),
+                              const SizedBox(width: 10),
+                              Text(
+                                (initBirth)
+                                    ? DateFormat('yyyy / MM / dd').format(birth)
+                                    : '請選擇出生年月日(西元)',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: (initBirth) ? Colors.black : textColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -260,8 +302,13 @@ class _RegisterPage02State extends State<RegisterPage02> {
                 onPressed: () async {
                   final height = heightController.text,
                       weight = weightController.text,
-                      birthday = birthdayController.text;
-                  String reqeustData = """{
+                      birthday = DateFormat('yyyyMMdd').format(birth);
+
+                  bool _textFieldIsNotEmpty =
+                      height.isNotEmpty && weight.isNotEmpty;
+                  bool _birthIsNotEmpty = initBirth;
+                  if (_textFieldIsNotEmpty && _birthIsNotEmpty) {
+                    String reqeustData = """{
                             "user_id": "$userId",
                             "password": "$password",
                             "email": "$email",
@@ -271,11 +318,19 @@ class _RegisterPage02State extends State<RegisterPage02> {
                             "weight": $weight,
                             "birthday": "$birthday"
                           }""";
-                  await HttpRequest()
-                      .post('${HttpURL.host}/api/user/signup', reqeustData)
-                      .then((response) {
-                    _showAlertDialog(context, response['message']);
-                  });
+                    await HttpRequest()
+                        .post('${HttpURL.host}/api/user/signup', reqeustData)
+                        .then((response) {
+                      _showAlertDialog(context, response['message']);
+                    });
+                  } else {
+                    // TODO: showAlertDialog @cheese
+                    showAlertDialog(
+                      context,
+                      title: '',
+                      message: '',
+                    );
+                  }
                 },
               ),
               const SizedBox(height: 20),
@@ -300,6 +355,22 @@ class _RegisterPage02State extends State<RegisterPage02> {
     email = prefs.getString("email") ?? "";
   }
 
+  void _datePicker() async {
+    initBirth = true;
+    var result = await showDatePicker(
+      context: context,
+      initialDate: birth,
+      firstDate: DateTime(1900, 01),
+      lastDate: DateTime(1960, 01),
+    );
+
+    if (result != null) {
+      setState(() {
+        birth = result;
+      });
+    }
+  }
+
   // Show AlertDialog
   void _showAlertDialog(context, message) {
     // Init
@@ -308,6 +379,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
       actions: [
         ElevatedButton(
           child: const Text("確認"),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
           onPressed: () {
             Navigator.pushReplacementNamed(context, LoginPage.routeName);
           },
