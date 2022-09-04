@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
+import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/screen/components/page_title.dart';
 import 'package:sport_app/screen/components/textfield_inputbox.dart';
 import 'package:sport_app/screen/login/login.dart';
@@ -17,162 +18,140 @@ class RegisterPage02 extends StatefulWidget {
   State<RegisterPage02> createState() => _RegisterPage02State();
 }
 
-Widget _registerHeightTF(heightController) {
-  //身高
+// Widget _registerHeightTF(heightController) {
+//身高
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       const Text(
+//         '身高',
+//         style: TextStyle(
+//             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+//       ),
+//       const SizedBox(height: 10.0),
+//       Container(
+//         alignment: Alignment.centerLeft,
+//         height: 50,
+//         child: TextField(
+//           //keyboardType: TextInputType.emailAddress,
+//           style: const TextStyle(color: Colors.black),
+//           decoration: const InputDecoration(
+//             contentPadding: EdgeInsets.only(top: 10),
+//             prefixIcon: Icon(
+//               Icons.account_box_rounded,
+//               color: primaryColor,
+//             ),
+//             hintText: '公分',
+//             hintStyle: TextStyle(
+//               color: primaryColor,
+//             ),
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(
+//                 color: primaryColor,
+//                 width: 1,
+//               ),
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(
+//                 color: primaryColor,
+//                 width: 1,
+//               ),
+//             ),
+//           ),
+//           controller: heightController,
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        '身高',
-        style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 10.0),
-      Container(
-        alignment: Alignment.centerLeft,
-        height: 50,
-        child: TextField(
-          //keyboardType: TextInputType.emailAddress,
-          style: const TextStyle(color: Colors.black),
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.account_box_rounded,
-              color: primaryColor,
-            ),
-            hintText: '公分',
-            hintStyle: TextStyle(
-              color: primaryColor,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1,
-              ),
-            ),
-          ),
-          controller: heightController,
+//           inputFormatters: [
+//             FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
+//           ],
+//           keyboardType: TextInputType.number,
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
-          ],
-          keyboardType: TextInputType.number,
-        ),
-      ),
-    ],
-  );
-}
+// Widget _registerWeightTF(weightController) {
+//   //體重
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       const Text(
+//         '體重',
+//         style: TextStyle(
+//           color: primaryColor,
+//           fontSize: 24,
+//           fontWeight: FontWeight.bold,
+//         ),
+//       ),
+//       const SizedBox(height: 10.0),
+//       Container(
+//         alignment: Alignment.centerLeft,
+//         height: 50,
+//         child: TextField(
+//           style: const TextStyle(color: Colors.black),
+//           decoration: const InputDecoration(
+//             contentPadding: EdgeInsets.only(top: 10),
+//             prefixIcon: Icon(Icons.account_box_rounded, color: primaryColor),
+//             hintText: '公斤',
+//             hintStyle: TextStyle(color: primaryColor),
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: primaryColor, width: 1),
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: primaryColor, width: 1),
+//             ),
+//           ),
+//           controller: weightController,
+//           inputFormatters: [
+//             FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
+//           ],
+//           keyboardType: TextInputType.number,
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
-Widget _registerWeightTF(weightController) {
-  //體重
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        '體重',
-        style: TextStyle(
-          color: primaryColor,
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      const SizedBox(height: 10.0),
-      Container(
-        alignment: Alignment.centerLeft,
-        height: 50,
-        child: TextField(
-          style: const TextStyle(color: Colors.black),
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(Icons.account_box_rounded, color: primaryColor),
-            hintText: '公斤',
-            hintStyle: TextStyle(color: primaryColor),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: primaryColor, width: 1),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: primaryColor, width: 1),
-            ),
-          ),
-          controller: weightController,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
-          ],
-          keyboardType: TextInputType.number,
-        ),
-      ),
-    ],
-  );
-}
-
-Widget _RegisterBirTF(birthdayController, context) {
-  //生日
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        '生日',
-        style: TextStyle(
-            color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(
-        height: 10.0,
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        height: 50,
-        child: TextField(
-          style: const TextStyle(color: Colors.black),
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.only(top: 10),
-            prefixIcon: Icon(
-              Icons.account_box_rounded,
-              color: primaryColor,
-            ),
-            hintText: '民國年/月/日',
-            hintStyle: TextStyle(color: primaryColor),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: primaryColor, width: 1),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: primaryColor, width: 1),
-            ),
-          ),
-          controller: birthdayController,
-          inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-        ),
-      ),
-    ],
-  );
-}
-
-Widget _registerPreBtn(context) {
-  return Container(
-    alignment: Alignment.center,
-    child: GestureDetector(
-      onTap: () {
-        Navigator.pushReplacementNamed(context, RegisterPage.routeName);
-      },
-      child: const Text(
-        '上一步',
-        style: TextStyle(
-          color: primaryColor,
-          fontSize: 20,
-          decoration: TextDecoration.underline,
-        ),
-      ),
-    ),
-  );
-}
+// Widget _RegisterBirTF(birthdayController, context) {
+//生日
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       const Text(
+//         '生日',
+//         style: TextStyle(
+//             color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+//       ),
+//       const SizedBox(
+//         height: 10.0,
+//       ),
+//       Container(
+//         alignment: Alignment.centerLeft,
+//         height: 50,
+//         child: TextField(
+//           style: const TextStyle(color: Colors.black),
+//           decoration: const InputDecoration(
+//             contentPadding: EdgeInsets.only(top: 10),
+//             prefixIcon: Icon(
+//               Icons.account_box_rounded,
+//               color: primaryColor,
+//             ),
+//             hintText: '民國年/月/日',
+//             hintStyle: TextStyle(color: primaryColor),
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: primaryColor, width: 1),
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: primaryColor, width: 1),
+//             ),
+//           ),
+//           controller: birthdayController,
+//           inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
 class _RegisterPage02State extends State<RegisterPage02> {
   String dropdownValue = '男';
@@ -214,23 +193,23 @@ class _RegisterPage02State extends State<RegisterPage02> {
                 icon: Icons.account_box_rounded,
                 controller: heightController,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               textField(
                 textFieldName: '體重',
                 hintText: '請輸入體重 (公斤)',
                 icon: Icons.account_box_rounded,
                 controller: weightController,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               textField(
                 textFieldName: '生日',
                 hintText: '西元年/月/日',
                 icon: Icons.account_box_rounded,
                 controller: birthdayController,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     '性別',
@@ -241,52 +220,48 @@ class _RegisterPage02State extends State<RegisterPage02> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    height: 62.5,
-                    child: DropdownButtonFormField(
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.account_box_rounded,
-                            color: primaryColor),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: primaryColor, width: 1),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: primaryColor, width: 1),
-                        ),
+                  DropdownButtonFormField(
+                    decoration: const InputDecoration(
+                      prefixIcon:
+                          Icon(Icons.account_box_rounded, color: primaryColor),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: primaryColor, width: 1),
                       ),
-                      value: dropdownValue,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownValue = newValue!;
-                        });
-                      },
-                      items: <String>['男', '女'].map<DropdownMenuItem<String>>(
-                        (String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: const TextStyle(
-                                color: primaryColor,
-                                fontSize: 18,
-                              ),
-                            ),
-                          );
-                        },
-                      ).toList(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: primaryColor, width: 1),
+                      ),
                     ),
+                    value: dropdownValue,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                      });
+                    },
+                    items: <String>['男', '女'].map<DropdownMenuItem<String>>(
+                      (String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(
+                              color: textColor,
+                              // fontSize: 18,
+                            ),
+                          ),
+                        );
+                      },
+                    ).toList(),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    height: 90,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final height = heightController.text,
-                            weight = weightController.text,
-                            birthday = birthdayController.text;
-                        String reqeustData = """{
+                ],
+              ),
+              const SizedBox(height: 40),
+              mainBtn(
+                text: '完成 / 返回登入',
+                onPressed: () async {
+                  final height = heightController.text,
+                      weight = weightController.text,
+                      birthday = birthdayController.text;
+                  String reqeustData = """{
                             "user_id": "$userId",
                             "password": "$password",
                             "email": "$email",
@@ -296,22 +271,20 @@ class _RegisterPage02State extends State<RegisterPage02> {
                             "weight": $weight,
                             "birthday": "$birthday"
                           }""";
-                        await HttpRequest()
-                            .post(
-                                '${HttpURL.host}/api/user/signup', reqeustData)
-                            .then((response) {
-                          _showAlertDialog(context, response['message']);
-                        });
-                      },
-                      child: const Text(
-                        '完成 / 返回登入',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      style: ElevatedButton.styleFrom(primary: primaryColor),
-                    ),
-                  ),
-                  _registerPreBtn(context),
-                ],
+                  await HttpRequest()
+                      .post('${HttpURL.host}/api/user/signup', reqeustData)
+                      .then((response) {
+                    _showAlertDialog(context, response['message']);
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              underScoreBtn(
+                text: '上一步',
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                      context, RegisterPage.routeName);
+                },
               ),
             ],
           ),

@@ -4,6 +4,7 @@ import 'package:sport_app/screen/home/home.dart';
 import 'package:sport_app/screen/other/other_page.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/http_request.dart';
 
 class Main extends StatefulWidget {
   const Main({Key? key}) : super(key: key);
@@ -22,6 +23,28 @@ class _MainState extends State<Main> {
     super.initState();
     _currentIndex = 0;
     _asyncMethod();
+    _loadStates();
+  }
+
+  void _loadStates() async {
+    // final prefs = await SharedPreferences.getInstance();
+    // // var userId = '';
+    // userId = prefs.getString("userId") ?? "";
+    // var height = 0.0;
+    // var weight = 0.0;
+    // var birth = '';
+    // var gender = '';
+    // HttpRequest().get('${HttpURL.host}/api/user/$userId').then((response) {
+    //   height = response['data']['height'];
+    //   weight = response['data']['weight'];
+    //   birth = response['data']['birth'];
+    //   gender = response['data']['gender'];
+
+    //   prefs.setDouble("height", height);
+    //   prefs.setDouble("weight", weight);
+    //   prefs.setString("birth", birth);
+    //   prefs.setString("gender", gender);
+    // });
   }
 
   _asyncMethod() async {
