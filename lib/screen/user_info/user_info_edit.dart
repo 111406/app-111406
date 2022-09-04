@@ -317,6 +317,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       centerTitle: true,
       elevation: 0,
       title: const Text('編輯 個人資訊'),
+      leading: Container(),
     );
   }
 

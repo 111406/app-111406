@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/change_password/change_password.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
-import 'package:sport_app/screen/forgotpassword.dart';
+import 'package:sport_app/screen/forgot_password/forgotpassword.dart';
 import 'package:sport_app/screen/intropage.dart';
 import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/login/login.dart';
@@ -98,6 +99,7 @@ class MyApp extends StatelessWidget {
         TestResultPage.routeName: (context) => const TestResultPage(),
         TrainingPage.routeName: (context) => const TrainingPage(),
         WarmupPage.routeName: (context) => const WarmupPage(),
+        ChangePassword.routeName: (context) => const ChangePassword(),
       },
       builder: EasyLoading.init(),
     );

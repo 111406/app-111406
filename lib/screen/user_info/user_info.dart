@@ -12,15 +12,13 @@ class UserInfoPage extends StatefulWidget {
   State<UserInfoPage> createState() => _UserInfoPageState();
 }
 
-var userId = 'user';
+var userId = '載入中';
+var birth = '1960/01/01';
+var _height = 0.0;
+var _weight = 0.0;
+var _gender = '載入中';
 
 class _UserInfoPageState extends State<UserInfoPage> {
-  // var userId = 'User';
-  var birth = '1960/01/01';
-  // var gender = true;
-  var height = '172';
-  var weight = '70';
-
   @override
   void initState() {
     super.initState();
@@ -29,8 +27,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    userId = prefs.getString("userId") ?? "noob";
-    debugPrint(userId);
+    userId = prefs.getString("_userId") ?? "";
+    _height = prefs.getDouble("height") ?? 0;
+    _weight = prefs.getDouble("weight") ?? 0;
+    _gender = prefs.getString("gender") ?? "";
   }
 
   @override
@@ -94,41 +94,42 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
             ),
           ),
-          // const SizedBox(height: 10),
-          // Container(
-          //   child: Row(
-          //     children: [
-          //       const Expanded(
-          //         child: Text(
-          //           '性別',
-          //           style: TextStyle(
-          //             fontSize: 22,
-          //             color: textColor,
-          //             fontWeight: FontWeight.bold,
-          //           ),
-          //         ),
-          //       ),
-          //       TextButton(
-          //         child: const Text('男'),
-          //         onPressed: () {},
-          //       ),
-          //       TextButton(
-          //         child: const Text('女'),
-          //         onPressed: () {},
-          //       )
-          //     ],
-          //   ),
-          //   alignment: Alignment.centerLeft,
-          //   padding: const EdgeInsets.only(left: 20, right: 15),
-          //   margin: const EdgeInsets.only(left: 20, right: 20),
-          //   constraints: const BoxConstraints(maxHeight: 56),
-          //   decoration: BoxDecoration(
-          //     color: Colors.white,
-          //     borderRadius: BorderRadius.circular(5),
-          //     border:
-          //         Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
-          //   ),
-          // ),
+          const SizedBox(height: 10),
+          Container(
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    '性別',
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  // (gender == 0) ? '男' : '女',
+                  _gender,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(left: 20, right: 15),
+            margin: const EdgeInsets.only(left: 20, right: 20),
+            constraints: const BoxConstraints(maxHeight: 56),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border:
+                  Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+            ),
+          ),
           const SizedBox(height: 10),
           Container(
             child: Row(
@@ -144,7 +145,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   ),
                 ),
                 Text(
-                  height,
+                  _height.toString(),
                   style: const TextStyle(
                     fontSize: 22,
                     color: textColor,
@@ -179,7 +180,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   ),
                 ),
                 Text(
-                  weight,
+                  _weight.toString(),
                   style: const TextStyle(
                     fontSize: 22,
                     color: textColor,

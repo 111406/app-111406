@@ -239,7 +239,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
       backgroundColor: secondColor,
       centerTitle: true,
       elevation: 0,
-      title: const Text('開始測試'),
+      title: const Text('開始訓練'),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {
