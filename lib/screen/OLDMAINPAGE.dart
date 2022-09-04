@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:math' as math;
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/enum/record_type.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
 
@@ -422,9 +421,6 @@ class _MainPageState extends State<MainPage> {
                           await prefs.setBool('twohead', true); //上肢的二頭或三角
                           //
                           await prefs.setInt("part", TrainingPart.biceps.value);
-                          //待更改
-                          await prefs.setInt(
-                              "type", RecordType.examination.value);
                           Navigator.pushNamed(
                               context, IntroPage.routeName); //此為跳轉至intropage
                           //Navigator.pushNamed(context, TestPage.routeName);
@@ -478,9 +474,6 @@ class _MainPageState extends State<MainPage> {
                           await prefs.setInt(
                               "part", TrainingPart.deltoid.value);
 
-                          //待更改
-                          await prefs.setInt(
-                              "type", RecordType.examination.value);
                           Navigator.pushNamed(
                               context, IntroPage.routeName); //此為跳轉至intropage
                           //Navigator.pushNamed(context, TestPage.routeName);
@@ -534,9 +527,6 @@ class _MainPageState extends State<MainPage> {
                           await prefs.setInt(
                               "part", TrainingPart.quadriceps.value);
 
-                          //待更改
-                          await prefs.setInt(
-                              "type", RecordType.examination.value);
                           Navigator.pushNamed(
                               context, IntroPage.routeName); //此為跳轉至intropage
                           //Navigator.pushNamed(context, TestPage.routeName);

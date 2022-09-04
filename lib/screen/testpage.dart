@@ -11,8 +11,9 @@ import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/prepare2.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/http_request.dart';
 
-int _part = 0, _type = 0;
+TrainingPart _part = TrainingPart.quadriceps;
 var _timerStart = false;
 var _ss = 0;
 
@@ -144,9 +145,7 @@ class _TestPageState extends State<TestPage> {
   void initState() {
     super.initState();
     _setTimerEvent();
-    _loadPrefs();
-    subscription =
-        motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription = motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         _calcAngles(event.x, event.y, event.z);
       });
@@ -188,25 +187,13 @@ class _TestPageState extends State<TestPage> {
     );
   }
 
-  void _loadPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    _part = (prefs.getInt("part") ?? 0);
-    _type = (prefs.getInt("type") ?? 0);
-  }
-
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch =
-        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
-            .floor();
-    var roll =
-        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
-            .floor();
+    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
+    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
 
-    //可能需要例外處理
-    TrainingPart? part = TrainingPart.parse(_part);
 
-    _checkPart(part!, pitch, roll);
+    _checkPart(_part, pitch, roll);
   }
 
   ///區分訓練部位
@@ -253,8 +240,6 @@ class _TestPageState extends State<TestPage> {
 
   ///設定倒數計時器
   void _setTimerEvent() {
-    Timer? _timer1;
-    late double _progress;
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
     Timer.periodic(
@@ -262,26 +247,24 @@ class _TestPageState extends State<TestPage> {
       (timer) async {
         _displayTimer = _timer - timer.tick;
         if (_displayTimer == 0) {
+          final prefs = await SharedPreferences.getInstance();
+          String userId = prefs.getString("userId")!;
           timer.cancel();
           _timerStart = false;
-          // TODO 需載入登入資訊，待修改
           String reqeustData = """
             {
-              "user_id": "zsda5858sda",
-              "part": $_part,
+              "user_id": "$userId",
+              "part": ${_part.code},
               "times": $_times,
               "age": 100,
               "gender": 0,
               "angles": ${jsonEncode(_angleList)}
             }
         """;
+          dynamic response = await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
+          prefs.setString(TrainingPart.biceps.string, jsonEncode(response['data']));
+
           Navigator.pushNamed(context, Prepare2.routeName);
-          // dynamic response =
-          //     await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
-          // Navigator.pushReplacementNamed(context, Prepare2.routeName, arguments: {
-          //   'data': response["data"],
-          //   'angles': jsonEncode(_angleList)
-          // });
         }
         if (_ss == 1) {
           timer.cancel();
