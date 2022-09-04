@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sport_app/screen/main_page.dart';
+import 'package:sport_app/screen/training/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
-import 'package:sport_app/screen/trainingpage.dart';
 import '../main_page.dart';
 
 class ChoosingPage extends StatefulWidget {
