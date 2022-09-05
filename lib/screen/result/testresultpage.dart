@@ -2,8 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/model/chart_data.dart';
+import 'package:sport_app/model/record.dart';
 import 'package:sport_app/model/target.dart';
+import 'package:sport_app/enum/training_part.dart';
+import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -217,16 +221,16 @@ Widget _endBtn(BuildContext context) {
         width: MediaQuery.of(context).size.width / 1.5,
         child: ElevatedButton(
           onPressed: () async {
+            final prefs = await SharedPreferences.getInstance();
+            String userId = prefs.getString("userId")!;
             List userTodoList = [];
             DateTime now = DateTime.now();
             DateTime startDateTime = now.add(Duration(days: 8 - now.weekday));
             String startDate = DateFormat('yyyyMMdd').format(startDateTime);
-            String endDate = DateFormat('yyyyMMdd')
-                .format(startDateTime.add(const Duration(days: 28)));
+            String endDate = DateFormat('yyyyMMdd').format(startDateTime.add(const Duration(days: 28)));
             for (int i = 0; i < 8; i++) {
-              DateTime targetDateTime = i % 2 == 0
-                  ? startDateTime.add(Duration(days: 7 * (i ~/ 2)))
-                  : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
+              DateTime targetDateTime =
+                  i % 2 == 0 ? startDateTime.add(Duration(days: 7 * (i ~/ 2))) : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
               String targetDate = DateFormat('yyyyMMdd').format(targetDateTime);
               // TODO 目前為預設值，可能須搭配醫師才能做出完整計畫，待修改
               dynamic userTodo = {
@@ -241,14 +245,14 @@ Widget _endBtn(BuildContext context) {
               userTodoList.add(userTodo);
             }
             Target target = Target(
-              "zsda5858sda",
+              userId,
               startDate,
               endDate,
               userTodoList,
             );
-            await HttpRequest().post(
-                "${HttpURL.host}/api/target", jsonEncode(target.toJson()));
-            Navigator.pushReplacementNamed(context, MainPage.routeName);
+            // TODO 需要確認有沒有完整結束上一個訓練才能傳新的訓練表
+            await HttpRequest().post("${HttpURL.host}/api/target", jsonEncode(target.toJson()));
+            Navigator.pushReplacementNamed(context, Main.routeName);
           },
           child: const Text(
             '結束',
@@ -264,13 +268,10 @@ Widget _endBtn(BuildContext context) {
 class _TestResultPageState extends State<TestResultPage> {
   @override
   Widget build(BuildContext context) {
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    dynamic analyzeData = arguments["data"];
-    Iterable anglesJson = json.decode(arguments["angles"]);
-    final List<ChartData> chartData = List<ChartData>.from(
-        anglesJson.map((model) => ChartData.fromJson(model)));
-    bool isHasDiff = analyzeData["difference"] == null;
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    Record bicepsTestResult = Record.fromJson(jsonDecode(args['bicepsData']));
+    // Record quadricepsTestResult = args['quadricepsData'];
+    bool isHasDiff = bicepsTestResult.difference == null;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -283,17 +284,17 @@ class _TestResultPageState extends State<TestResultPage> {
             const SizedBox(height: 25),
             _resultTitle(),
             const SizedBox(height: 30),
-            _resultNumber(context, analyzeData["times"]),
+            _resultNumber(context, bicepsTestResult.times),
             const SizedBox(height: 15),
-            _resultAnalyze(context, analyzeData["test_result"]),
+            _resultAnalyze(context, bicepsTestResult.testResult),
             const SizedBox(height: 15),
-            _resultPR(context, analyzeData["pr"]),
+            _resultPR(context, bicepsTestResult.pr),
             const SizedBox(height: 15),
-            if (!isHasDiff)
-              _resultGap(context, analyzeData["difference"].round()),
+            if (!isHasDiff) _resultGap(context, bicepsTestResult.difference),
             if (!isHasDiff) const SizedBox(height: 30),
-            _resultChart(context, chartData),
-            const SizedBox(height: 30),
+            // 顯示角度變化圖表
+            // _resultChart(context, chartData),
+            // const SizedBox(height: 30),
             _endBtn(context),
             const SizedBox(height: 100),
           ],

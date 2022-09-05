@@ -247,7 +247,7 @@ class _TestPageState2 extends State<TestPage2> {
         String userId = prefs.getString("userId")!;
         timer.cancel();
         _timerStart = false;
-        String reqeustData = """
+        String quadricepsReqeustData = """
             {
               "user_id": "$userId",
               "part": ${_part.code},
@@ -257,10 +257,15 @@ class _TestPageState2 extends State<TestPage2> {
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-        dynamic response = await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
-        prefs.setString(_part.string, jsonEncode(response['data']));
+        String bicepsRequestData = prefs.getString(TrainingPart.biceps.string)!;
+        dynamic bicepsResponse = await HttpRequest().post("${HttpURL.host}/api/record", bicepsRequestData);
+        dynamic bicepsData = jsonEncode(bicepsResponse['data']);
+        
+        dynamic quadricepsResponse = await HttpRequest().post("${HttpURL.host}/api/record", quadricepsReqeustData);
+        dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
+        prefs.remove(TrainingPart.biceps.string);
 
-        Navigator.pushNamed(context, TestResultPage.routeName);
+        Navigator.pushNamed(context, TestResultPage.routeName, arguments: {"bicepsData": bicepsData, "quadricepsData": quadricepsData});
       }
       if (_ss == 1) {
         timer.cancel();

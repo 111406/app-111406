@@ -251,6 +251,7 @@ class _TestPageState extends State<TestPage> {
           String userId = prefs.getString("userId")!;
           timer.cancel();
           _timerStart = false;
+          // TODO wrap in object
           String reqeustData = """
             {
               "user_id": "$userId",
@@ -261,8 +262,7 @@ class _TestPageState extends State<TestPage> {
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-          dynamic response = await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
-          prefs.setString(TrainingPart.biceps.string, jsonEncode(response['data']));
+          prefs.setString(TrainingPart.biceps.string, reqeustData);
 
           Navigator.pushNamed(context, Prepare2.routeName);
         }
