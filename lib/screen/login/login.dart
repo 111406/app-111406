@@ -113,8 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                 text: '忘記密碼',
                 alignment: Alignment.centerRight,
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, ForgotPassword.routeName);
+                  Navigator.pushReplacementNamed(context, ForgotPassword.routeName);
                 },
               ),
               const SizedBox(height: 20),
@@ -153,8 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                     _timer1 = Timer.periodic(
                       const Duration(milliseconds: 100),
                       (Timer timer) {
-                        EasyLoading.showProgress(_progress,
-                            status: '${(_progress * 100).toStringAsFixed(0)}%');
+                        EasyLoading.showProgress(_progress, status: '${(_progress * 100).toStringAsFixed(0)}%');
                         _progress += 0.04;
 
                         if (_progress >= 1) {
@@ -164,14 +162,12 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     );
                     try {
-                      await HttpRequest()
-                          .post('${HttpURL.host}/api/user/login', requestData)
-                          .then(
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.clear();
+                      await HttpRequest().post('${HttpURL.host}/api/user/login', requestData).then(
                         (response) async {
-                          final prefs = await SharedPreferences.getInstance();
                           prefs.setString("userId", userId);
-                          Navigator.pushReplacementNamed(
-                              context, Main.routeName);
+                          Navigator.pushReplacementNamed(context, Main.routeName);
                         },
                       );
                     } on Exception catch (e) {
@@ -188,8 +184,7 @@ class _LoginPageState extends State<LoginPage> {
               underScoreBtn(
                 text: '尚未有帳號，註冊',
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, RegisterPage.routeName);
+                  Navigator.pushReplacementNamed(context, RegisterPage.routeName);
                 },
               )
             ],
