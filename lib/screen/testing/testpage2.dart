@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/testresultpage.dart';
+import 'package:sport_app/screen/result/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 
