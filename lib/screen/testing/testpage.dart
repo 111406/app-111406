@@ -6,7 +6,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/db/model/chart_data.dart';
+import 'package:sport_app/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/prepare/prepare2.dart';

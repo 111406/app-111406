@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/db/model/user_todo.dart';
+import 'package:sport_app/model/user_todo.dart';
 import 'package:sport_app/screen/home/home.dart';
 import 'package:sport_app/screen/other/other_page.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';

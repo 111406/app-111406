@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sport_app/db/model/chart_data.dart';
-import 'package:sport_app/db/model/target.dart';
+import 'package:sport_app/model/chart_data.dart';
+import 'package:sport_app/model/target.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
