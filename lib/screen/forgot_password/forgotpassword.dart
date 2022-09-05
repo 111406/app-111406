@@ -169,8 +169,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     // TODO: @cheese
                     showAlertDialog(
                       context,
-                      title: '',
-                      message: '',
+                      title: '輸入框不得為空白',
+                      message: '請重新輸入',
                     );
                   }
                 },
