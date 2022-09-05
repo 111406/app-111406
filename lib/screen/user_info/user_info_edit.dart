@@ -142,12 +142,14 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                     InkWell(
                       onTap: _datePicker,
                       child: Container(
-                        child: Text(DateFormat('yyyy/MM/dd').format(birth),
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: textColor,
-                              fontWeight: FontWeight.bold,
-                            )),
+                        child: Text(
+                          DateFormat('yyyy/MM/dd').format(birth),
+                          style: const TextStyle(
+                            fontSize: 22,
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         alignment: Alignment.center,
                       ),
                     ),

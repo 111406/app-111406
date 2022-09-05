@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
 import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/screen/components/page_title.dart';
 import 'package:sport_app/screen/components/textfield_inputbox.dart';
+import 'package:sport_app/screen/forgot_password/forgotpassword02.dart';
+import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/alertdialog.dart';
 import 'dart:async';
+
+import 'package:sport_app/utils/http_request.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -27,6 +33,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   void dispose() {
+    emailAddressController.dispose();
+    optCodeController.dispose();
     super.dispose();
   }
 
@@ -40,39 +48,71 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             children: [
               appLogo(),
               pageTitle('忘記密碼'),
-              const SizedBox(height: 20),
-              textField(
-                textFieldName: '電子郵件信箱',
-                hintText: '請輸入電子郵件信箱',
-                icon: Icons.mail,
-                controller: emailAddressController,
+              const SizedBox(height: 30),
+              Column(
+                children: [
+                  textField(
+                    textFieldName: '電子郵件信箱',
+                    hintText: '請輸入電子郵件信箱',
+                    icon: Icons.mail,
+                    controller: emailAddressController,
+                  ),
+                  const SizedBox(height: 10),
+                  textField(
+                    textFieldName: '驗證碼',
+                    hintText: '請輸入驗證碼',
+                    icon: Icons.lock,
+                    controller: optCodeController,
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              textField(
-                textFieldName: '驗證碼',
-                hintText: '請輸入驗證碼',
-                icon: Icons.lock,
-                controller: emailAddressController,
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () {
-                          if (_countdownTime == 0) {
+                        onPressed: () async {
+                          final email = emailAddressController.text;
+                          String requestData = """{
+                            "email": "$email"
+                          }""";
+                          if (_countdownTime == 0 && email.isNotEmpty) {
+                            await HttpRequest()
+                                .post('${HttpURL.host}/api/mail/code',
+                                    requestData)
+                                .then(
+                              (response) async {
+                                showAlertDialog(
+                                  context,
+                                  title: '',
+                                  message: '驗證碼已傳送',
+                                );
+                              },
+                            );
                             setState(() {
                               _countdownTime = 60;
                             });
                             startCountdownTimer();
+                          } else if (email.isEmpty) {
+                            showAlertDialog(
+                              context,
+                              title: '',
+                              message: '請輸入已註冊之電子郵件',
+                            );
                           } else {
-                            return;
+                            showAlertDialog(
+                              context,
+                              title: '驗證碼已傳送',
+                              message: '請等候$_countdownTime秒後重新獲取',
+                            );
                           }
                         },
                         child: Text(
-                          _countdownTime > 0 ? '$_countdownTime後重新獲取' : '獲取驗證碼',
+                          _countdownTime > 0
+                              ? '$_countdownTime秒後重新獲取'
+                              : '獲取驗證碼',
                           style: TextStyle(
                             fontSize: 14,
                             color: _countdownTime > 0
@@ -90,8 +130,57 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               const SizedBox(height: 50),
               mainBtn(
                 text: '下一步',
-                onPressed: () {},
-              )
+                onPressed: () async {
+                  final email = emailAddressController.text;
+                  final optCode = optCodeController.text;
+
+                  String requestData = """{
+                    "email": "$email", 
+                    "otp": "$optCode"
+                  }""";
+
+                  if (email.isNotEmpty && optCode.isNotEmpty) {
+                    try {
+                      await HttpRequest()
+                          .post(
+                              '${HttpURL.host}/api/mail/validate', requestData)
+                          .then(
+                            (response) async {},
+                          );
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString("email", email);
+                      showAlertDialog(
+                        context,
+                        title: '驗證碼正確',
+                        message: '驗證碼正確\n請繼續下一步',
+                      );
+
+                      Navigator.pushReplacementNamed(
+                          context, ForgotPassword02.routeName);
+                    } on Exception catch (e) {
+                      showAlertDialog(
+                        context,
+                        title: '驗證碼錯誤',
+                        message: '請重新輸入驗證碼',
+                      );
+                    }
+                  } else {
+                    // TODO: @cheese
+                    showAlertDialog(
+                      context,
+                      title: '',
+                      message: '',
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              underScoreBtn(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, LoginPage.routeName);
+                },
+              ),
             ],
           ),
         ),
