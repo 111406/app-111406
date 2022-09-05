@@ -3,7 +3,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:sport_app/db/model/chart_data.dart';
-import 'package:sport_app/screen/testpage2.dart';
+import 'package:sport_app/screen/testing/testpage2.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
