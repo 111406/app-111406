@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/prepare.dart';
+import 'package:sport_app/screen/prepare/prepare.dart';
 import 'package:sport_app/theme/color.dart';
 
 var _timerStart = false;

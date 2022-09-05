@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
+import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/screen/components/page_title.dart';
 import 'package:sport_app/screen/components/textfield_inputbox.dart';
+import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/alertdialog.dart';
+import 'package:sport_app/utils/http_request.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -11,22 +15,6 @@ class ChangePassword extends StatefulWidget {
 
   @override
   State<ChangePassword> createState() => _ChangePasswordState();
-}
-
-Widget _forgotPsConfBtn(BuildContext context) {
-  //確認修改按鈕
-  return Container(
-    padding: const EdgeInsets.symmetric(vertical: 20),
-    height: 90,
-    width: double.infinity,
-    child: ElevatedButton(
-      onPressed: () {
-        Navigator.pushReplacementNamed(context, Main.routeName);
-      },
-      child: const Text('確認修改', style: TextStyle(fontSize: 24)),
-      style: ElevatedButton.styleFrom(primary: primaryColor),
-    ),
-  );
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
@@ -58,31 +46,101 @@ class _ChangePasswordState extends State<ChangePassword> {
               appLogo(),
               pageTitle('修改密碼'),
               const SizedBox(height: 20),
-              textField(
-                obscureText: true,
-                textFieldName: '舊密碼',
-                hintText: '請輸入舊密碼',
-                icon: Icons.lock,
-                controller: oldPasswordController,
+              Column(
+                children: [
+                  textField(
+                    obscureText: true,
+                    textFieldName: '舊密碼',
+                    hintText: '請輸入舊密碼',
+                    icon: Icons.lock,
+                    controller: oldPasswordController,
+                  ),
+                  const SizedBox(height: 10),
+                  textField(
+                    obscureText: true,
+                    textFieldName: '新密碼',
+                    hintText: '請輸入新密碼',
+                    icon: Icons.lock,
+                    controller: newPasswordController,
+                  ),
+                  const SizedBox(height: 10),
+                  textField(
+                    obscureText: true,
+                    textFieldName: '確認密碼',
+                    hintText: '確認密碼',
+                    icon: Icons.lock,
+                    controller: confirmPasswordController,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 50),
+              mainBtn(
+                text: '確認修改',
+                onPressed: () async {
+                  final oldPassword = oldPasswordController.text;
+                  final newPassword = newPasswordController.text;
+                  final confirmPassword = confirmPasswordController.text;
+
+                  bool _textFieldIsNotEmpty = (oldPassword.isNotEmpty ||
+                      newPassword.isNotEmpty ||
+                      confirmPassword.isNotEmpty);
+                  bool _passwordCheck = (newPassword == confirmPassword);
+
+                  if (!_textFieldIsNotEmpty) {
+                    showAlertDialog(
+                      context,
+                      title: '',
+                      message: '',
+                    );
+                  }
+                  if (!_passwordCheck) {
+                    showAlertDialog(
+                      context,
+                      title: '',
+                      message: '',
+                    );
+                  }
+
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  final userId = prefs.getString("userId");
+
+                  String requestData = """{
+                    "userId": "$userId",
+                    "password": "$newPassword"
+                  }""";
+
+                  try {
+                    await HttpRequest()
+                        .post('${HttpURL.host}/api/user/update/password',
+                            requestData)
+                        .then(
+                          (response) async {},
+                        );
+                    showAlertDialog(
+                      context,
+                      title: '修改成功',
+                      message: '',
+                    );
+                    Navigator.pushReplacementNamed(
+                        context, LoginPage.routeName);
+                  } on Exception catch (e) {
+                    // TODO
+                    showAlertDialog(
+                      context,
+                      title: '',
+                      message: '',
+                    );
+                  }
+                },
               ),
               const SizedBox(height: 20),
-              textField(
-                obscureText: true,
-                textFieldName: '新密碼',
-                hintText: '請輸入新密碼',
-                icon: Icons.lock,
-                controller: newPasswordController,
+              underScoreBtn(
+                text: '取消 / 返回',
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, Main.routeName);
+                },
               ),
-              const SizedBox(height: 20),
-              textField(
-                obscureText: true,
-                textFieldName: '確認密碼',
-                hintText: '確認密碼',
-                icon: Icons.lock,
-                controller: confirmPasswordController,
-              ),
-              const SizedBox(height: 20),
-              _forgotPsConfBtn(context),
             ],
           ),
         ),

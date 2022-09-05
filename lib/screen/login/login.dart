@@ -163,16 +163,24 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                     );
-                    await HttpRequest()
-                        .post('${HttpURL.host}/api/user/login', requestData)
-                        .then(
-                      (response) async {
-                        final prefs = await SharedPreferences.getInstance();
-                        // prefs.setString("loginUser", userId);
-                        prefs.setString("userId", userId);
-                        Navigator.pushReplacementNamed(context, Main.routeName);
-                      },
-                    );
+                    try {
+                      await HttpRequest()
+                          .post('${HttpURL.host}/api/user/login', requestData)
+                          .then(
+                        (response) async {
+                          final prefs = await SharedPreferences.getInstance();
+                          prefs.setString("userId", userId);
+                          Navigator.pushReplacementNamed(
+                              context, Main.routeName);
+                        },
+                      );
+                    } on Exception catch (e) {
+                      showAlertDialog(
+                        context,
+                        title: '',
+                        message: '',
+                      );
+                    }
                   }
                 },
               ),
