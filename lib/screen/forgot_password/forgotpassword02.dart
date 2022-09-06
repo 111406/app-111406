@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
@@ -71,21 +73,21 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                       confirmNewPassword = confirmNewPasswordController.text;
 
                   bool _textFieldIsNotEmpty =
-                      (newPassword.isNotEmpty || confirmNewPassword.isNotEmpty);
+                      (newPassword.isNotEmpty && confirmNewPassword.isNotEmpty);
                   bool _passwordCheck = (newPassword == confirmNewPassword);
 
                   if (!_textFieldIsNotEmpty) {
                     showAlertDialog(
                       context,
-                      title: '',
-                      message: '',
+                      title: '輸入框不得為空白',
+                      message: '請重新輸入',
                     );
                   }
                   if (!_passwordCheck) {
                     showAlertDialog(
                       context,
-                      title: '',
-                      message: '',
+                      title: '新密碼與舊密碼不相同',
+                      message: '請重新輸入',
                     );
                   }
 
@@ -98,27 +100,31 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                     "password": "$newPassword"
                   }""";
 
-                  try {
-                    await HttpRequest()
-                        .post('${HttpURL.host}/api/user/update/password',
-                            requestData)
-                        .then(
-                          (response) async {},
-                        );
-                    showAlertDialog(
-                      context,
-                      title: '修改成功',
-                      message: '',
-                    );
-                    Navigator.pushReplacementNamed(
-                        context, LoginPage.routeName);
-                  } on Exception catch (e) {
-                    // TODO
-                    showAlertDialog(
-                      context,
-                      title: '',
-                      message: '',
-                    );
+                  if (_textFieldIsNotEmpty && _passwordCheck) {
+                    try {
+                      await HttpRequest()
+                          .post('${HttpURL.host}/api/user/update/password',
+                              requestData)
+                          .then(
+                            (response) async {},
+                          );
+                      showAlertDialog(
+                        context,
+                        title: '修改成功',
+                        message: '',
+                      );
+                      Timer(Duration(seconds: 2), () {
+                        Navigator.pushReplacementNamed(
+                            context, LoginPage.routeName);
+                      });
+                    } on Exception catch (e) {
+                      // TODO
+                      showAlertDialog(
+                        context,
+                        title: '',
+                        message: '',
+                      );
+                    }
                   }
                 },
               ),
