@@ -324,11 +324,10 @@ class _RegisterPage02State extends State<RegisterPage02> {
                       _showAlertDialog(context, response['message']);
                     });
                   } else {
-                    // TODO: showAlertDialog @cheese
                     showAlertDialog(
                       context,
-                      title: '',
-                      message: '',
+                      title: '輸入框不得為空白',
+                      message: '請重新輸入',
                     );
                   }
                 },

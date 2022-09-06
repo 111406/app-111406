@@ -285,14 +285,17 @@ class _RegisterPageState extends State<RegisterPage> {
                     prefs.setString("email", email);
                     Navigator.pushNamed(context, RegisterPage02.routeName);
                   } else if (!_passwordCheck) {
-                    // TODO: 顯示密碼確認錯誤提示框 @cheese 文字交給你
                     showAlertDialog(
                       context,
-                      title: '',
-                      message: '',
+                      title: '密碼與確認密碼不相同',
+                      message: '請重新輸入',
                     );
                   } else {
-                    // TODO: 顯示無輸入參考上面 @cheese
+                    showAlertDialog(
+                      context,
+                      title: '輸入框不得為空白',
+                      message: '請重新輸入',
+                    );
                   }
                 },
               ),

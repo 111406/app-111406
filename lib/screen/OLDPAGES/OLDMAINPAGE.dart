@@ -8,8 +8,8 @@ import 'package:sport_app/enum/record_type.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
 
-import 'package:sport_app/screen/intropage.dart';
-import 'package:sport_app/screen/testpage.dart';
+import 'package:sport_app/screen/manual/intropage.dart';
+import 'package:sport_app/screen/testing/testpage.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
 import 'package:sport_app/theme/color.dart';
 

@@ -137,48 +137,64 @@ class _LoginPageState extends State<LoginPage> {
                     "password": "${passwordController.text}"
                     }""";
 
-                    EasyLoading.instance
-                      ..backgroundColor = primaryColor
-                      ..textColor = Colors.white
-                      ..progressColor = Colors.white
-                      ..maskColor = Colors.white70
-                      ..displayDuration = const Duration(milliseconds: 1500)
-                      ..loadingStyle = EasyLoadingStyle.custom
-                      ..indicatorType = EasyLoadingIndicatorType.wave
-                      ..maskType = EasyLoadingMaskType.custom
-                      ..userInteractions = false;
+                    final userID = userIdController.text;
+                    final password = passwordController.text;
 
-                    _progress = 0;
-                    _timer1?.cancel();
-                    _timer1 = Timer.periodic(
-                      const Duration(milliseconds: 100),
-                      (Timer timer) {
-                        EasyLoading.showProgress(_progress,
-                            status: '${(_progress * 100).toStringAsFixed(0)}%');
-                        _progress += 0.04;
+                    bool _textFieldIsNotEmpty =
+                        (userID.isNotEmpty && password.isNotEmpty);
+                    if (_textFieldIsNotEmpty) {
+                      try {
+                        //讀取
+                        EasyLoading.instance
+                          ..backgroundColor = primaryColor
+                          ..textColor = Colors.white
+                          ..progressColor = Colors.white
+                          ..maskColor = Colors.white70
+                          ..displayDuration = const Duration(milliseconds: 1500)
+                          ..loadingStyle = EasyLoadingStyle.custom
+                          ..indicatorType = EasyLoadingIndicatorType.wave
+                          ..maskType = EasyLoadingMaskType.custom
+                          ..userInteractions = false;
 
-                        if (_progress >= 1) {
-                          _timer1?.cancel();
-                          EasyLoading.dismiss();
-                        }
-                      },
-                    );
-                    try {
-                      await HttpRequest()
-                          .post('${HttpURL.host}/api/user/login', requestData)
-                          .then(
-                        (response) async {
-                          final prefs = await SharedPreferences.getInstance();
-                          prefs.setString("userId", userId);
-                          Navigator.pushReplacementNamed(
-                              context, Main.routeName);
-                        },
-                      );
-                    } on Exception catch (e) {
+                        _progress = 0;
+                        _timer1?.cancel();
+                        _timer1 = Timer.periodic(
+                          const Duration(milliseconds: 100),
+                          (Timer timer) {
+                            EasyLoading.showProgress(_progress,
+                                status:
+                                    '${(_progress * 100).toStringAsFixed(0)}%');
+                            _progress += 0.04;
+
+                            if (_progress >= 1) {
+                              _timer1?.cancel();
+                              EasyLoading.dismiss();
+                            }
+                          },
+                        );
+                        //讀取結束
+                        await HttpRequest()
+                            .post('${HttpURL.host}/api/user/login', requestData)
+                            .then(
+                          (response) async {
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.setString("userId", userId);
+                            Navigator.pushReplacementNamed(
+                                context, Main.routeName);
+                          },
+                        );
+                      } on Exception catch (e) {
+                        showAlertDialog(
+                          context,
+                          title: '帳號或密碼錯誤',
+                          message: '請重新輸入',
+                        );
+                      }
+                    } else {
                       showAlertDialog(
                         context,
-                        title: '',
-                        message: '',
+                        title: '輸入框不得為空白',
+                        message: '請重新輸入',
                       );
                     }
                   }
