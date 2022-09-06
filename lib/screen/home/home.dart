@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
-import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/screen/manual/intropage.dart';
+import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/alertdialog.dart';
+import 'package:sport_app/utils/app_config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -36,9 +39,13 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 25),
                     child: InkWell(
-                      onTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, ChoosingPage.routeName);
+                      onTap: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        if (prefs.getBool(AppConfig.CHECK_TRAINING)!) {
+                          Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
+                        } else {
+                          showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
+                        }
                       },
                       child: Ink(child: trainingBtn()),
                     ),
@@ -101,8 +108,7 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -149,8 +155,7 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),

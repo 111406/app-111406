@@ -113,8 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                 text: '忘記密碼',
                 alignment: Alignment.centerRight,
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, ForgotPassword.routeName);
+                  Navigator.pushReplacementNamed(context, ForgotPassword.routeName);
                 },
               ),
               const SizedBox(height: 20),
@@ -173,6 +172,8 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         );
                         //讀取結束
+                        final prefs = await SharedPreferences.getInstance();
+                      	prefs.clear();
                         await HttpRequest()
                             .post('${HttpURL.host}/api/user/login', requestData)
                             .then(
@@ -204,8 +205,7 @@ class _LoginPageState extends State<LoginPage> {
               underScoreBtn(
                 text: '尚未有帳號，註冊',
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, RegisterPage.routeName);
+                  Navigator.pushReplacementNamed(context, RegisterPage.routeName);
                 },
               )
             ],

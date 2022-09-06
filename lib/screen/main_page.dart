@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/model/user_todo.dart';
 import 'package:sport_app/screen/home/home.dart';
 import 'package:sport_app/screen/other/other_page.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/app_config.dart';
 import 'package:sport_app/utils/http_request.dart';
 
 class Main extends StatefulWidget {
@@ -45,6 +49,22 @@ class _MainState extends State<Main> {
     //   prefs.setString("birth", birth);
     //   prefs.setString("gender", gender);
     // });
+    final prefs = await SharedPreferences.getInstance();
+    final todoList = <String>[];
+    final userId = prefs.getString("userId");
+    await HttpRequest().get('${HttpURL.host}/api/target/$userId').then((response) {
+      final dataList = response['data'];
+      if (dataList != false) {
+        for (var data in response['data']) {
+          var todo = UserTodo.fromJson(data);
+          todoList.add(json.encode(todo));
+        }
+        prefs.setStringList("todoList", todoList);
+        prefs.setBool(AppConfig.CHECK_TRAINING, true);
+      } else {
+        prefs.setBool(AppConfig.CHECK_TRAINING, false);
+      }
+    });
   }
 
   _asyncMethod() async {
