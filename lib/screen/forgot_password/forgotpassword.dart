@@ -150,6 +150,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.setString("email", email);
+
                       showAlertDialog(
                         context,
                         title: '驗證碼正確',

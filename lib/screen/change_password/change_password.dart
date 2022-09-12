@@ -6,7 +6,6 @@ import 'package:sport_app/screen/components/app_logo.dart';
 import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/screen/components/page_title.dart';
 import 'package:sport_app/screen/components/textfield_inputbox.dart';
-import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
@@ -95,7 +94,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       message: '請重新輸入',
                     );
                   }
-                  if (!_passwordCheck) {
+                  if (!_passwordCheck && _textFieldIsNotEmpty) {
                     showAlertDialog(
                       context,
                       title: '確認密碼不相同',
@@ -108,35 +107,33 @@ class _ChangePasswordState extends State<ChangePassword> {
                   final userId = prefs.getString("userId");
 
                   String requestData = """{
-                    "userId": "$userId",
+                    "user_id": "$userId",
+                    "old_password": "$oldPassword",
                     "password": "$newPassword"
                   }""";
 
-                  if (_passwordCheck && _textFieldIsNotEmpty) {
-                    try {
-                      await HttpRequest()
-                          .post('${HttpURL.host}/api/user/update/password',
-                              requestData)
-                          .then(
-                            (response) async {},
-                          );
-                      showAlertDialog(
-                        context,
-                        title: '修改成功',
-                        message: '',
-                      );
-                      Timer(Duration(seconds: 2), () {
-                        Navigator.pushReplacementNamed(
-                            context, LoginPage.routeName);
-                      });
-                    } on Exception catch (e) {
-                      // TODO
-                      showAlertDialog(
-                        context,
-                        title: '',
-                        message: '',
-                      );
-                    }
+                  try {
+                    await HttpRequest()
+                        .post('${HttpURL.host}/api/user/update/password',
+                            requestData)
+                        .then(
+                          (response) async {},
+                        );
+                    showAlertDialog(
+                      context,
+                      title: '修改成功',
+                      message: '',
+                    );
+                    Timer(const Duration(seconds: 2), () {
+                      Navigator.pushReplacementNamed(context, Main.routeName);
+                    });
+                  } on Exception catch (e) {
+                    // TODO
+                    showAlertDialog(
+                      context,
+                      title: '修改失敗',
+                      message: '舊密碼錯誤',
+                    );
                   }
                 },
               ),
