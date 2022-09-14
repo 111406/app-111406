@@ -31,28 +31,12 @@ class _MainState extends State<Main> {
   }
 
   void _loadStates() async {
-    // final prefs = await SharedPreferences.getInstance();
-    // // var userId = '';
-    // userId = prefs.getString("userId") ?? "";
-    // var height = 0.0;
-    // var weight = 0.0;
-    // var birth = '';
-    // var gender = '';
-    // HttpRequest().get('${HttpURL.host}/api/user/$userId').then((response) {
-    //   height = response['data']['height'];
-    //   weight = response['data']['weight'];
-    //   birth = response['data']['birth'];
-    //   gender = response['data']['gender'];
-
-    //   prefs.setDouble("height", height);
-    //   prefs.setDouble("weight", weight);
-    //   prefs.setString("birth", birth);
-    //   prefs.setString("gender", gender);
-    // });
     final prefs = await SharedPreferences.getInstance();
     final todoList = <String>[];
     final userId = prefs.getString("userId");
-    await HttpRequest().get('${HttpURL.host}/api/target/$userId').then((response) {
+    await HttpRequest()
+        .get('${HttpURL.host}/api/target/$userId')
+        .then((response) {
       final dataList = response['data'];
       if (dataList != false) {
         for (var data in response['data']) {
@@ -64,6 +48,20 @@ class _MainState extends State<Main> {
       } else {
         prefs.setBool(AppConfig.CHECK_TRAINING, false);
       }
+    });
+
+    await HttpRequest()
+        .get('${HttpURL.host}/api/user/$userId')
+        .then((response) {
+      var height = response['data']['height'];
+      var weight = response['data']['weight'];
+      var birth = response['data']['birthday'];
+      var gender = response['data']['gender'];
+
+      prefs.setDouble("height", height);
+      prefs.setDouble("weight", weight);
+      prefs.setString("birth", birth);
+      prefs.setString("gender", gender);
     });
   }
 

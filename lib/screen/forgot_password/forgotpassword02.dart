@@ -83,7 +83,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                       message: '請重新輸入',
                     );
                   }
-                  if (!_passwordCheck) {
+                  if (!_passwordCheck && _textFieldIsNotEmpty) {
                     showAlertDialog(
                       context,
                       title: '新密碼與舊密碼不相同',
@@ -113,7 +113,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                         title: '修改成功',
                         message: '',
                       );
-                      Timer(Duration(seconds: 2), () {
+                      Timer(const Duration(seconds: 2), () {
                         Navigator.pushReplacementNamed(
                             context, LoginPage.routeName);
                       });

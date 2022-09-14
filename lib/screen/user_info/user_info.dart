@@ -27,10 +27,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    userId = prefs.getString("_userId") ?? "";
+    userId = prefs.getString("userId") ?? "";
     _height = prefs.getDouble("height") ?? 0;
     _weight = prefs.getDouble("weight") ?? 0;
     _gender = prefs.getString("gender") ?? "";
+    birth = prefs.getString("birth") ?? "";
   }
 
   @override
