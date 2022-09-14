@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:sport_app/theme/color.dart' as colors;
@@ -13,9 +14,9 @@ class UserInfoPage extends StatefulWidget {
 }
 
 var userId = '載入中';
-var birth = '1960/01/01';
-var _height = 0.0;
-var _weight = 0.0;
+var birth = '19600101';
+var _height = '載入中';
+var _weight = '載入中';
 var _gender = '載入中';
 
 class _UserInfoPageState extends State<UserInfoPage> {
@@ -28,8 +29,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString("userId") ?? "";
-    _height = prefs.getDouble("height") ?? 0;
-    _weight = prefs.getDouble("weight") ?? 0;
+    _height = (prefs.getDouble("height") ?? 0).toString();
+    _weight = (prefs.getDouble("weight") ?? 0).toString();
     _gender = prefs.getString("gender") ?? "";
     birth = prefs.getString("birth") ?? "";
   }
@@ -75,7 +76,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   ),
                 ),
                 Text(
-                  birth,
+                  DateFormat('yyyy/MM/dd').format(DateTime.parse(birth)),
                   style: const TextStyle(
                     fontSize: 22,
                     color: textColor,

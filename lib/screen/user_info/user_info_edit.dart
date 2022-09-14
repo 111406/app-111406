@@ -1,7 +1,14 @@
+/// 使用者資訊編輯
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/alertdialog.dart';
+import 'package:sport_app/utils/http_request.dart';
 
 import '../main_page.dart';
 
@@ -13,80 +20,106 @@ class UserInfoEditPage extends StatefulWidget {
   State<UserInfoEditPage> createState() => _UserInfoEditPageState();
 }
 
+var userId = '載入中';
+var birth = DateTime(1960, 1, 1);
+var height = '載入中';
+var weight = '載入中';
+// var gender = '載入中';
+
 class _UserInfoEditPageState extends State<UserInfoEditPage> {
-  var userName = 'User';
-  var birth = DateTime(1960, 1, 1);
-  // var gender = true;
-  var height = '172';
-  var weight = '70';
+  TextEditingController heightController = TextEditingController();
+  TextEditingController weightController = TextEditingController();
+
+  @override
+  void initState() {
+    _loadPrefs();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    heightController.dispose();
+    weightController.dispose();
+    super.dispose();
+  }
+
+  void _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString("userId") ?? "";
+    height = (prefs.getDouble("height") ?? 0).toString();
+    weight = (prefs.getDouble("weight") ?? 0).toString();
+    // gender = prefs.getString("gender") ?? "";
+    var _b = prefs.getString("birth") ?? "";
+    birth = DateTime.parse(_b);
+  }
 
   heightChange(BuildContext context) {
     // Init
-    TextEditingController heightController = new TextEditingController();
     AlertDialog dialog = AlertDialog(
-      title: Text("輸入新身高"),
-      content: Container(
-        child: TextField(
-          controller: heightController,
-          keyboardType: TextInputType.number,
-          maxLines: 1,
-        ),
+      title: const Text("輸入新身高"),
+      content: TextField(
+        controller: heightController,
+        keyboardType: TextInputType.number,
+        maxLines: 1,
       ),
       actions: [
         ElevatedButton(
-            child: Text("確認"),
-            style: ElevatedButton.styleFrom(primary: primaryColor),
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                height = heightController.text;
-              });
-            }),
+          child: const Text("確認"),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
+          onPressed: () {
+            setState(() {
+              height = double.parse(heightController.text).toString();
+            });
+            Navigator.pop(context);
+          },
+        ),
         ElevatedButton(
-            child: Text("取消"),
-            style: ElevatedButton.styleFrom(primary: primaryColor),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
+          child: const Text("取消"),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ],
     );
 
     // Show the dialog
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return dialog;
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return dialog;
+      },
+    );
   }
 
   weightChange(BuildContext context) {
     // Init
-    TextEditingController weightController = new TextEditingController();
+
     AlertDialog dialog = AlertDialog(
-      title: Text("輸入新體重"),
-      content: Container(
-        child: TextField(
-          controller: weightController,
-          keyboardType: TextInputType.number,
-          maxLines: 1,
-        ),
+      title: const Text("輸入新體重"),
+      content: TextField(
+        controller: weightController,
+        keyboardType: TextInputType.number,
+        maxLines: 1,
       ),
       actions: [
         ElevatedButton(
-            child: Text("確認"),
-            style: ElevatedButton.styleFrom(primary: primaryColor),
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                weight = weightController.text;
-              });
-            }),
+          child: const Text("確認"),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
+          onPressed: () {
+            setState(() {
+              weight = double.parse(weightController.text).toString();
+            });
+            Navigator.pop(context);
+          },
+        ),
         ElevatedButton(
-            child: Text("取消"),
-            style: ElevatedButton.styleFrom(primary: primaryColor),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
+          child: const Text("取消"),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ],
     );
 
@@ -101,216 +134,220 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: appBar(),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-              Container(
-                alignment: Alignment.center,
-                child: const Icon(
-                  Icons.account_circle_rounded,
-                  color: Color(0xffB5C0BF),
-                  size: 100,
-                ),
+      backgroundColor: backgroundColor,
+      appBar: appBar(),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+            Container(
+              alignment: Alignment.center,
+              child: const Icon(
+                Icons.account_circle_rounded,
+                color: Color(0xffB5C0BF),
+                size: 100,
               ),
-              const SizedBox(height: 10),
-              Text(
-                userName,
-                style: const TextStyle(
-                  fontSize: 30,
-                  color: textColor,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              userId,
+              style: const TextStyle(
+                fontSize: 30,
+                color: textColor,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 30),
-              const SizedBox(height: 10),
-              Container(
-                child: Row(
-                  children: [
-                    const Expanded(
+            ),
+            const SizedBox(height: 30),
+            Container(
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      '出生年月日',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: _datePicker,
+                    child: Container(
                       child: Text(
-                        '出生年月日',
-                        style: TextStyle(
+                        DateFormat('yyyy/MM/dd').format(birth),
+                        style: const TextStyle(
                           fontSize: 22,
-                          color: textColor,
+                          color: editTextColor,
                           fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
+                      alignment: Alignment.center,
                     ),
-                    InkWell(
-                      onTap: _datePicker,
-                      child: Container(
-                        child: Text(
-                          DateFormat('yyyy/MM/dd').format(birth),
-                          style: const TextStyle(
-                            fontSize: 22,
-                            color: textColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                      ),
-                    ),
-                  ],
-                ),
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 20, right: 15),
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                constraints: const BoxConstraints(maxHeight: 56),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 225, 225, 225)),
-                ),
+                  ),
+                ],
               ),
-              // const SizedBox(height: 10),
-              // Container(
-              //   child: Row(
-              //     children: [
-              //       const Expanded(
-              //         child: Text(
-              //           '性別',
-              //           style: TextStyle(
-              //             fontSize: 22,
-              //             color: textColor,
-              //             fontWeight: FontWeight.bold,
-              //           ),
-              //         ),
-              //       ),
-              //       TextButton(
-              //         child: const Text('男'),
-              //         onPressed: () {},
-              //       ),
-              //       TextButton(
-              //         child: const Text('女'),
-              //         onPressed: () {},
-              //       )
-              //     ],
-              //   ),
-              //   alignment: Alignment.centerLeft,
-              //   padding: const EdgeInsets.only(left: 20, right: 15),
-              //   margin: const EdgeInsets.only(left: 20, right: 20),
-              //   constraints: const BoxConstraints(maxHeight: 56),
-              //   decoration: BoxDecoration(
-              //     color: Colors.white,
-              //     borderRadius: BorderRadius.circular(5),
-              //     border: Border.all(
-              //         color: const Color.fromARGB(255, 225, 225, 225)),
-              //   ),
-              // ),
-              const SizedBox(height: 10),
-              Container(
-                child: Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        '身高(公分)',
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: textColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        heightChange(context);
-                      },
-                      child: Container(
-                        child: Text(
-                          height,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            color: textColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 20, right: 15),
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                constraints: const BoxConstraints(maxHeight: 56),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 225, 225, 225)),
-                ),
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 20, right: 15),
+              constraints: const BoxConstraints(maxHeight: 56),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border:
+                    Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
               ),
-              const SizedBox(height: 10),
-              Container(
-                child: Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        '體重(公斤)',
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: textColor,
-                          fontWeight: FontWeight.bold,
-                        ),
+            ),
+            // const SizedBox(height: 10),
+            // Container(
+            //   child: Row(
+            //     children: [
+            //       const Expanded(
+            //         child: Text(
+            //           '性別',
+            //           style: TextStyle(
+            //             fontSize: 22,
+            //             color: textColor,
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //         ),
+            //       ),
+            //       TextButton(
+            //         child: const Text('男'),
+            //         onPressed: () {},
+            //       ),
+            //       TextButton(
+            //         child: const Text('女'),
+            //         onPressed: () {},
+            //       )
+            //     ],
+            //   ),
+            //   alignment: Alignment.centerLeft,
+            //   padding: const EdgeInsets.only(left: 20, right: 15),
+            //   margin: const EdgeInsets.only(left: 20, right: 20),
+            //   constraints: const BoxConstraints(maxHeight: 56),
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: BorderRadius.circular(5),
+            //     border: Border.all(
+            //         color: const Color.fromARGB(255, 225, 225, 225)),
+            //   ),
+            // ),
+            const SizedBox(height: 10),
+            Container(
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      '身高(公分)',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        weightChange(context);
-                      },
-                      child: Container(
-                        child: Text(
-                          weight,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            color: textColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      heightChange(context);
+                    },
+                    child: Text(
+                      height.toString(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: editTextColor,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
-                  ],
-                ),
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 20, right: 15),
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                constraints: const BoxConstraints(maxHeight: 56),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 225, 225, 225)),
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 60),
-              InkWell(
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  await prefs.setInt('returnMainPage', 1);
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 20, right: 15),
+              constraints: const BoxConstraints(maxHeight: 56),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border:
+                    Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      '體重(公斤)',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      weightChange(context);
+                    },
+                    child: Text(
+                      weight.toString(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: editTextColor,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 20, right: 15),
+              constraints: const BoxConstraints(maxHeight: 56),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border:
+                    Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+              ),
+            ),
+            const SizedBox(height: 60),
+            mainBtn(
+              text: "完成",
+              onPressed: () async {
+                String birthday = DateFormat('yyyyMMdd').format(birth);
+
+                String requestData = """{
+                  "birthday": "$birthday",
+                  "height": $height,
+                  "weight": $weight
+                }""";
+
+                await HttpRequest()
+                    .post('${HttpURL.host}/user/update/$userId', requestData)
+                    .then(
+                      (response) async {},
+                    );
+
+                showAlertDialog(
+                  context,
+                  title: '修改成功',
+                  message: '',
+                );
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setInt('returnMainPage', 1);
+                Timer(const Duration(seconds: 2), () {
                   Navigator.pushReplacementNamed(context, Main.routeName);
-                },
-                child: Ink(
-                  height: 36,
-                  width: 280,
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Container(
-                    child: const Text('完成',
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
-                    alignment: Alignment.center,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ));
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   AppBar appBar() {
@@ -319,7 +356,14 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       centerTitle: true,
       elevation: 0,
       title: const Text('編輯 個人資訊'),
-      leading: Container(),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setInt('returnMainPage', 1);
+          Navigator.pushReplacementNamed(context, Main.routeName);
+        },
+      ),
     );
   }
 
@@ -328,7 +372,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       context: context,
       initialDate: birth,
       firstDate: DateTime(1900, 01),
-      lastDate: DateTime(1960, 01),
+      lastDate: birth,
     );
 
     if (result != null) {
