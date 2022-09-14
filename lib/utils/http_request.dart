@@ -35,7 +35,7 @@ class HttpRequest {
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'token':token,
+        'token': token,
       },
     ).then((response) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -53,5 +53,5 @@ class HttpRequest {
 
 class HttpURL {
   // static const String host = "https://vaulted-epigram-349713.de.r.appspot.com";
-  static const String host = "https://backend-111406.herokuapp.com";
+  static const String host = "https://backend-111406.herokuapp.com/api";
 }

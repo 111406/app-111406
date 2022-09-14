@@ -254,8 +254,8 @@ Widget _endBtn(BuildContext context) {
               userTodoList,
             );
             // TODO 需要確認有沒有完整結束上一個訓練才能傳新的訓練表
-            await HttpRequest().post(
-                "${HttpURL.host}/api/target", jsonEncode(target.toJson()));
+            await HttpRequest()
+                .post("${HttpURL.host}/target", jsonEncode(target.toJson()));
             Navigator.pushReplacementNamed(context, Main.routeName);
           },
           child: const Text(

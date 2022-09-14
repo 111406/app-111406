@@ -115,8 +115,8 @@ class _ChangePasswordState extends State<ChangePassword> {
 
                   try {
                     await HttpRequest()
-                        .post('${HttpURL.host}/api/user/update/password',
-                            requestData)
+                        .post(
+                            '${HttpURL.host}/user/update/password', requestData)
                         .then(
                           (response) async {},
                         );
