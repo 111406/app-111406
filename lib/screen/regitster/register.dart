@@ -1,3 +1,5 @@
+///註冊第一頁
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
@@ -222,91 +224,95 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
-          child: Column(
-            children: [
-              appLogo(),
-              pageTitle('註冊'),
-              const SizedBox(height: 5),
-              Column(
-                children: [
-                  textField(
-                    textFieldName: '帳號',
-                    hintText: '請輸入帳號',
-                    icon: Icons.account_box_rounded,
-                    controller: userIdController,
-                  ),
-                  const SizedBox(height: 10),
-                  textField(
-                    textFieldName: '密碼',
-                    hintText: '請輸入密碼',
-                    obscureText: true,
-                    icon: Icons.lock,
-                    controller: passwordController,
-                  ),
-                  const SizedBox(height: 10),
-                  textField(
-                    textFieldName: '確認密碼',
-                    hintText: '確認密碼',
-                    obscureText: true,
-                    icon: Icons.lock,
-                    controller: cpasswordController,
-                  ),
-                  const SizedBox(height: 10),
-                  textField(
-                    textFieldName: '信箱',
-                    hintText: '請輸入信箱',
-                    icon: Icons.email,
-                    controller: emailController,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 50),
-              mainBtn(
-                // 下一步按鈕
-                onPressed: () async {
-                  String userId = userIdController.text;
-                  String password = passwordController.text;
-                  String confirmPassword = cpasswordController.text;
-                  String email = emailController.text;
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+            child: Column(
+              children: [
+                appLogo(),
+                pageTitle('註冊'),
+                const SizedBox(height: 5),
+                Column(
+                  children: [
+                    textField(
+                      textFieldName: '帳號',
+                      hintText: '請輸入帳號',
+                      icon: Icons.account_box_rounded,
+                      controller: userIdController,
+                    ),
+                    const SizedBox(height: 10),
+                    textField(
+                      textFieldName: '密碼',
+                      hintText: '請輸入密碼',
+                      obscureText: true,
+                      icon: Icons.lock,
+                      controller: passwordController,
+                    ),
+                    const SizedBox(height: 10),
+                    textField(
+                      textFieldName: '確認密碼',
+                      hintText: '確認密碼',
+                      obscureText: true,
+                      icon: Icons.lock,
+                      controller: cpasswordController,
+                    ),
+                    const SizedBox(height: 10),
+                    textField(
+                      textFieldName: '信箱',
+                      hintText: '請輸入信箱',
+                      icon: Icons.email,
+                      controller: emailController,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 50),
+                mainBtn(
+                  // 下一步按鈕
+                  onPressed: () async {
+                    String userId = userIdController.text;
+                    String password = passwordController.text;
+                    String confirmPassword = cpasswordController.text;
+                    String email = emailController.text;
 
-                  bool _textFieldIsNotEmpty = userId.isNotEmpty &&
-                      password.isNotEmpty &&
-                      confirmPassword.isNotEmpty &&
-                      email.isNotEmpty;
-                  bool _passwordCheck = (password == confirmPassword);
+                    bool _textFieldIsNotEmpty = userId.isNotEmpty &&
+                        password.isNotEmpty &&
+                        confirmPassword.isNotEmpty &&
+                        email.isNotEmpty;
+                    bool _passwordCheck = (password == confirmPassword);
 
-                  if (_textFieldIsNotEmpty && _passwordCheck) {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.setString("userId", userId);
-                    prefs.setString("password", password);
-                    prefs.setString("email", email);
-                    Navigator.pushNamed(context, RegisterPage02.routeName);
-                  } else if (!_passwordCheck) {
-                    showAlertDialog(
-                      context,
-                      title: '密碼與確認密碼不相同',
-                      message: '請重新輸入',
-                    );
-                  } else {
-                    showAlertDialog(
-                      context,
-                      title: '輸入框不得為空白',
-                      message: '請重新輸入',
-                    );
-                  }
-                },
-              ),
-              const SizedBox(height: 20),
-              underScoreBtn(
-                text: '我已有帳號，返回登入',
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, LoginPage.routeName);
-                },
-              )
-            ],
+                    if (_textFieldIsNotEmpty && _passwordCheck) {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString("userId", userId);
+                      prefs.setString("password", password);
+                      prefs.setString("email", email);
+                      Navigator.pushNamed(context, RegisterPage02.routeName);
+                    } else if (!_passwordCheck) {
+                      showAlertDialog(
+                        context,
+                        title: '密碼與確認密碼不相同',
+                        message: '請重新輸入',
+                      );
+                    } else {
+                      showAlertDialog(
+                        context,
+                        title: '輸入框不得為空白',
+                        message: '請重新輸入',
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                underScoreBtn(
+                  text: '我已有帳號，返回登入',
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, LoginPage.routeName);
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),

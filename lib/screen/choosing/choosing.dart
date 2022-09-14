@@ -1,3 +1,5 @@
+///訓練選擇頁
+
 import 'package:flutter/material.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/training/trainingpage.dart';

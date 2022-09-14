@@ -1,7 +1,8 @@
+///座椅深蹲測試頁
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
@@ -120,7 +121,10 @@ Widget _endBtn(BuildContext context) {
       },
       child: const Text(
         '長按結束',
-        style: TextStyle(color: primaryColor, fontSize: 20, decoration: TextDecoration.underline),
+        style: TextStyle(
+            color: primaryColor,
+            fontSize: 20,
+            decoration: TextDecoration.underline),
       ),
     ),
   );
@@ -141,7 +145,8 @@ class _TestPageState2 extends State<TestPage2> {
   void initState() {
     super.initState();
     _setTimerEvent();
-    subscription = motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription =
+        motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         _calcAngles(event.x, event.y, event.z);
       });
@@ -185,8 +190,12 @@ class _TestPageState2 extends State<TestPage2> {
 
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
-    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
+    var pitch =
+        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
+            .floor();
+    var roll =
+        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
+            .floor();
 
     _checkPart(_part, pitch, roll);
   }
@@ -258,14 +267,19 @@ class _TestPageState2 extends State<TestPage2> {
             }
         """;
         String bicepsRequestData = prefs.getString(TrainingPart.biceps.string)!;
-        dynamic bicepsResponse = await HttpRequest().post("${HttpURL.host}/api/record", bicepsRequestData);
+        dynamic bicepsResponse = await HttpRequest()
+            .post("${HttpURL.host}/api/record", bicepsRequestData);
         dynamic bicepsData = jsonEncode(bicepsResponse['data']);
-        
-        dynamic quadricepsResponse = await HttpRequest().post("${HttpURL.host}/api/record", quadricepsReqeustData);
+
+        dynamic quadricepsResponse = await HttpRequest()
+            .post("${HttpURL.host}/api/record", quadricepsReqeustData);
         dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
         prefs.remove(TrainingPart.biceps.string);
 
-        Navigator.pushNamed(context, TestResultPage.routeName, arguments: {"bicepsData": bicepsData, "quadricepsData": quadricepsData});
+        Navigator.pushNamed(context, TestResultPage.routeName, arguments: {
+          "bicepsData": bicepsData,
+          "quadricepsData": quadricepsData
+        });
       }
       if (_ss == 1) {
         timer.cancel();

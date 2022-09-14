@@ -1,3 +1,5 @@
+///其他資訊頁
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
