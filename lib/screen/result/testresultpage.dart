@@ -1,5 +1,6 @@
-import 'dart:convert';
+///測試結果頁
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -227,10 +228,12 @@ Widget _endBtn(BuildContext context) {
             DateTime now = DateTime.now();
             DateTime startDateTime = now.add(Duration(days: 8 - now.weekday));
             String startDate = DateFormat('yyyyMMdd').format(startDateTime);
-            String endDate = DateFormat('yyyyMMdd').format(startDateTime.add(const Duration(days: 28)));
+            String endDate = DateFormat('yyyyMMdd')
+                .format(startDateTime.add(const Duration(days: 28)));
             for (int i = 0; i < 8; i++) {
-              DateTime targetDateTime =
-                  i % 2 == 0 ? startDateTime.add(Duration(days: 7 * (i ~/ 2))) : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
+              DateTime targetDateTime = i % 2 == 0
+                  ? startDateTime.add(Duration(days: 7 * (i ~/ 2)))
+                  : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
               String targetDate = DateFormat('yyyyMMdd').format(targetDateTime);
               // TODO 目前為預設值，可能須搭配醫師才能做出完整計畫，待修改
               dynamic userTodo = {
@@ -251,7 +254,8 @@ Widget _endBtn(BuildContext context) {
               userTodoList,
             );
             // TODO 需要確認有沒有完整結束上一個訓練才能傳新的訓練表
-            await HttpRequest().post("${HttpURL.host}/api/target", jsonEncode(target.toJson()));
+            await HttpRequest().post(
+                "${HttpURL.host}/api/target", jsonEncode(target.toJson()));
             Navigator.pushReplacementNamed(context, Main.routeName);
           },
           child: const Text(

@@ -1,3 +1,5 @@
+///主頁分頁
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
@@ -42,7 +44,8 @@ class _HomePageState extends State<HomePage> {
                       onTap: () async {
                         final prefs = await SharedPreferences.getInstance();
                         if (prefs.getBool(AppConfig.CHECK_TRAINING)!) {
-                          Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
+                          Navigator.pushReplacementNamed(
+                              context, ChoosingPage.routeName);
                         } else {
                           showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
                         }
@@ -57,7 +60,9 @@ class _HomePageState extends State<HomePage> {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 25),
             child: InkWell(
-              onTap: () {
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setInt('introScreen', 1);
                 Navigator.pushReplacementNamed(context, IntroPage.routeName);
               },
               child: Ink(child: testingBtn()),
@@ -108,7 +113,8 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -155,7 +161,8 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
