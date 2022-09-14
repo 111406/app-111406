@@ -20,7 +20,7 @@ class HttpRequest {
       if (response.statusCode == 500) {
         throw Exception(result["message"]);
       }
-      if (url.contains('login')) {
+      if (response.headers['token'] != null) {
         prefs.setString('token', response.headers['token']!);
       }
     });
@@ -42,6 +42,9 @@ class HttpRequest {
       result = responseJson;
       if (response.statusCode == 500) {
         throw Exception(result["message"]);
+      }
+      if (response.headers['token'] != null) {
+        prefs.setString('token', response.headers['token']!);
       }
     });
     return result;
