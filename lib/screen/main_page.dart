@@ -35,9 +35,7 @@ class _MainState extends State<Main> {
     final prefs = await SharedPreferences.getInstance();
     final todoList = <String>[];
     final userId = prefs.getString("userId");
-    await HttpRequest()
-        .get('${HttpURL.host}/api/target/$userId')
-        .then((response) {
+    await HttpRequest().get('${HttpURL.host}/target/$userId').then((response) {
       final dataList = response['data'];
       if (dataList != false) {
         for (var data in response['data']) {
@@ -51,9 +49,7 @@ class _MainState extends State<Main> {
       }
     });
 
-    await HttpRequest()
-        .get('${HttpURL.host}/api/user/$userId')
-        .then((response) {
+    await HttpRequest().get('${HttpURL.host}/user/$userId').then((response) {
       var height = response['data']['height'];
       var weight = response['data']['weight'];
       var birth = response['data']['birthday'];

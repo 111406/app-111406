@@ -186,7 +186,7 @@ class _WarmupPageState extends State<WarmupPage> {
         //     }
         // """;
         // dynamic response = await HttpRequest()
-        //     .post("${HttpURL.host}/api/standard/analyze", """{
+        //     .post("${HttpURL.host}/standard/analyze", """{
         //       "user_id": "zsda5858sda",
         //       "gender": 0,
         //       "part": $_part,
