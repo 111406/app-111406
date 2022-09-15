@@ -131,7 +131,7 @@ Widget _forgotPsConfBtn(BuildContext context) {
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, Main.routeName);
+        Navigator.pushReplacementNamed(context, Main.routeName);
       },
       child: const Text('確認修改', style: TextStyle(fontSize: 24)),
       style: ElevatedButton.styleFrom(primary: primaryColor),

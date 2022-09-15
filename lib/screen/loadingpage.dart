@@ -34,14 +34,14 @@ class _LoadingPageState extends State<LoadingPage> {
       if (currentTimer >= 3000) {
         timer.cancel();
         if (loginloadingpage == true) {
-          Navigator.pushNamed(context, Main.routeName);
+          Navigator.pushReplacementNamed(context, Main.routeName);
           prefs.setBool('loginloadingpage', false);
           setState(() {
             loginloadingpage = false;
           });
         }
         // if (testloadingpage == true) {
-        //   Navigator.pushNamed(context, TestResultPage.routeName);
+        //   Navigator.pushReplacementNamed(context, TestResultPage.routeName);
         //   prefs.setBool('testloadingpage', false);
         //   setState(() {
         //     testloadingpage = false;

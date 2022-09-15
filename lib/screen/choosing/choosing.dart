@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/screen/trainingpage.dart';
+import 'package:sport_app/screen/intropage2.dart';
 import '../main_page.dart';
 
 class ChoosingPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
             margin: const EdgeInsets.symmetric(horizontal: 25),
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(context, TrainingPage.routeName);
+                Navigator.pushReplacementNamed(context, IntroPage2.routeName);
               },
               child: Ink(child: bicepsBtn()),
             ),
@@ -243,7 +244,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {
-          Navigator.pushNamed(context, Main.routeName);
+          Navigator.pushReplacementNamed(context, Main.routeName);
         },
       ),
     );

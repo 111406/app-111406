@@ -424,9 +424,9 @@ class _MainPageState extends State<MainPage> {
                           //待更改
                           await prefs.setInt(
                               "type", RecordType.examination.value);
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                               context, IntroPage.routeName); //此為跳轉至intropage
-                          //Navigator.pushNamed(context, TestPage.routeName);
+                          //Navigator.pushReplacementNamed(context, TestPage.routeName);
                         },
                       ),
                     ),
@@ -480,9 +480,9 @@ class _MainPageState extends State<MainPage> {
                           //待更改
                           await prefs.setInt(
                               "type", RecordType.examination.value);
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                               context, IntroPage.routeName); //此為跳轉至intropage
-                          //Navigator.pushNamed(context, TestPage.routeName);
+                          //Navigator.pushReplacementNamed(context, TestPage.routeName);
                         },
                       ),
                     ),
@@ -536,9 +536,9 @@ class _MainPageState extends State<MainPage> {
                           //待更改
                           await prefs.setInt(
                               "type", RecordType.examination.value);
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                               context, IntroPage.routeName); //此為跳轉至intropage
-                          //Navigator.pushNamed(context, TestPage.routeName);
+                          //Navigator.pushReplacementNamed(context, TestPage.routeName);
                         },
                       ),
                     ),
@@ -640,7 +640,8 @@ class _MainPageState extends State<MainPage> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, PoseDetectorView.routeName);
+                      Navigator.pushReplacementNamed(
+                          context, PoseDetectorView.routeName);
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(

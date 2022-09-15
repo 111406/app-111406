@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, ForgotPassword.routeName);
+          Navigator.pushReplacementNamed(context, ForgotPassword.routeName);
         },
         child: const Text(
           '忘記密碼',

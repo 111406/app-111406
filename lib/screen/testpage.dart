@@ -115,7 +115,7 @@ Widget _endBtn(BuildContext context) {
     child: GestureDetector(
       onLongPress: () {
         _ss = 1;
-        Navigator.pushNamed(context, Main.routeName);
+        Navigator.pushReplacementNamed(context, Main.routeName);
       },
       child: const Text(
         '長按結束',
@@ -275,7 +275,7 @@ class _TestPageState extends State<TestPage> {
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-          Navigator.pushNamed(context, Prepare2.routeName);
+          Navigator.pushReplacementNamed(context, Prepare2.routeName);
           // dynamic response =
           //     await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
           // Navigator.pushReplacementNamed(context, Prepare2.routeName, arguments: {

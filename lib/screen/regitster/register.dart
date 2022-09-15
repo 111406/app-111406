@@ -274,7 +274,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     prefs.setString("userId", userId);
                     prefs.setString("password", password);
                     prefs.setString("email", email);
-                    Navigator.pushNamed(context, RegisterPage02.routeName);
+                    Navigator.pushReplacementNamed(
+                        context, RegisterPage02.routeName);
                   },
                   child: const Text('下一步', style: TextStyle(fontSize: 24)),
                   style: ElevatedButton.styleFrom(primary: primaryColor),

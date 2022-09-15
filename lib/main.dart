@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
 import 'package:sport_app/screen/forgotpassword.dart';
 import 'package:sport_app/screen/intropage.dart';
+import 'package:sport_app/screen/intropage2.dart';
 import 'package:sport_app/screen/loadingpage.dart';
 import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
@@ -21,6 +22,8 @@ import 'package:sport_app/screen/prepare.dart';
 import 'package:sport_app/screen/prepare2.dart';
 import 'package:sport_app/screen/warmuppage.dart';
 import 'package:sport_app/screen/trainingpage.dart';
+import 'package:sport_app/screen/trainingresultpage.dart';
+import 'package:sport_app/screen/restpage.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -75,10 +78,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: '肌動GO',
-      home: const LoginPage(),
-      //initialRoute: MainPage.routeName,
-      initialRoute:
-          (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
+      // home: const LoginPage(),
+      // initialRoute: MainPage.routeName,
+      initialRoute: TrainingPage.routeName,
+      // (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
       routes: {
         Main.routeName: (context) => const Main(),
         ChoosingPage.routeName: (context) => const ChoosingPage(),
@@ -92,11 +95,14 @@ class MyApp extends StatelessWidget {
         RegisterPage.routeName: (context) => const RegisterPage(),
         RegisterPage02.routeName: (context) => const RegisterPage02(),
         IntroPage.routeName: (context) => const IntroPage(),
+        IntroPage2.routeName: (context) => const IntroPage2(),
         TestPage.routeName: (context) => const TestPage(),
         TestPage2.routeName: (context) => const TestPage2(),
         PoseDetectorView.routeName: (context) => const PoseDetectorView(),
         TestResultPage.routeName: (context) => const TestResultPage(),
+        TrainingResultPage.routeName: (context) => const TrainingResultPage(),
         TrainingPage.routeName: (context) => const TrainingPage(),
+        RestPage.routeName: (context) => const RestPage(),
         WarmupPage.routeName: (context) => const WarmupPage(),
       },
       builder: EasyLoading.init(),
