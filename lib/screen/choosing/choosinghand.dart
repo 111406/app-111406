@@ -1,26 +1,24 @@
-///訓練選擇頁
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/enum/training_part.dart';
+import 'package:sport_app/enum/training_hand.dart';
 import 'package:sport_app/model/user_todo.dart';
-import 'package:sport_app/screen/choosing/choosinghand.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/manual/training_intropage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import '../main_page.dart';
 
-class ChoosingPage extends StatefulWidget {
-  const ChoosingPage({Key? key}) : super(key: key);
-  static const String routeName = "/choosing";
+class ChoosingHandPage extends StatefulWidget {
+  const ChoosingHandPage({Key? key}) : super(key: key);
+  static const String routeName = "/choosing_hand";
 
   @override
-  State<ChoosingPage> createState() => _ChoosingPageState();
+  State<ChoosingHandPage> createState() => _ChoosingHandPageState();
 }
 
-class _ChoosingPageState extends State<ChoosingPage> {
+class _ChoosingHandPageState extends State<ChoosingHandPage> {
   late UserTodo userTodo;
 
   @override
@@ -51,15 +49,12 @@ class _ChoosingPageState extends State<ChoosingPage> {
           ),
           const SizedBox(height: 35),
           Container(
-            alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.symmetric(horizontal: 35),
-            child: const Text(
-              '上半身肌肉(上肢部分)',
-              style: TextStyle(
-                fontSize: 22,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+            margin: const EdgeInsets.symmetric(horizontal: 25),
+            child: InkWell(
+              onTap: () {
+                goNextPage("left");
+              },
+              child: Ink(child: leftHandBtn()),
             ),
           ),
           const SizedBox(height: 20),
@@ -67,42 +62,9 @@ class _ChoosingPageState extends State<ChoosingPage> {
             margin: const EdgeInsets.symmetric(horizontal: 25),
             child: InkWell(
               onTap: () {
-                goNextPage(TrainingPart.biceps.value);
+                goNextPage("right");
               },
-              child: Ink(child: bicepsBtn()),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: InkWell(
-              onTap: () {
-                goNextPage(TrainingPart.deltoid.value);
-              },
-              child: Ink(child: deltaBtn()),
-            ),
-          ),
-          const SizedBox(height: 35),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.symmetric(horizontal: 35),
-            child: const Text(
-              '下半身肌肉(下肢部分)',
-              style: TextStyle(
-                fontSize: 22,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: InkWell(
-              onTap: () {
-                goNextPage(TrainingPart.quadriceps.value);
-              },
-              child: Ink(child: squatBtn()),
+              child: Ink(child: rightHandBtn()),
             ),
           ),
         ],
@@ -110,7 +72,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
     );
   }
 
-  Container bicepsBtn() {
+  Container leftHandBtn() {
     return Container(
       height: 90,
       padding: const EdgeInsets.only(left: 15, right: 25),
@@ -133,7 +95,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: const Text(
-                  '二頭肌彎舉',
+                  '左手',
                   style: TextStyle(
                     fontSize: 22,
                     color: Colors.white,
@@ -157,7 +119,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
     );
   }
 
-  Container deltaBtn() {
+  Container rightHandBtn() {
     return Container(
       height: 90,
       padding: const EdgeInsets.only(left: 15, right: 25),
@@ -180,54 +142,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: const Text(
-                  '三角肌平舉',
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ]),
-          ),
-          Container(
-            height: 32,
-            width: 32,
-            decoration: BoxDecoration(
-              color: const Color(0x50292D32),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
-          )
-        ],
-      ),
-    );
-  }
-
-  Container squatBtn() {
-    return Container(
-      height: 90,
-      padding: const EdgeInsets.only(left: 15, right: 25),
-      decoration: BoxDecoration(
-        color: primaryColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Row(children: [
-              SizedBox(
-                height: 75,
-                width: 75,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset('assets/schematic/squat.png'),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 10),
-                child: const Text(
-                  '滑牆深蹲運動',
+                  '右手',
                   style: TextStyle(
                     fontSize: 22,
                     color: Colors.white,
@@ -266,26 +181,22 @@ class _ChoosingPageState extends State<ChoosingPage> {
     );
   }
 
-  void goNextPage(int part) async {
+  void goNextPage(String trainingHand) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("trainingPart", part);
 
     final userTodoString = prefs.getString("userTodo")!;
+    final part = prefs.getInt("trainingPart")!;
     final userTodo = UserTodo.fromJson(jsonDecode(userTodoString));
     final totalTimes = userTodo.targetTimes[part]['total'];
-    if (part != TrainingPart.quadriceps.value) {
-      if (userTodo.actualTimes[part]['left']['times'] >= totalTimes && userTodo.actualTimes[part]['right']['times'] >= totalTimes) {
-        final trainpart = TrainingPart.parse(part);
-        showAlertDialog(context, message: "${trainpart.string}訓練已完成！");
-      } else {
-        Navigator.pushReplacementNamed(context, ChoosingHandPage.routeName);
-      }
+    final hand = TrainingHand.parse(trainingHand);
+    if (userTodo.actualTimes[part][trainingHand]['times'] >= totalTimes) {
+      showAlertDialog(context, message: "${hand.string}訓練已完成！");
     } else {
-      if (userTodo.actualTimes[part]['times'] >= totalTimes) {
-        showAlertDialog(context, message: "滑牆深蹲訓練已完成！");
-      } else {
-        Navigator.pushReplacementNamed(context, TrainingIntroPage.routeName);
-      }
+      prefs.setString("trainingHand", trainingHand);
+      prefs.setInt("times", userTodo.targetTimes[part]['times']);
+      prefs.setInt("set", userTodo.targetTimes[part]['set']);
+      prefs.setInt("total", totalTimes);
+      Navigator.pushReplacementNamed(context, TrainingIntroPage.routeName);
     }
   }
 

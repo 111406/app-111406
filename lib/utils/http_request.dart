@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpRequest {
-  Future<dynamic> post(String url, String reqeustData) async {
+  Future<dynamic> post(String url, String requestData) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
     dynamic result;
@@ -13,11 +13,11 @@ class HttpRequest {
               'Content-Type': 'application/json; charset=UTF-8',
               'token': token,
             },
-            body: reqeustData)
+            body: requestData)
         .then((response) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
       result = responseJson;
-      if (response.statusCode == 500) {
+      if (response.statusCode >= 400) {
         throw Exception(result["message"]);
       }
       if (response.headers['token'] != null) {
@@ -40,7 +40,7 @@ class HttpRequest {
     ).then((response) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
       result = responseJson;
-      if (response.statusCode == 500) {
+      if (response.statusCode >= 400) {
         throw Exception(result["message"]);
       }
       if (response.headers['token'] != null) {

@@ -1,12 +1,13 @@
 ///訓練結果頁
 
 import 'package:flutter/material.dart';
-import 'package:sport_app/screen/trainingpage.dart';
+import 'package:sport_app/screen/training/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 class TrainingResultPage extends StatefulWidget {
   const TrainingResultPage({Key? key}) : super(key: key);
   static const String routeName = "/trainresult";
+
   @override
   State<TrainingResultPage> createState() => _TrainingResultPageState();
 }
@@ -38,20 +39,21 @@ Widget _resultTitle() {
   );
 }
 
-Widget _resultChart(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-        width: MediaQuery.of(context).size.width / 1.5,
-        height: MediaQuery.of(context).size.height / 2.5,
-        child: const Text('圖表畫面'),
-        alignment: Alignment.center,
-      ),
-    ],
-  );
-}
+// TODO 帶確認是否需要留
+// Widget _resultChart(BuildContext context) {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: [
+//       Container(
+//         decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+//         width: MediaQuery.of(context).size.width / 1.5,
+//         height: MediaQuery.of(context).size.height / 2.5,
+//         child: const Text('圖表畫面'),
+//         alignment: Alignment.center,
+//       ),
+//     ],
+//   );
+// }
 
 Widget _resultNumber() {
   return const Text(
@@ -89,8 +91,8 @@ class _TrainingResultPageState extends State<TrainingResultPage> {
               _title(),
               const SizedBox(height: 25),
               _resultTitle(),
-              const SizedBox(height: 10),
-              _resultChart(context),
+              // const SizedBox(height: 10),
+              // _resultChart(context),
               const SizedBox(height: 10),
               _resultNumber(),
               const SizedBox(height: 50),

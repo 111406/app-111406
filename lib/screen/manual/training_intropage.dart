@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/warmup/warmuppage.dart';
 import 'package:sport_app/theme/color.dart';
 
-class IntroPage2 extends StatefulWidget {
-  const IntroPage2({Key? key}) : super(key: key);
-  static const String routeName = "/intro2";
+/// 訓練教學頁
+class TrainingIntroPage extends StatefulWidget {
+  const TrainingIntroPage({Key? key}) : super(key: key);
+  static const String routeName = "/train_intro";
 
   @override
-  State<IntroPage2> createState() => _IntroPageState2();
+  State<TrainingIntroPage> createState() => _TrainingIntroPageState();
 }
 
 Widget _tutorialScreen(BuildContext context) {
@@ -35,9 +35,6 @@ Widget _tutorialScreen(BuildContext context) {
             fit: BoxFit.cover,
           ),
         ],
-        onPageChanged: (value) {
-          print('Page changed: $value');
-        },
         autoPlayInterval: 3000,
         isLoop: true,
       ),
@@ -67,9 +64,6 @@ Widget _tutorialScreen01(BuildContext context) {
             fit: BoxFit.cover,
           ),
         ],
-        onPageChanged: (value) {
-          print('Page changed: $value');
-        },
         autoPlayInterval: 3000,
         isLoop: true,
       ),
@@ -131,39 +125,12 @@ Widget _tutorialScreen03(BuildContext context) {
             fit: BoxFit.cover,
           ),
         ],
-        onPageChanged: (value) {
-          print('Page changed: $value');
-        },
         autoPlayInterval: 3000,
         isLoop: true,
       ),
     ],
   );
 }
-
-// Widget _CurrentAngle() {
-//   return const Text(
-//     '當前角度: 3',
-//     style: TextStyle(
-//         color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
-//   );
-// }
-
-// Widget _ResetZero(BuildContext context) {
-//   return Container(
-//     width: MediaQuery.of(context).size.width / 3,
-//     child: ElevatedButton(
-//       onPressed: () {},
-//       child: const Text(
-//         '起始角度歸零',
-//         style: TextStyle(fontSize: 16),
-//       ),
-//       style: ElevatedButton.styleFrom(
-//         primary: primaryColor,
-//       ),
-//     ),
-//   );
-// }
 
 Widget _startBtn(BuildContext context) {
   return SizedBox(
@@ -178,34 +145,7 @@ Widget _startBtn(BuildContext context) {
   );
 }
 
-class _IntroPageState2 extends State<IntroPage2> {
-  //判斷一般模式或視覺辨識
-  bool NormalMode = false;
-  //判斷上肢或下肢
-  bool UpMode = true;
-  //判斷二頭或三角
-  bool TwoHead = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _asyncMethod();
-  }
-
-  _asyncMethod() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? normalmode = prefs.getBool('normalmode');
-    bool? upmode = prefs.getBool('upmode');
-    bool? twohead = prefs.getBool('twohead');
-
-    setState(
-      () {
-        NormalMode = normalmode!;
-        UpMode = upmode!;
-        TwoHead = twohead!;
-      },
-    );
-  }
+class _TrainingIntroPageState extends State<TrainingIntroPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -218,9 +158,7 @@ class _IntroPageState2 extends State<IntroPage2> {
               const SizedBox(height: 70),
               _tutorialScreen(context),
               const SizedBox(height: 30),
-              // _CurrentAngle(),
               const SizedBox(height: 10),
-              // _ResetZero(context),
               const SizedBox(height: 70),
               _startBtn(context),
             ],
@@ -235,11 +173,11 @@ class _IntroPageState2 extends State<IntroPage2> {
       backgroundColor: secondColor,
       centerTitle: true,
       elevation: 0,
-      title: const Text('運動流程'),
+      title: const Text("訓練教學"),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {
-          Navigator.pushReplacementNamed(context, Main.routeName);
+          Navigator.pushNamed(context, Main.routeName);
         },
       ),
     );

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sport_app/theme/color.dart';
 
-showAlertDialog(
+Future<void> showAlertDialog(
   context, {
   title = '提示',
   message = '執行錯誤',
-}) {
+}) async {
   // Init
   AlertDialog dialog = AlertDialog(
     title: Text(title),
@@ -21,7 +21,7 @@ showAlertDialog(
     ],
   );
 
-  showGeneralDialog(
+   await showGeneralDialog(
     context: context,
     pageBuilder: (context, anim1, anim2) {
       return Wrap();
