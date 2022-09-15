@@ -69,6 +69,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    _loadPrefs();
+  }
+
+  void _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userIdController.text = prefs.getString("userId") ?? "";
+    });
   }
 
   @override
