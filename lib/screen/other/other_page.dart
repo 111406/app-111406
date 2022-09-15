@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
 import 'package:sport_app/screen/login/login.dart';
+import 'package:sport_app/screen/manual/manual.dart';
 import 'package:sport_app/theme/color.dart';
 
 class OtherPage extends StatefulWidget {
@@ -30,7 +31,9 @@ class _OtherPageState extends State<OtherPage> {
           ),
           const SizedBox(height: 10),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushReplacementNamed(context, Manual.routeName);
+            },
             child: Ink(
               height: 48,
               decoration: BoxDecoration(

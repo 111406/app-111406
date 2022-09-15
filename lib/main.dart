@@ -10,6 +10,7 @@ import 'package:sport_app/screen/manual/intropage.dart';
 import 'package:sport_app/screen/OLDPAGES/loadingpage.dart';
 import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
+import 'package:sport_app/screen/manual/manual.dart';
 import 'package:sport_app/screen/prepare/prepare.dart';
 import 'package:sport_app/screen/prepare/prepare2.dart';
 import 'package:sport_app/screen/regitster/register.dart';
@@ -83,6 +84,7 @@ class MyApp extends StatelessWidget {
           (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
       routes: {
         Main.routeName: (context) => const Main(),
+        Manual.routeName: (context) => const Manual(),
         ChoosingPage.routeName: (context) => const ChoosingPage(),
         UserInfoPage.routeName: (context) => const UserInfoPage(),
         UserInfoEditPage.routeName: (context) => const UserInfoEditPage(),
