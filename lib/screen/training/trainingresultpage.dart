@@ -1,11 +1,12 @@
 ///訓練結果頁
 
 import 'package:flutter/material.dart';
+import 'package:sport_app/screen/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 class TrainingResultPage extends StatefulWidget {
   const TrainingResultPage({Key? key}) : super(key: key);
-
+  static const String routeName = "/trainresult";
   @override
   State<TrainingResultPage> createState() => _TrainingResultPageState();
 }
@@ -67,7 +68,9 @@ Widget _endBtn(BuildContext context) {
   return SizedBox(
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushReplacementNamed(context, TrainingPage.routeName);
+      },
       child: const Text('結束', style: TextStyle(fontSize: 24)),
       style: ElevatedButton.styleFrom(primary: primaryColor),
     ),

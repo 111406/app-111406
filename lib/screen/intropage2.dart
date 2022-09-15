@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/warmup/warmuppage.dart';
+import 'package:sport_app/screen/warmuppage.dart';
 import 'package:sport_app/theme/color.dart';
 
-class IntroPage extends StatefulWidget {
-  const IntroPage({Key? key}) : super(key: key);
-  static const String routeName = "/intro";
+class IntroPage2 extends StatefulWidget {
+  const IntroPage2({Key? key}) : super(key: key);
+  static const String routeName = "/intro2";
 
   @override
-  State<IntroPage> createState() => _IntroPageState();
+  State<IntroPage2> createState() => _IntroPageState2();
 }
 
 Widget _tutorialScreen(BuildContext context) {
@@ -177,7 +178,35 @@ Widget _startBtn(BuildContext context) {
   );
 }
 
-class _IntroPageState extends State<IntroPage> {
+class _IntroPageState2 extends State<IntroPage2> {
+  //判斷一般模式或視覺辨識
+  bool NormalMode = false;
+  //判斷上肢或下肢
+  bool UpMode = true;
+  //判斷二頭或三角
+  bool TwoHead = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _asyncMethod();
+  }
+
+  _asyncMethod() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? normalmode = prefs.getBool('normalmode');
+    bool? upmode = prefs.getBool('upmode');
+    bool? twohead = prefs.getBool('twohead');
+
+    setState(
+      () {
+        NormalMode = normalmode!;
+        UpMode = upmode!;
+        TwoHead = twohead!;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,7 +235,7 @@ class _IntroPageState extends State<IntroPage> {
       backgroundColor: secondColor,
       centerTitle: true,
       elevation: 0,
-      title: const Text('測試流程'),
+      title: const Text('運動流程'),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {

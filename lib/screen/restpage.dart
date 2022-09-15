@@ -1,24 +1,25 @@
-///熱身頁
-
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
-import 'package:sport_app/model/chart_data.dart';
+import 'package:sport_app/db/model/chart_data.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/prepare/prepare.dart';
+import 'package:sport_app/screen/prepare.dart';
+import 'package:sport_app/screen/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 var _timerStart = false;
 var _displayTimer = 60;
 var _ss = 0;
+var set, settimes;
 
-class WarmupPage extends StatefulWidget {
-  const WarmupPage({Key? key}) : super(key: key);
-  static const String routeName = "/warm";
+class RestPage extends StatefulWidget {
+  const RestPage({Key? key}) : super(key: key);
+  static const String routeName = "/rest";
 
   @override
-  State<WarmupPage> createState() => _WarmupPageState();
+  State<RestPage> createState() => _RestPageState();
 }
 
 Widget _title() {
@@ -64,7 +65,7 @@ Widget _secondLeft(int timer) {
 
 Widget _countNumberTitle() {
   return const Text(
-    '暖身時間',
+    '休息時間',
     style: TextStyle(
       color: primaryColor,
       fontSize: 32,
@@ -75,9 +76,9 @@ Widget _countNumberTitle() {
 
 Widget _warmUpGit() {
   return FadeInImage.assetNetwork(
-    placeholder: 'assets/icon/warmup.gif',
+    placeholder: 'assets/icon/rest.gif',
     image:
-        'https://www.heyueptc.com/heyueptc/6-education/edu_stretch/edu_sports_warm_up/_imagecache/edu_sports%20warm%20up%2003.gif',
+        'https://c.tenor.com/-U7dV-vMdOEAAAAC/%E4%BC%91%E6%81%AF%E4%B8%80%E4%B8%8B-corgi.gif',
   );
 }
 
@@ -101,22 +102,21 @@ Widget _endBtn(BuildContext context) {
   );
 }
 
-class _WarmupPageState extends State<WarmupPage> {
+class _RestPageState extends State<RestPage> {
   FlutterTts flutterTts = FlutterTts();
   var _times = 0, _displayAngle = 0, _startTime = 0, _checkAddNum = 0.0;
   final List<ChartData> _angleList = [];
   final int _timer = 60;
-  late StreamSubscription<AccelerometerEvent> subscription;
 
   @override
   void initState() {
     super.initState();
     _setTimerEvent();
+    _loadPrefs();
   }
 
   @override
   void dispose() {
-    subscription.cancel();
     super.dispose();
   }
 
@@ -147,6 +147,12 @@ class _WarmupPageState extends State<WarmupPage> {
     );
   }
 
+  void _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    set = prefs.getInt("set") ?? 0;
+    settimes = prefs.getInt("settimes") ?? 0;
+  }
+
   ///設置加速度器更新時間
   void setUpdateInterval(int interval) {
     motionSensors.accelerometerUpdateInterval = interval;
@@ -174,7 +180,10 @@ class _WarmupPageState extends State<WarmupPage> {
       if (_displayTimer == 0) {
         timer.cancel();
         _timerStart = false;
-        Navigator.pushReplacementNamed(context, Prepare.routeName);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setInt("settimes", settimes);
+        prefs.setInt("set", set);
+        Navigator.pushReplacementNamed(context, TrainingPage.routeName);
         //測試資料
         // String reqeustData = """
         //     {
@@ -186,7 +195,7 @@ class _WarmupPageState extends State<WarmupPage> {
         //     }
         // """;
         // dynamic response = await HttpRequest()
-        //     .post("${HttpURL.host}/standard/analyze", """{
+        //     .post("${HttpURL.host}/api/standard/analyze", """{
         //       "user_id": "zsda5858sda",
         //       "gender": 0,
         //       "part": $_part,

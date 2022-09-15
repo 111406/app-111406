@@ -86,7 +86,7 @@ Widget _startBtn(BuildContext context) {
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, TestPage2.routeName);
+        Navigator.pushReplacementNamed(context, TestPage2.routeName);
       },
       child: const Text('開始', style: TextStyle(fontSize: 24)),
       style: ElevatedButton.styleFrom(primary: primaryColor),
