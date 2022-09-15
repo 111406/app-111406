@@ -12,9 +12,8 @@ import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/prepare/prepare2.dart';
 import 'package:sport_app/theme/color.dart';
-import 'package:sport_app/utils/http_request.dart';
 
-TrainingPart _part = TrainingPart.quadriceps;
+TrainingPart _part = TrainingPart.biceps;
 var _timerStart = false;
 var _ss = 0;
 
@@ -191,12 +190,8 @@ class _TestPageState extends State<TestPage> {
 
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch =
-        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
-            .floor();
-    var roll =
-        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
-            .floor();
+    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
+    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
 
     _checkPart(_part, pitch, roll);
   }

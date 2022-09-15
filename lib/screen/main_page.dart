@@ -31,8 +31,10 @@ class _MainState extends State<Main> {
     _loadStates();
   }
 
+  bool checkComplete = false;
   void _loadStates() async {
     final prefs = await SharedPreferences.getInstance();
+    prefs.remove("trainingPart");
     final todoList = <String>[];
     final userId = prefs.getString("userId");
     await HttpRequest().get('${HttpURL.host}/target/$userId').then((response) {
@@ -43,11 +45,19 @@ class _MainState extends State<Main> {
           todoList.add(json.encode(todo));
         }
         prefs.setStringList("todoList", todoList);
+        // TODO 訓練表部分待調整
+        prefs.setString("userTodo", todoList[0]);
         prefs.setBool(AppConfig.CHECK_TRAINING, true);
       } else {
+        checkComplete = true;
         prefs.setBool(AppConfig.CHECK_TRAINING, false);
       }
     });
+    if (checkComplete) {
+      prefs.setBool(AppConfig.TRAINING_FINISH, true);
+    } else {
+      prefs.setBool(AppConfig.TRAINING_FINISH, false);
+    }
 
     await HttpRequest().get('${HttpURL.host}/user/$userId').then((response) {
       var height = response['data']['height'];

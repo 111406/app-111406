@@ -70,11 +70,14 @@ class _HomePageState extends State<HomePage> {
                     child: InkWell(
                       onTap: () async {
                         final prefs = await SharedPreferences.getInstance();
-                        if (prefs.getBool(AppConfig.CHECK_TRAINING)!) {
-                          Navigator.pushReplacementNamed(
-                              context, ChoosingPage.routeName);
-                        } else {
+                        bool checkTraining = prefs.getBool(AppConfig.CHECK_TRAINING)!;
+                        bool trainingFinish = prefs.getBool(AppConfig.TRAINING_FINISH)!;
+                        if (checkTraining && !trainingFinish) {
+                          Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
+                        } else if (!checkTraining) {
                           showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
+                        } else {
+                          showAlertDialog(context, message: "您目前的訓練已完成，請等候下次的新任務喔！");
                         }
                       },
                       child: Ink(child: trainingBtn()),

@@ -4,21 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
+import 'package:sport_app/screen/choosing/choosinghand.dart';
 import 'package:sport_app/screen/forgot_password/forgotpassword.dart';
 import 'package:sport_app/screen/forgot_password/forgotpassword02.dart';
 import 'package:sport_app/screen/manual/intropage.dart';
 import 'package:sport_app/screen/OLDPAGES/loadingpage.dart';
 import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
+import 'package:sport_app/screen/manual/training_intropage.dart';
 import 'package:sport_app/screen/manual/manual.dart';
 import 'package:sport_app/screen/prepare/prepare.dart';
 import 'package:sport_app/screen/prepare/prepare2.dart';
 import 'package:sport_app/screen/regitster/register.dart';
 import 'package:sport_app/screen/regitster/register_next.dart';
+import 'package:sport_app/screen/restpage.dart';
 import 'package:sport_app/screen/testing/testpage.dart';
 import 'package:sport_app/screen/testing/testpage2.dart';
 import 'package:sport_app/screen/result/testresultpage.dart';
 import 'package:sport_app/screen/training/trainingpage.dart';
+import 'package:sport_app/screen/OLDPAGES/trainingresultpage.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
@@ -104,6 +108,10 @@ class MyApp extends StatelessWidget {
         TrainingPage.routeName: (context) => const TrainingPage(),
         WarmupPage.routeName: (context) => const WarmupPage(),
         ChangePassword.routeName: (context) => const ChangePassword(),
+        TrainingIntroPage.routeName: (context) => const TrainingIntroPage(),
+        ChoosingHandPage.routeName: (context) => const ChoosingHandPage(),
+        TrainingResultPage.routeName: (context) => const TrainingResultPage(),
+        RestPage.routeName: (context) => const RestPage(),
       },
       builder: EasyLoading.init(),
     );

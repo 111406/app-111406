@@ -256,6 +256,7 @@ class _TestPageState2 extends State<TestPage2> {
         String userId = prefs.getString("userId")!;
         timer.cancel();
         _timerStart = false;
+        // TODO wrap in object
         String quadricepsReqeustData = """
             {
               "user_id": "$userId",

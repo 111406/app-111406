@@ -4,13 +4,13 @@ class TrainingPart {
   const TrainingPart._(this.string, this.code);
 
   ///二頭肌
-  static const biceps = TrainingPart._('biceps', 0);
+  static const biceps = TrainingPart._('二頭肌', 0);
 
   ///三角肌
-  static const deltoid = TrainingPart._('deltoid', 1);
+  static const deltoid = TrainingPart._('三角肌', 1);
 
   ///股四頭肌
-  static const quadriceps = TrainingPart._('quadriceps', 2);
+  static const quadriceps = TrainingPart._('股四頭肌', 2);
 
   static const values = [biceps, deltoid, quadriceps];
 

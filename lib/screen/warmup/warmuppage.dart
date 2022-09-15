@@ -4,9 +4,11 @@ import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/model/chart_data.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/prepare/prepare.dart';
+import 'package:sport_app/screen/training/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 var _timerStart = false;
@@ -76,8 +78,7 @@ Widget _countNumberTitle() {
 Widget _warmUpGit() {
   return FadeInImage.assetNetwork(
     placeholder: 'assets/icon/warmup.gif',
-    image:
-        'https://www.heyueptc.com/heyueptc/6-education/edu_stretch/edu_sports_warm_up/_imagecache/edu_sports%20warm%20up%2003.gif',
+    image: 'https://www.heyueptc.com/heyueptc/6-education/edu_stretch/edu_sports_warm_up/_imagecache/edu_sports%20warm%20up%2003.gif',
   );
 }
 
@@ -171,28 +172,16 @@ class _WarmupPageState extends State<WarmupPage> {
       setState(() {
         _displayTimer;
       });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? part = prefs.getInt("trainingPart");
       if (_displayTimer == 0) {
         timer.cancel();
         _timerStart = false;
-        Navigator.pushReplacementNamed(context, Prepare.routeName);
-        //測試資料
-        // String reqeustData = """
-        //     {
-        //       "user_id": "zsda5858sda",
-        //       "part": $_part,
-        //       "type": $_type,
-        //       "times": "$_times",
-        //       "angles": ${jsonEncode(_angleList)}
-        //     }
-        // """;
-        // dynamic response = await HttpRequest()
-        //     .post("${HttpURL.host}/standard/analyze", """{
-        //       "user_id": "zsda5858sda",
-        //       "gender": 0,
-        //       "part": $_part,
-        //       "age": 100,
-        //       "times": $_times
-        //   }""");
+        if (part != null) {
+          Navigator.pushNamed(context, TrainingPage.routeName);
+        } else {
+          Navigator.pushNamed(context, Prepare.routeName);
+        }
       }
       if (_ss == 1) {
         timer.cancel();
