@@ -89,9 +89,9 @@ class _OtherPageState extends State<OtherPage> {
             onTap: () async {
               Navigator.pushReplacementNamed(context, LoginPage.routeName);
               SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setString("userId", '');
+              // prefs.setString("userId", '');
               prefs.setString("token", '');
-              prefs.clear();
+              // prefs.clear();
             },
             child: Ink(
               height: 48,
