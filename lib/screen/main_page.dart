@@ -64,14 +64,10 @@ class _MainState extends State<Main> {
 
   _asyncMethod() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? returnMainPage = 0;
-    returnMainPage = prefs.getInt('returnMainPage');
-    if (returnMainPage == 1) {
-      setState(() {
-        _currentIndex = returnMainPage!;
-        returnMainPage = 0;
-      });
-    }
+    int returnMainPage = prefs.getInt('returnMainPage') ?? 0;
+    setState(() {
+      _currentIndex = returnMainPage;
+    });
     prefs.remove('returnMainPage');
   }
 
