@@ -36,7 +36,7 @@ Widget textField({
             prefixIcon: Icon(icon, color: primaryColor),
             //提示字
             hintText: hintText,
-            hintStyle: const TextStyle(color: primaryColor),
+            hintStyle: const TextStyle(color: textColor),
             //框框
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: primaryColor, width: 1),

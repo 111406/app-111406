@@ -1,9 +1,15 @@
+///主頁面
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/model/user_todo.dart';
 import 'package:sport_app/screen/home/home.dart';
 import 'package:sport_app/screen/other/other_page.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/app_config.dart';
+import 'package:sport_app/utils/http_request.dart';
 
 class Main extends StatefulWidget {
   const Main({Key? key}) : super(key: key);
@@ -22,18 +28,46 @@ class _MainState extends State<Main> {
     super.initState();
     _currentIndex = 0;
     _asyncMethod();
+    _loadStates();
+  }
+
+  void _loadStates() async {
+    final prefs = await SharedPreferences.getInstance();
+    final todoList = <String>[];
+    final userId = prefs.getString("userId");
+    await HttpRequest().get('${HttpURL.host}/target/$userId').then((response) {
+      final dataList = response['data'];
+      if (dataList != false) {
+        for (var data in response['data']) {
+          var todo = UserTodo.fromJson(data);
+          todoList.add(json.encode(todo));
+        }
+        prefs.setStringList("todoList", todoList);
+        prefs.setBool(AppConfig.CHECK_TRAINING, true);
+      } else {
+        prefs.setBool(AppConfig.CHECK_TRAINING, false);
+      }
+    });
+
+    await HttpRequest().get('${HttpURL.host}/user/$userId').then((response) {
+      var height = response['data']['height'];
+      var weight = response['data']['weight'];
+      var birth = response['data']['birthday'];
+      var gender = response['data']['gender'];
+
+      prefs.setDouble("height", height);
+      prefs.setDouble("weight", weight);
+      prefs.setString("birth", birth);
+      prefs.setString("gender", gender);
+    });
   }
 
   _asyncMethod() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? returnMainPage = 0;
-    returnMainPage = prefs.getInt('returnMainPage');
-    if (returnMainPage == 1) {
-      setState(() {
-        _currentIndex = returnMainPage!;
-        returnMainPage = 0;
-      });
-    }
+    int returnMainPage = prefs.getInt('returnMainPage') ?? 0;
+    setState(() {
+      _currentIndex = returnMainPage;
+    });
     prefs.remove('returnMainPage');
   }
 

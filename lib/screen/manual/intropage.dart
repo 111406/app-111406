@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/warmuppage.dart';
+import 'package:sport_app/screen/warmup/warmuppage.dart';
 import 'package:sport_app/theme/color.dart';
 
 class IntroPage extends StatefulWidget {
@@ -179,34 +178,6 @@ Widget _startBtn(BuildContext context) {
 }
 
 class _IntroPageState extends State<IntroPage> {
-  //判斷一般模式或視覺辨識
-  bool NormalMode = false;
-  //判斷上肢或下肢
-  bool UpMode = true;
-  //判斷二頭或三角
-  bool TwoHead = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _asyncMethod();
-  }
-
-  _asyncMethod() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? normalmode = prefs.getBool('normalmode');
-    bool? upmode = prefs.getBool('upmode');
-    bool? twohead = prefs.getBool('twohead');
-
-    setState(
-      () {
-        NormalMode = normalmode!;
-        UpMode = upmode!;
-        TwoHead = twohead!;
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

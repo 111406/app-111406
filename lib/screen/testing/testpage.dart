@@ -1,18 +1,20 @@
+///二頭肌測試頁
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/db/model/chart_data.dart';
+import 'package:sport_app/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
-import 'package:sport_app/screen/prepare2.dart';
 import 'package:sport_app/screen/main_page.dart';
+import 'package:sport_app/screen/prepare/prepare2.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/http_request.dart';
 
-int _part = 0, _type = 0;
+TrainingPart _part = TrainingPart.quadriceps;
 var _timerStart = false;
 var _ss = 0;
 
@@ -115,7 +117,7 @@ Widget _endBtn(BuildContext context) {
     child: GestureDetector(
       onLongPress: () {
         _ss = 1;
-        Navigator.pushReplacementNamed(context, Main.routeName);
+        Navigator.pushNamed(context, Main.routeName);
       },
       child: const Text(
         '長按結束',
@@ -144,7 +146,6 @@ class _TestPageState extends State<TestPage> {
   void initState() {
     super.initState();
     _setTimerEvent();
-    _loadPrefs();
     subscription =
         motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
@@ -188,12 +189,6 @@ class _TestPageState extends State<TestPage> {
     );
   }
 
-  void _loadPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    _part = (prefs.getInt("part") ?? 0);
-    _type = (prefs.getInt("type") ?? 0);
-  }
-
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
     var pitch =
@@ -203,10 +198,7 @@ class _TestPageState extends State<TestPage> {
         (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
             .floor();
 
-    //可能需要例外處理
-    TrainingPart? part = TrainingPart.parse(_part);
-
-    _checkPart(part!, pitch, roll);
+    _checkPart(_part, pitch, roll);
   }
 
   ///區分訓練部位
@@ -253,8 +245,6 @@ class _TestPageState extends State<TestPage> {
 
   ///設定倒數計時器
   void _setTimerEvent() {
-    Timer? _timer1;
-    late double _progress;
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
     Timer.periodic(
@@ -262,26 +252,24 @@ class _TestPageState extends State<TestPage> {
       (timer) async {
         _displayTimer = _timer - timer.tick;
         if (_displayTimer == 0) {
+          final prefs = await SharedPreferences.getInstance();
+          String userId = prefs.getString("userId")!;
           timer.cancel();
           _timerStart = false;
-          // TODO 需載入登入資訊，待修改
+          // TODO wrap in object
           String reqeustData = """
             {
-              "user_id": "zsda5858sda",
-              "part": $_part,
+              "user_id": "$userId",
+              "part": ${_part.code},
               "times": $_times,
               "age": 100,
               "gender": 0,
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-          Navigator.pushReplacementNamed(context, Prepare2.routeName);
-          // dynamic response =
-          //     await HttpRequest().post("${HttpURL.host}/api/record", reqeustData);
-          // Navigator.pushReplacementNamed(context, Prepare2.routeName, arguments: {
-          //   'data': response["data"],
-          //   'angles': jsonEncode(_angleList)
-          // });
+          prefs.setString(TrainingPart.biceps.string, reqeustData);
+
+          Navigator.pushNamed(context, Prepare2.routeName);
         }
         if (_ss == 1) {
           timer.cancel();

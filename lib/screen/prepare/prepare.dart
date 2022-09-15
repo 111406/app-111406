@@ -1,18 +1,20 @@
+///二頭肌測試準備頁
+
 import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
-import 'package:sport_app/db/model/chart_data.dart';
-import 'package:sport_app/screen/testpage2.dart';
+import 'package:sport_app/model/chart_data.dart';
+import 'package:sport_app/screen/testing/testpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
-class Prepare2 extends StatefulWidget {
-  const Prepare2({Key? key}) : super(key: key);
-  static const String routeName = "/prepare2";
+class Prepare extends StatefulWidget {
+  const Prepare({Key? key}) : super(key: key);
+  static const String routeName = "/prepare";
 
   @override
-  State<Prepare2> createState() => _PrepareState2();
+  State<Prepare> createState() => _PrepareState();
 }
 
 Widget _title() {
@@ -24,9 +26,12 @@ Widget _title() {
         child: Text(
           '肌動GO',
           style: TextStyle(
-              color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+            color: primaryColor,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      )
+      ),
     ],
   );
 }
@@ -35,20 +40,26 @@ Widget _countNumberTitle() {
   return const Text(
     '下一個動作',
     style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
 Widget _poseTitle() {
   return const Text(
-    '座椅深蹲',
+    '二頭肌彎舉',
     style: TextStyle(
-        color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+      color: primaryColor,
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 
 Widget _tutorialScreen(BuildContext context) {
-  //一般模式 深蹲教學
+  //一般模式 二頭肌教學
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -57,15 +68,15 @@ Widget _tutorialScreen(BuildContext context) {
         height: MediaQuery.of(context).size.height / 2.5,
         children: [
           Image.network(
-            'https://img.edh.tw/c1/1/734/22770752080_b243f771c7.jpg',
+            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
             fit: BoxFit.cover,
           ),
           Image.network(
-            'https://img.edh.tw/c2/6/5748/22770749660_e00feb3e74.jpg',
+            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
             fit: BoxFit.cover,
           ),
           Image.network(
-            'https://img.edh.tw/c1/1/734/22770752080_b243f771c7.jpg',
+            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
             fit: BoxFit.cover,
           ),
         ],
@@ -84,7 +95,7 @@ Widget _startBtn(BuildContext context) {
     width: MediaQuery.of(context).size.width / 1.5,
     child: ElevatedButton(
       onPressed: () {
-        Navigator.pushReplacementNamed(context, TestPage2.routeName);
+        Navigator.pushReplacementNamed(context, TestPage.routeName);
       },
       child: const Text('開始', style: TextStyle(fontSize: 24)),
       style: ElevatedButton.styleFrom(primary: primaryColor),
@@ -92,7 +103,7 @@ Widget _startBtn(BuildContext context) {
   );
 }
 
-class _PrepareState2 extends State<Prepare2> {
+class _PrepareState extends State<Prepare> {
   FlutterTts flutterTts = FlutterTts();
   final List<ChartData> _angleList = [];
   late StreamSubscription<AccelerometerEvent> subscription;

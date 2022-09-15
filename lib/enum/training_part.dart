@@ -14,16 +14,14 @@ class TrainingPart {
 
   static const values = [biceps, deltoid, quadriceps];
 
-  static TrainingPart? parse(int value) {
+  static TrainingPart parse(int value) {
     switch (value) {
       case 0:
         return TrainingPart.biceps;
       case 1:
         return TrainingPart.deltoid;
-      case 2:
-        return TrainingPart.quadriceps;
       default:
-        throw Exception("Invalid TrainingPart value");
+        return TrainingPart.quadriceps;
     }
   }
 

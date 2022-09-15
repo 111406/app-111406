@@ -2,28 +2,28 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/change_password/change_password.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
-import 'package:sport_app/screen/forgotpassword.dart';
-import 'package:sport_app/screen/intropage.dart';
-import 'package:sport_app/screen/intropage2.dart';
-import 'package:sport_app/screen/loadingpage.dart';
+import 'package:sport_app/screen/forgot_password/forgotpassword.dart';
+import 'package:sport_app/screen/forgot_password/forgotpassword02.dart';
+import 'package:sport_app/screen/manual/intropage.dart';
+import 'package:sport_app/screen/OLDPAGES/loadingpage.dart';
 import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
+import 'package:sport_app/screen/manual/manual.dart';
+import 'package:sport_app/screen/prepare/prepare.dart';
+import 'package:sport_app/screen/prepare/prepare2.dart';
 import 'package:sport_app/screen/regitster/register.dart';
 import 'package:sport_app/screen/regitster/register_next.dart';
-import 'package:sport_app/screen/testpage.dart';
-import 'package:sport_app/screen/testpage2.dart';
-import 'package:sport_app/screen/testresultpage.dart';
+import 'package:sport_app/screen/testing/testpage.dart';
+import 'package:sport_app/screen/testing/testpage2.dart';
+import 'package:sport_app/screen/result/testresultpage.dart';
+import 'package:sport_app/screen/training/trainingpage.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:sport_app/screen/prepare.dart';
-import 'package:sport_app/screen/prepare2.dart';
-import 'package:sport_app/screen/warmuppage.dart';
-import 'package:sport_app/screen/trainingpage.dart';
-import 'package:sport_app/screen/trainingresultpage.dart';
-import 'package:sport_app/screen/restpage.dart';
+import 'package:sport_app/screen/warmup/warmuppage.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -78,16 +78,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: '肌動GO',
-      // home: const LoginPage(),
-      // initialRoute: MainPage.routeName,
-      initialRoute: TrainingPage.routeName,
-      // (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
+      home: const LoginPage(),
+      //initialRoute: MainPage.routeName,
+      initialRoute:
+          (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
       routes: {
         Main.routeName: (context) => const Main(),
+        Manual.routeName: (context) => const Manual(),
         ChoosingPage.routeName: (context) => const ChoosingPage(),
         UserInfoPage.routeName: (context) => const UserInfoPage(),
         UserInfoEditPage.routeName: (context) => const UserInfoEditPage(),
         ForgotPassword.routeName: (context) => const ForgotPassword(),
+        ForgotPassword02.routeName: (context) => const ForgotPassword02(),
         LoadingPage.routeName: (context) => const LoadingPage(),
         Prepare.routeName: (context) => const Prepare(),
         Prepare2.routeName: (context) => const Prepare2(),
@@ -95,15 +97,13 @@ class MyApp extends StatelessWidget {
         RegisterPage.routeName: (context) => const RegisterPage(),
         RegisterPage02.routeName: (context) => const RegisterPage02(),
         IntroPage.routeName: (context) => const IntroPage(),
-        IntroPage2.routeName: (context) => const IntroPage2(),
         TestPage.routeName: (context) => const TestPage(),
         TestPage2.routeName: (context) => const TestPage2(),
         PoseDetectorView.routeName: (context) => const PoseDetectorView(),
         TestResultPage.routeName: (context) => const TestResultPage(),
-        TrainingResultPage.routeName: (context) => const TrainingResultPage(),
         TrainingPage.routeName: (context) => const TrainingPage(),
-        RestPage.routeName: (context) => const RestPage(),
         WarmupPage.routeName: (context) => const WarmupPage(),
+        ChangePassword.routeName: (context) => const ChangePassword(),
       },
       builder: EasyLoading.init(),
     );

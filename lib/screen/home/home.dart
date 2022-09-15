@@ -1,7 +1,12 @@
+///主頁分頁
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
+import 'package:sport_app/screen/manual/intropage.dart';
 import 'package:sport_app/theme/color.dart';
-import 'package:sport_app/screen/intropage.dart';
+import 'package:sport_app/utils/alertdialog.dart';
+import 'package:sport_app/utils/app_config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,6 +16,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var todoList = <String>[];
+
+  @override
+  initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      todoList = prefs.getStringList('todoList') ?? [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,6 +49,18 @@ class _HomePageState extends State<HomePage> {
                     color: secondColor,
                   ),
                 ),
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 30,
+                  ),
+                  height: size.height * 0.4,
+                  child: target(),
+                  decoration: BoxDecoration(
+                    color: primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
                 Positioned(
                   bottom: 10,
                   left: 0,
@@ -36,9 +68,14 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 25),
                     child: InkWell(
-                      onTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, ChoosingPage.routeName);
+                      onTap: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        if (prefs.getBool(AppConfig.CHECK_TRAINING)!) {
+                          Navigator.pushReplacementNamed(
+                              context, ChoosingPage.routeName);
+                        } else {
+                          showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
+                        }
                       },
                       child: Ink(child: trainingBtn()),
                     ),
@@ -50,12 +87,39 @@ class _HomePageState extends State<HomePage> {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 25),
             child: InkWell(
-              onTap: () {
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setInt('introScreen', 1);
                 Navigator.pushReplacementNamed(context, IntroPage.routeName);
               },
               child: Ink(child: testingBtn()),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Container target() {
+    return Container(
+      alignment: Alignment.center,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
         ],
       ),
     );

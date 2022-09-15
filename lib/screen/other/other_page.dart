@@ -1,6 +1,10 @@
+///其他資訊頁
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/change_password/change_password.dart';
 import 'package:sport_app/screen/login/login.dart';
+import 'package:sport_app/screen/manual/manual.dart';
 import 'package:sport_app/theme/color.dart';
 
 class OtherPage extends StatefulWidget {
@@ -27,7 +31,9 @@ class _OtherPageState extends State<OtherPage> {
           ),
           const SizedBox(height: 10),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushReplacementNamed(context, Manual.routeName);
+            },
             child: Ink(
               height: 48,
               decoration: BoxDecoration(
@@ -65,10 +71,11 @@ class _OtherPageState extends State<OtherPage> {
           ),
           const SizedBox(height: 10),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushReplacementNamed(context, ChangePassword.routeName);
+            },
             child: Ink(
               height: 48,
-              // color: Colors.white,
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.grey),
@@ -85,9 +92,9 @@ class _OtherPageState extends State<OtherPage> {
             onTap: () async {
               Navigator.pushReplacementNamed(context, LoginPage.routeName);
               SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setString("userId", '');
+              // prefs.setString("userId", '');
               prefs.setString("token", '');
-              prefs.clear();
+              // prefs.clear();
             },
             child: Ink(
               height: 48,
@@ -113,6 +120,7 @@ class _OtherPageState extends State<OtherPage> {
       centerTitle: true,
       elevation: 0,
       title: const Text('其他'),
+      leading: Container(),
     );
   }
 }

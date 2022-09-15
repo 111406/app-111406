@@ -1,3 +1,5 @@
+///訓練結果頁
+
 import 'package:flutter/material.dart';
 import 'package:sport_app/screen/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
