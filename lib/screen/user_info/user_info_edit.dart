@@ -326,11 +326,15 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   "weight": $weight
                 }""";
 
-                await HttpRequest()
-                    .post('${HttpURL.host}/user/update/$userId', requestData)
-                    .then(
-                      (response) async {},
-                    );
+                try {
+                  await HttpRequest()
+                      .post('${HttpURL.host}/user/update/$userId', requestData)
+                      .then(
+                        (response) async {},
+                      );
+                } on Exception catch (e) {
+                  // TODO
+                }
 
                 showAlertDialog(
                   context,
@@ -372,7 +376,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       context: context,
       initialDate: birth,
       firstDate: DateTime(1900, 01),
-      lastDate: birth,
+      lastDate: DateTime.now(),
     );
 
     if (result != null) {

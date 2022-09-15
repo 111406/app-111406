@@ -32,7 +32,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
     _height = (prefs.getDouble("height") ?? 0).toString();
     _weight = (prefs.getDouble("weight") ?? 0).toString();
     _gender = prefs.getString("gender") ?? "";
-    birth = prefs.getString("birth") ?? "";
+    birth = prefs.getString("birth") ?? "19600101";
   }
 
   @override
