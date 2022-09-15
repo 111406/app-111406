@@ -16,6 +16,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var todoList = <String>[];
+
+  @override
+  initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      todoList = prefs.getStringList('todoList') ?? [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,6 +47,18 @@ class _HomePageState extends State<HomePage> {
                   height: size.height * 0.6 - 70,
                   decoration: const BoxDecoration(
                     color: secondColor,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 30,
+                  ),
+                  height: size.height * 0.4,
+                  child: target(),
+                  decoration: BoxDecoration(
+                    color: primaryColor,
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
                 Positioned(
@@ -68,6 +95,31 @@ class _HomePageState extends State<HomePage> {
               child: Ink(child: testingBtn()),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Container target() {
+    return Container(
+      alignment: Alignment.center,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
+          Text('asdsad'),
         ],
       ),
     );
