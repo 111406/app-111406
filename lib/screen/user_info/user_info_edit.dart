@@ -20,20 +20,20 @@ class UserInfoEditPage extends StatefulWidget {
   State<UserInfoEditPage> createState() => _UserInfoEditPageState();
 }
 
-var userId = '載入中';
-var birth = DateTime(1960, 1, 1);
-var height = '載入中';
-var weight = '載入中';
-// var gender = '載入中';
-
 class _UserInfoEditPageState extends State<UserInfoEditPage> {
   TextEditingController heightController = TextEditingController();
   TextEditingController weightController = TextEditingController();
 
+  var userId = '載入中';
+  var birth = DateTime(1960, 1, 1);
+  var height = '載入中';
+  var weight = '載入中';
+// var gender = '載入中';
+
   @override
   void initState() {
-    _loadPrefs();
     super.initState();
+    _loadPrefs();
   }
 
   @override
@@ -45,12 +45,14 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
 
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    userId = prefs.getString("userId") ?? "";
-    height = (prefs.getDouble("height") ?? 0).toString();
-    weight = (prefs.getDouble("weight") ?? 0).toString();
-    // gender = prefs.getString("gender") ?? "";
-    var _b = prefs.getString("birth") ?? "";
-    birth = DateTime.parse(_b);
+    setState(() {
+      userId = prefs.getString("userId") ?? "";
+      height = (prefs.getDouble("height") ?? 0).toString();
+      weight = (prefs.getDouble("weight") ?? 0).toString();
+      // gender = prefs.getString("gender") ?? "";
+      var _b = prefs.getString("birth") ?? "";
+      birth = DateTime.parse(_b);
+    });
   }
 
   heightChange(BuildContext context) {
@@ -125,10 +127,11 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
 
     // Show the dialog
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return dialog;
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return dialog;
+      },
+    );
   }
 
   @override
@@ -341,6 +344,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   title: '修改成功',
                   message: '',
                 );
+
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setInt('returnMainPage', 1);
                 Timer(const Duration(seconds: 2), () {
@@ -348,6 +352,15 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                 });
               },
             ),
+            const SizedBox(height: 10),
+            mainBtn(
+              text: '取消',
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setInt('returnMainPage', 1);
+                Navigator.pushReplacementNamed(context, Main.routeName);
+              },
+            )
           ],
         ),
       ),
