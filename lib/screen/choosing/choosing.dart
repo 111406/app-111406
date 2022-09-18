@@ -284,6 +284,9 @@ class _ChoosingPageState extends State<ChoosingPage> {
       if (userTodo.actualTimes[part]['times'] >= totalTimes) {
         showAlertDialog(context, message: "滑牆深蹲訓練已完成！");
       } else {
+        prefs.setInt("times", userTodo.targetTimes[part]['times']);
+        prefs.setInt("set", userTodo.targetTimes[part]['set']);
+        prefs.setInt("total", totalTimes);
         Navigator.pushReplacementNamed(context, TrainingIntroPage.routeName);
       }
     }
