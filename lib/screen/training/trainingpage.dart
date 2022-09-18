@@ -191,18 +191,16 @@ class _TrainingPageState extends State<TrainingPage> {
     } else {
       showAlertDialog(context, message: "恭喜您已完成本次訓練！").then((value) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        String hand = prefs.getString("trainingHand")!;
+        String hand = prefs.getString("trainingHand") ?? "";
         String userId = prefs.getString("userId")!;
         UserTodo todo = UserTodo.fromJson(jsonDecode(prefs.getString("userTodo")!));
         String targetDate = todo.targetDate;
-        String requestData = """
-          {
-            "part": ${part.value},
-            "hand": "$hand",
-            "times": $totalTimes
-          }
-        """;
-        await HttpRequest().post("${HttpURL.host}/target/$userId/$targetDate", requestData);
+        Map<String, dynamic> requestData = {"part": part.value, "times": totalTimes};
+        if (hand != "") {
+          requestData["hand"] = hand;
+        }
+        
+        await HttpRequest().post("${HttpURL.host}/target/$userId/$targetDate", jsonEncode(requestData));
         prefs.remove("times");
         prefs.remove("set");
         prefs.remove("total");

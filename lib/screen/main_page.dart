@@ -32,31 +32,40 @@ class _MainState extends State<Main> {
   }
 
   bool checkComplete = false;
+  List checkCompleteList = [];
   void _loadStates() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove("trainingPart");
-    final todoList = <String>[];
+    final todoStringList = <String>[];
+    final todoList = <UserTodo>[];
     final userId = prefs.getString("userId");
     await HttpRequest().get('${HttpURL.host}/target/$userId').then((response) {
-      final dataList = response['data'];
-      if (dataList != false) {
+      final dataList = response['data'] as List;
+      if (dataList.isNotEmpty) {
         for (var data in response['data']) {
           var todo = UserTodo.fromJson(data);
-          todoList.add(json.encode(todo));
+          checkCompleteList.add(todo.complete);
+          todoStringList.add(json.encode(todo));
+          todoList.add(todo);
         }
-        prefs.setStringList("todoList", todoList);
+        checkComplete = checkCompleteList.contains(false);
+        prefs.setStringList("todoList", todoStringList);
         // TODO 訓練表部分待調整
-        prefs.setString("userTodo", todoList[0]);
+        if (checkComplete) {
+          prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));
+        }
         prefs.setBool(AppConfig.CHECK_TRAINING, true);
       } else {
+        prefs.remove("todoList");
+        prefs.remove("userTodo");
         checkComplete = true;
         prefs.setBool(AppConfig.CHECK_TRAINING, false);
       }
     });
     if (checkComplete) {
-      prefs.setBool(AppConfig.TRAINING_FINISH, true);
-    } else {
       prefs.setBool(AppConfig.TRAINING_FINISH, false);
+    } else {
+      prefs.setBool(AppConfig.TRAINING_FINISH, true);
     }
 
     await HttpRequest().get('${HttpURL.host}/user/$userId').then((response) {
