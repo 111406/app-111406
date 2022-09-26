@@ -104,10 +104,9 @@ Widget _endBtn(BuildContext context) {
 
 class _WarmupPageState extends State<WarmupPage> {
   FlutterTts flutterTts = FlutterTts();
-  var _times = 0, _displayAngle = 0, _startTime = 0, _checkAddNum = 0.0;
+  var displayAngle = 0, _startTime = 0;
   final List<ChartData> _angleList = [];
   final int _timer = 60;
-  late StreamSubscription<AccelerometerEvent> subscription;
 
   @override
   void initState() {
@@ -155,7 +154,7 @@ class _WarmupPageState extends State<WarmupPage> {
       if (_timerStart) {
         int now = DateTime.now().millisecondsSinceEpoch;
         double sec = (now - _startTime) / 1000;
-        var data = ChartData(sec, _displayAngle);
+        var data = ChartData(sec, displayAngle);
         _angleList.add(data);
       }
     });

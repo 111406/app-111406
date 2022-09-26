@@ -40,7 +40,7 @@ class _MainState extends State<Main> {
     final todoList = <UserTodo>[];
     final userId = prefs.getString("userId");
     await HttpRequest().get('${HttpURL.host}/target/$userId').then((response) {
-      final dataList = response['data'] as List;
+      final dataList = (response['data'] ?? []) as List;
       if (dataList.isNotEmpty) {
         for (var data in response['data']) {
           var todo = UserTodo.fromJson(data);

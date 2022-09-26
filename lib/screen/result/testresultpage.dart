@@ -224,38 +224,41 @@ Widget _endBtn(BuildContext context) {
           onPressed: () async {
             final prefs = await SharedPreferences.getInstance();
             String userId = prefs.getString("userId")!;
-            List userTodoList = [];
-            DateTime now = DateTime.now();
-            DateTime startDateTime = now.add(Duration(days: 8 - now.weekday));
-            String startDate = DateFormat('yyyyMMdd').format(startDateTime);
-            String endDate = DateFormat('yyyyMMdd')
-                .format(startDateTime.add(const Duration(days: 28)));
-            for (int i = 0; i < 8; i++) {
-              DateTime targetDateTime = i % 2 == 0
-                  ? startDateTime.add(Duration(days: 7 * (i ~/ 2)))
-                  : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
-              String targetDate = DateFormat('yyyyMMdd').format(targetDateTime);
-              // TODO 目前為預設值，可能須搭配醫師才能做出完整計畫，待修改
-              dynamic userTodo = {
-                "target_date": targetDate,
-                "target_times": [
-                  {"times": 15, "set": 2, "total": 30},
-                  {"times": 8, "set": 1, "total": 8},
-                  {"times": 15, "set": 2, "total": 30}
-                ],
-                "complete": false
-              };
-              userTodoList.add(userTodo);
+
+            // 確認是否還有訓練未做完，有的話就不會新增訓練計劃表
+            final responseData = await HttpRequest().get("${HttpURL.host}/target/existed/$userId");
+            bool checkExisted = responseData["data"];
+            if (!checkExisted) {
+              List userTodoList = [];
+              DateTime now = DateTime.now();
+              DateTime startDateTime = now.add(Duration(days: 8 - now.weekday));
+              String startDate = DateFormat('yyyyMMdd').format(startDateTime);
+              String endDate = DateFormat('yyyyMMdd').format(startDateTime.add(const Duration(days: 28)));
+              for (int i = 0; i < 8; i++) {
+                DateTime targetDateTime =
+                    i % 2 == 0 ? startDateTime.add(Duration(days: 7 * (i ~/ 2))) : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
+                String targetDate = DateFormat('yyyyMMdd').format(targetDateTime);
+                // TODO 目前為預設值，做資料分析才能做出完整計畫，待調整
+                dynamic userTodo = {
+                  "target_date": targetDate,
+                  "target_times": [
+                    {"times": 15, "set": 2, "total": 30},
+                    {"times": 8, "set": 1, "total": 8},
+                    {"times": 15, "set": 2, "total": 30}
+                  ],
+                  "complete": false
+                };
+                userTodoList.add(userTodo);
+              }
+              Target target = Target(
+                userId,
+                startDate,
+                endDate,
+                userTodoList,
+              );
+              await HttpRequest().post("${HttpURL.host}/target", jsonEncode(target.toJson()));
             }
-            Target target = Target(
-              userId,
-              startDate,
-              endDate,
-              userTodoList,
-            );
-            // TODO 需要確認有沒有完整結束上一個訓練才能傳新的訓練表
-            await HttpRequest()
-                .post("${HttpURL.host}/target", jsonEncode(target.toJson()));
+
             Navigator.pushReplacementNamed(context, Main.routeName);
           },
           child: const Text(
