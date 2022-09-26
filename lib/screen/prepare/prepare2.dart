@@ -1,10 +1,6 @@
 ///座椅深蹲測試準備頁
 
-import 'dart:async';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
-import 'package:motion_sensors/motion_sensors.dart';
-import 'package:sport_app/model/chart_data.dart';
 import 'package:sport_app/screen/testing/testpage2.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -95,9 +91,6 @@ Widget _startBtn(BuildContext context) {
 }
 
 class _PrepareState2 extends State<Prepare2> {
-  FlutterTts flutterTts = FlutterTts();
-  final List<ChartData> _angleList = [];
-  late StreamSubscription<AccelerometerEvent> subscription;
 
   @override
   void initState() {
@@ -106,7 +99,6 @@ class _PrepareState2 extends State<Prepare2> {
 
   @override
   void dispose() {
-    subscription.cancel();
     super.dispose();
   }
 
@@ -134,11 +126,4 @@ class _PrepareState2 extends State<Prepare2> {
       ),
     );
   }
-
-  ///設置加速度器更新時間
-
-  var period = const Duration(seconds: 1);
-
-  ///設定倒數計時器
-
 }
