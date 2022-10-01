@@ -2,20 +2,27 @@ import 'package:sport_app/enum/training_part.dart';
 
 class Record {
   final String? userId;
-  final TrainingPart part;
-  final int times;
+  final TrainingPart? part;
+  final int? times;
   final int? fails;
-  final String testResult;
-  final int pr;
+  final String? testResult;
+  final int? pr;
   final int? createTime;
   final int? difference;
 
-  Record({this.userId, required this.part, required this.times, this.fails, required this.testResult, required this.pr, this.createTime, this.difference});
-
+  Record(
+      {this.userId,
+      this.part,
+      this.times,
+      this.fails,
+      this.testResult,
+      this.pr,
+      this.createTime,
+      this.difference});
 
   Map toJson() => {
         'userId': userId,
-        'part': part.value,
+        'part': part!.value,
         'times': times,
         'fails': fails,
         'testResult': testResult,
