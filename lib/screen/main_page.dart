@@ -8,6 +8,7 @@ import 'package:sport_app/screen/home/home.dart';
 import 'package:sport_app/screen/other/other_page.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/app_config.dart';
 import 'package:sport_app/utils/http_request.dart';
 
@@ -92,9 +93,15 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: pages[_currentIndex],
-      bottomNavigationBar: bottomNavigatorBar(),
+    return WillPopScope(
+      child: Scaffold(
+        body: pages[_currentIndex],
+        bottomNavigationBar: bottomNavigatorBar(),
+      ),
+      onWillPop: () async {
+        showCheckDialog(context, message: "是否離開肌動Go", func: () => exit(0));
+        return false;
+      },
     );
   }
 
