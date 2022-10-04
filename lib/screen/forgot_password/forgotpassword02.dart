@@ -105,7 +105,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
 
                     if (_textFieldIsNotEmpty && _passwordCheck) {
                       try {
-                        await HttpRequest()
+                        await HttpRequest
                             .post('${HttpURL.host}/user/update/password',
                                 requestData)
                             .then(

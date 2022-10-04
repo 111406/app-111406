@@ -325,7 +325,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
                                 "weight": $weight,
                                 "birthday": "$birthday"
                               }""";
-                      await HttpRequest()
+                      await HttpRequest
                           .post('${HttpURL.host}/user/signup', reqeustData)
                           .then((response) {
                         _showAlertDialog(context, response['message']);

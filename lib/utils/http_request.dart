@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpRequest {
-  Future<dynamic> post(String url, String requestData) async {
+  static Future<dynamic> post(String url, String requestData) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
     dynamic result;
@@ -27,7 +27,7 @@ class HttpRequest {
     return result;
   }
 
-  Future<dynamic> get(String url) async {
+  static Future<dynamic> get(String url) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
     dynamic result;
@@ -53,6 +53,6 @@ class HttpRequest {
 
 class HttpURL {
   // static const String host = "https://vaulted-epigram-349713.de.r.appspot.com";
-  // static const String host = "https://backend-111406.onrender.com/api";
-  static const String host = "https://backend-111406.herokuapp.com/api";
+  static const String host = "https://backend-111406.onrender.com/api";
+  // static const String host = "https://backend-111406.herokuapp.com/api";
 }

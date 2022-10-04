@@ -83,7 +83,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 "email": "$email"
                               }""";
                             if (_countdownTime == 0 && email.isNotEmpty) {
-                              await HttpRequest()
+                              await HttpRequest
                                   .post(
                                       '${HttpURL.host}/mail/code', requestData)
                                   .then(
@@ -145,7 +145,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                     if (email.isNotEmpty && optCode.isNotEmpty) {
                       try {
-                        await HttpRequest()
+                        await HttpRequest
                             .post('${HttpURL.host}/mail/validate', requestData)
                             .then(
                               (response) async {},

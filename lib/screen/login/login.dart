@@ -188,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                           //讀取結束
                           final prefs = await SharedPreferences.getInstance();
                           prefs.clear();
-                          await HttpRequest()
+                          await HttpRequest
                               .post('${HttpURL.host}/user/login', requestData)
                               .then(
                             (response) async {
