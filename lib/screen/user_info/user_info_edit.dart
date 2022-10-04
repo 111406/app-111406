@@ -139,229 +139,229 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: appBar(),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-            Container(
-              alignment: Alignment.center,
-              child: const Icon(
-                Icons.account_circle_rounded,
-                color: Color(0xffB5C0BF),
-                size: 100,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              userId,
-              style: const TextStyle(
-                fontSize: 30,
-                color: textColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 30),
-            Container(
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      '出生年月日',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                Container(
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.account_circle_rounded,
+                    color: Color(0xffB5C0BF),
+                    size: 100,
                   ),
-                  InkWell(
-                    onTap: _datePicker,
-                    child: Container(
-                      child: Text(
-                        DateFormat('yyyy/MM/dd').format(birth),
-                        style: const TextStyle(
-                          fontSize: 22,
-                          color: editTextColor,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  userId,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Container(
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          '出生年月日',
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      alignment: Alignment.center,
-                    ),
-                  ),
-                ],
-              ),
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 20, right: 15),
-              constraints: const BoxConstraints(maxHeight: 56),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border:
-                    Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
-              ),
-            ),
-            // const SizedBox(height: 10),
-            // Container(
-            //   child: Row(
-            //     children: [
-            //       const Expanded(
-            //         child: Text(
-            //           '性別',
-            //           style: TextStyle(
-            //             fontSize: 22,
-            //             color: textColor,
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //         ),
-            //       ),
-            //       TextButton(
-            //         child: const Text('男'),
-            //         onPressed: () {},
-            //       ),
-            //       TextButton(
-            //         child: const Text('女'),
-            //         onPressed: () {},
-            //       )
-            //     ],
-            //   ),
-            //   alignment: Alignment.centerLeft,
-            //   padding: const EdgeInsets.only(left: 20, right: 15),
-            //   margin: const EdgeInsets.only(left: 20, right: 20),
-            //   constraints: const BoxConstraints(maxHeight: 56),
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(5),
-            //     border: Border.all(
-            //         color: const Color.fromARGB(255, 225, 225, 225)),
-            //   ),
-            // ),
-            const SizedBox(height: 10),
-            Container(
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      '身高(公分)',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
+                      InkWell(
+                        onTap: _datePicker,
+                        child: Container(
+                          child: Text(
+                            DateFormat('yyyy/MM/dd').format(birth),
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: editTextColor,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  InkWell(
-                    onTap: () {
-                      heightChange(context);
-                    },
-                    child: Text(
-                      height.toString(),
-                      style: const TextStyle(
-                        fontSize: 22,
-                        color: editTextColor,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 20, right: 15),
+                  constraints: const BoxConstraints(maxHeight: 56),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+                  ),
+                ),
+                // const SizedBox(height: 10),
+                // Container(
+                //   child: Row(
+                //     children: [
+                //       const Expanded(
+                //         child: Text(
+                //           '性別',
+                //           style: TextStyle(
+                //             fontSize: 22,
+                //             color: textColor,
+                //             fontWeight: FontWeight.bold,
+                //           ),
+                //         ),
+                //       ),
+                //       TextButton(
+                //         child: const Text('男'),
+                //         onPressed: () {},
+                //       ),
+                //       TextButton(
+                //         child: const Text('女'),
+                //         onPressed: () {},
+                //       )
+                //     ],
+                //   ),
+                //   alignment: Alignment.centerLeft,
+                //   padding: const EdgeInsets.only(left: 20, right: 15),
+                //   margin: const EdgeInsets.only(left: 20, right: 20),
+                //   constraints: const BoxConstraints(maxHeight: 56),
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(5),
+                //     border: Border.all(
+                //         color: const Color.fromARGB(255, 225, 225, 225)),
+                //   ),
+                // ),
+                const SizedBox(height: 10),
+                Container(
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          '身高(公分)',
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 20, right: 15),
-              constraints: const BoxConstraints(maxHeight: 56),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border:
-                    Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      '體重(公斤)',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
+                      InkWell(
+                        onTap: () {
+                          heightChange(context);
+                        },
+                        child: Text(
+                          height.toString(),
+                          style: const TextStyle(
+                            fontSize: 22,
+                            color: editTextColor,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  InkWell(
-                    onTap: () {
-                      weightChange(context);
-                    },
-                    child: Text(
-                      weight.toString(),
-                      style: const TextStyle(
-                        fontSize: 22,
-                        color: editTextColor,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 20, right: 15),
+                  constraints: const BoxConstraints(maxHeight: 56),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          '體重(公斤)',
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
+                      InkWell(
+                        onTap: () {
+                          weightChange(context);
+                        },
+                        child: Text(
+                          weight.toString(),
+                          style: const TextStyle(
+                            fontSize: 22,
+                            color: editTextColor,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 20, right: 15),
-              constraints: const BoxConstraints(maxHeight: 56),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border:
-                    Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
-              ),
-            ),
-            const SizedBox(height: 60),
-            mainBtn(
-              text: "完成",
-              onPressed: () async {
-                String birthday = DateFormat('yyyyMMdd').format(birth);
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 20, right: 15),
+                  constraints: const BoxConstraints(maxHeight: 56),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+                  ),
+                ),
+                const SizedBox(height: 60),
+                mainBtn(
+                  text: "完成",
+                  onPressed: () async {
+                    String birthday = DateFormat('yyyyMMdd').format(birth);
 
-                String requestData = """{
+                    String requestData = """{
                   "birthday": "$birthday",
                   "height": $height,
                   "weight": $weight
                 }""";
 
-                try {
-                  await HttpRequest()
-                      .post('${HttpURL.host}/user/update/$userId', requestData)
-                      .then(
-                        (response) async {},
-                      );
-                } on Exception catch (e) {
-                  // TODO
-                }
+                    try {
+                      await HttpRequest.post('${HttpURL.host}/user/update/$userId', requestData).then(
+                            (response) async {},
+                          );
+                    } on Exception catch (e) {
+                      // TODO
+                    }
 
-                showAlertDialog(
-                  context,
-                  title: '修改成功',
-                  message: '',
-                );
+                    showAlertDialog(
+                      context,
+                      title: '修改成功',
+                      message: '',
+                    );
 
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.setInt('returnMainPage', 1);
-                Timer(const Duration(seconds: 2), () {
-                  Navigator.pushReplacementNamed(context, Main.routeName);
-                });
-              },
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    await prefs.setInt('returnMainPage', 1);
+                    Timer(const Duration(seconds: 2), () {
+                      Navigator.pushReplacementNamed(context, Main.routeName);
+                    });
+                  },
+                ),
+                const SizedBox(height: 10),
+                mainBtn(
+                  text: '取消',
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    await prefs.setInt('returnMainPage', 1);
+                    Navigator.pushReplacementNamed(context, Main.routeName);
+                  },
+                )
+              ],
             ),
-            const SizedBox(height: 10),
-            mainBtn(
-              text: '取消',
-              onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.setInt('returnMainPage', 1);
-                Navigator.pushReplacementNamed(context, Main.routeName);
-              },
-            )
-          ],
+          ),
         ),
       ),
     );
