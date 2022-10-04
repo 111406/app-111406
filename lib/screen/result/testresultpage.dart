@@ -207,7 +207,7 @@ Widget _endBtn(BuildContext context) {
             String userId = prefs.getString("userId")!;
 
             // 確認是否還有訓練未做完，有的話就不會新增訓練計劃表
-            final responseData = await HttpRequest().get("${HttpURL.host}/target/existed/$userId");
+            final responseData = await HttpRequest.get("${HttpURL.host}/target/existed/$userId");
             bool checkExisted = responseData["data"];
             if (!checkExisted) {
               List userTodoList = [];
@@ -237,7 +237,7 @@ Widget _endBtn(BuildContext context) {
                 endDate,
                 userTodoList,
               );
-              await HttpRequest().post("${HttpURL.host}/target", jsonEncode(target.toJson()));
+              await HttpRequest.post("${HttpURL.host}/target", jsonEncode(target.toJson()));
             }
 
             Navigator.pushReplacementNamed(context, Main.routeName);
