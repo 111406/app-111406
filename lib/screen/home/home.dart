@@ -70,14 +70,19 @@ class _HomePageState extends State<HomePage> {
                     child: InkWell(
                       onTap: () async {
                         final prefs = await SharedPreferences.getInstance();
-                        bool checkTraining = prefs.getBool(AppConfig.CHECK_TRAINING)!;
-                        bool trainingFinish = prefs.getBool(AppConfig.TRAINING_FINISH)!;
-                        if (checkTraining && !trainingFinish) {
-                          Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
-                        } else if (!checkTraining) {
-                          showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
-                        } else {
-                          showAlertDialog(context, message: "您目前的訓練已完成，請等候下次的新任務喔！");
+                        final trainingState = prefs.getString("trainingState");
+                        switch (trainingState) {
+                          case AppConfig.CANNOT_TRAINING:
+                            showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
+                            break;
+                          case AppConfig.TRAINING_FINISH:
+                            showAlertDialog(context, message: "您目前的訓練已完成，請等候下次的新任務喔！");
+                            break;
+                          case AppConfig.WAITING_TRAINING:
+                            showAlertDialog(context, message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
+                            break;
+                          default:
+                            Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
                         }
                       },
                       child: Ink(child: trainingBtn()),
@@ -168,8 +173,7 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -216,8 +220,7 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
