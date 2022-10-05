@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpRequest {
-  static Future<dynamic> post(String url, String requestData) async {
+  Future<dynamic> post(String url, String requestData) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
     dynamic result;
@@ -17,6 +17,8 @@ class HttpRequest {
         .then((response) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
       result = responseJson;
+      // ignore: avoid_print
+      print(result);
       if (response.statusCode >= 400) {
         throw Exception(result["message"]);
       }
@@ -27,7 +29,7 @@ class HttpRequest {
     return result;
   }
 
-  static Future<dynamic> get(String url) async {
+  Future<dynamic> get(String url) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
     dynamic result;
@@ -124,6 +126,6 @@ class GetAccountBalanceHttpRequest {
 
 class HttpURL {
   // static const String host = "https://vaulted-epigram-349713.de.r.appspot.com";
-  static const String host = "https://backend-111406.onrender.com/api";
-  // static const String host = "https://backend-111406.herokuapp.com/api";
+  static const String host = "https://backend-111406.herokuapp.com/api";
+  // static const host = "http://127.0.0.1:5000/api";
 }
