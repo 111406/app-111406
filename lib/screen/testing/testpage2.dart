@@ -268,11 +268,11 @@ class _TestPageState2 extends State<TestPage2> {
             }
         """;
         String bicepsRequestData = prefs.getString(TrainingPart.biceps.string)!;
-        dynamic bicepsResponse = await HttpRequest()
+        dynamic bicepsResponse = await HttpRequest
             .post("${HttpURL.host}/record", bicepsRequestData);
         dynamic bicepsData = jsonEncode(bicepsResponse['data']);
 
-        dynamic quadricepsResponse = await HttpRequest()
+        dynamic quadricepsResponse = await HttpRequest
             .post("${HttpURL.host}/record", quadricepsReqeustData);
         dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
         prefs.remove(TrainingPart.biceps.string);

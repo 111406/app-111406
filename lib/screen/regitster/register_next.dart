@@ -339,7 +339,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
                                 "eth_password": "$privateKey",
                                 "eth_sum": $sum
                               }""";
-                      await HttpRequest()
+                      await HttpRequest
                           .post('${HttpURL.host}/user/signup', reqeustData)
                           .then((response) {
                         _showAlertDialog(context, response['message']);

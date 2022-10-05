@@ -32,11 +32,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     final _userId = prefs.getString("userId");
-    await HttpRequest().get('${HttpURL.host}/user/$_userId').then((response) {
-      // ignore: avoid_print
-      print(response.toString());
-      var height = response['data']['height'];
-      var weight = response['data']['weight'];
+    await HttpRequest.get('${HttpURL.host}/user/$_userId').then((response) {
+      var height = response['data']['height'] ?? .0;
+      var weight = response['data']['weight'] ?? .0;
       var birth = response['data']['birthday'];
       var gender = response['data']['gender'];
       var ethsum = response['data']['eth_sum'];

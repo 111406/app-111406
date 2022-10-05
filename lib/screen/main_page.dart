@@ -1,6 +1,7 @@
 ///主頁面
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/model/user_todo.dart';
@@ -8,6 +9,7 @@ import 'package:sport_app/screen/home/home.dart';
 import 'package:sport_app/screen/other/other_page.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/app_config.dart';
 import 'package:sport_app/utils/http_request.dart';
 
@@ -35,13 +37,14 @@ class _MainState extends State<Main> {
   List checkCompleteList = [];
   void _loadStates() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove("trainingPart");
+    await prefs.remove("trainingState");
     final todoStringList = <String>[];
     final todoList = <UserTodo>[];
     final userId = prefs.getString("userId");
-    await HttpRequest().get('${HttpURL.host}/target/$userId').then((response) {
-      final dataList = (response['data'] ?? []) as List;
+    await HttpRequest.get('${HttpURL.host}/target/$userId').then((response) async {
+      final dataList = response['data'] as List;
       if (dataList.isNotEmpty) {
+        // 有本周訓練資料
         for (var data in response['data']) {
           var todo = UserTodo.fromJson(data);
           checkCompleteList.add(todo.complete);
@@ -54,31 +57,40 @@ class _MainState extends State<Main> {
         if (checkComplete) {
           prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));
         }
-        prefs.setBool(AppConfig.CHECK_TRAINING, true);
       } else {
-        prefs.remove("todoList");
-        prefs.remove("userTodo");
         checkComplete = true;
-        prefs.setBool(AppConfig.CHECK_TRAINING, false);
+        // 檢查是不是剛做完檢測，因為不會馬上指派任務
+        await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
+          final target = response['data'];
+          prefs.remove("todoList");
+          prefs.remove("userTodo");
+          if (target != null) {
+            // 如果是剛檢測完會跑到這
+            prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
+          } else {
+            // 代表還沒做檢測
+            prefs.setString("trainingState", AppConfig.CANNOT_TRAINING);
+          }
+        });
       }
     });
-    if (checkComplete) {
-      prefs.setBool(AppConfig.TRAINING_FINISH, false);
-    } else {
-      prefs.setBool(AppConfig.TRAINING_FINISH, true);
+    if (!checkComplete) {
+      // 進到這裡表示本周任務已完成
+      prefs.setString("trainingState", AppConfig.TRAINING_FINISH);
     }
 
-    await HttpRequest().get('${HttpURL.host}/user/$userId').then((response) {
-      var height = response['data']['height'];
-      var weight = response['data']['weight'];
-      var birth = response['data']['birthday'];
-      var gender = response['data']['gender'];
+    // TODO check
+    // await HttpRequest.get('${HttpURL.host}/user/$userId').then((response) {
+    //   var height = response['data']['height'] ?? .0;
+    //   var weight = response['data']['weight'] ?? .0;
+    //   var birth = response['data']['birthday'];
+    //   var gender = response['data']['gender'];
 
-      prefs.setDouble("height", height);
-      prefs.setDouble("weight", weight);
-      prefs.setString("birth", birth);
-      prefs.setString("gender", gender);
-    });
+    //   prefs.setDouble("height", height);
+    //   prefs.setDouble("weight", weight);
+    //   prefs.setString("birth", birth);
+    //   prefs.setString("gender", gender);
+    // });
   }
 
   _asyncMethod() async {
@@ -92,9 +104,15 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: pages[_currentIndex],
-      bottomNavigationBar: bottomNavigatorBar(),
+    return WillPopScope(
+      child: Scaffold(
+        body: pages[_currentIndex],
+        bottomNavigationBar: bottomNavigatorBar(),
+      ),
+      onWillPop: () async {
+        showCheckDialog(context, message: "是否離開肌動Go", func: () => exit(0));
+        return false;
+      },
     );
   }
 

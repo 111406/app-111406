@@ -116,7 +116,6 @@ class _WarmupPageState extends State<WarmupPage> {
 
   @override
   void dispose() {
-    subscription.cancel();
     super.dispose();
   }
 

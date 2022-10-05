@@ -212,13 +212,10 @@ class _TrainingPageState extends State<TrainingPage> {
         UserTodo todo =
             UserTodo.fromJson(jsonDecode(prefs.getString("userTodo")!));
         String targetDate = todo.targetDate;
-        String requestData = """
-          {
-            "part": ${part.value},
-            "hand": "$hand",
-            "times": $totalTimes
-          }
-        """;
+        Map<String, dynamic> requestData = {"part": part.value, "times": totalTimes}; 
+        if (hand != "") {
+          requestData["hand"] = hand;
+        }
 
         await HttpRequest()
             .get('${HttpURL.host}/user/$userId')
@@ -256,6 +253,17 @@ class _TrainingPageState extends State<TrainingPage> {
 
           
         });
+        
+        
+        await HttpRequest.post("${HttpURL.host}/target/$userId/$targetDate", jsonEncode(requestData));
+        
+        
+        prefs.remove("times");
+        prefs.remove("set");
+        prefs.remove("total");
+        prefs.remove("trainingPart");
+        prefs.remove("trainingHand");
+        Navigator.pushReplacementNamed(context, Main.routeName);
       });
     }
   }
