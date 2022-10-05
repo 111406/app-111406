@@ -159,8 +159,7 @@ class RegisterPage02 extends StatefulWidget {
 class _RegisterPage02State extends State<RegisterPage02> {
   String dropdownValue = '男';
 
-  late String userId, password, email, walletAddress, privateKey;
-  late int sum;
+  late String userId, password, email;
   bool initBirth = false;
   DateTime birth = DateTime(1960, 1, 1);
   final heightController = TextEditingController();
@@ -308,17 +307,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
                 mainBtn(
                   text: '完成 / 返回登入',
                   onPressed: () async {
-                        // add account  
-                        Object accountrawData = {};
-                    
-                        await AddAccountHttpRequest()
-                            .post(accountrawData)
-                            .then((response) {
-                              walletAddress = response['walletAddress'];
-                              privateKey = response['privateKey'];
-                              sum = int.parse(response['sum']);
-                        });
-                        final height = heightController.text,
+                    final height = heightController.text,
                         weight = weightController.text,
                         birthday = DateFormat('yyyyMMdd').format(birth);
 
@@ -334,10 +323,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
                                 "role": 100,
                                 "height": $height,
                                 "weight": $weight,
-                                "birthday": "$birthday",
-                                "eth_account": "$walletAddress",
-                                "eth_password": "$privateKey",
-                                "eth_sum": $sum
+                                "birthday": "$birthday"
                               }""";
                       await HttpRequest()
                           .post('${HttpURL.host}/user/signup', reqeustData)

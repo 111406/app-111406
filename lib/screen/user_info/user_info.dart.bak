@@ -21,7 +21,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
   var _height = '載入中';
   var _weight = '載入中';
   var _gender = '載入中';
-  var _ethsum = '載入中';
 
   @override
   void initState() {
@@ -33,19 +32,15 @@ class _UserInfoPageState extends State<UserInfoPage> {
     final prefs = await SharedPreferences.getInstance();
     final _userId = prefs.getString("userId");
     await HttpRequest().get('${HttpURL.host}/user/$_userId').then((response) {
-      // ignore: avoid_print
-      print(response.toString());
       var height = response['data']['height'];
       var weight = response['data']['weight'];
       var birth = response['data']['birthday'];
       var gender = response['data']['gender'];
-      var ethsum = response['data']['eth_sum'];
 
       prefs.setDouble("height", height);
       prefs.setDouble("weight", weight);
       prefs.setString("birth", birth);
       prefs.setString("gender", gender);
-      prefs.setString("ethsum", ethsum.toString());
     });
 
     setState(() {
@@ -54,7 +49,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
       _weight = (prefs.getDouble("weight") ?? 0).toString();
       _gender = prefs.getString("gender") ?? "";
       birth = prefs.getString("birth") ?? "19600101";
-      _ethsum = prefs.getString("ethsum") ?? "";
     });
   }
 
@@ -222,44 +216,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
               ),
             ),
-            const SizedBox(height: 10),
-            Container(
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      '代幣數量',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    // (gender == 0) ? '男' : '女',
-                    _ethsum.toString(),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      color: textColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 20, right: 15),
-              constraints: const BoxConstraints(maxHeight: 56),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border:
-                    Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
-              ),
-            ),
-            
             const SizedBox(height: 60),
-            
             mainBtn(
               text: '編輯',
               onPressed: () {
