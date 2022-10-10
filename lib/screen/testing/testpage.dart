@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
@@ -249,6 +250,10 @@ class _TestPageState extends State<TestPage> {
         if (_displayTimer == 0) {
           final prefs = await SharedPreferences.getInstance();
           String userId = prefs.getString("userId")!;
+          
+          String birthday = prefs.getString("birthday")!;
+          final birthdayDatetime = DateTime.parse(birthday);
+          DateDuration duration = AgeCalculator.age(birthdayDatetime);
 
           String genderString = prefs.getString("gender")!;
           final gender = Gender.parse(genderString);
@@ -261,7 +266,7 @@ class _TestPageState extends State<TestPage> {
               "user_id": "$userId",
               "part": ${_part.code},
               "times": $_times,
-              "age": 100,
+              "age": ${duration.years},
               "gender": ${gender.value},
               "angles": ${jsonEncode(_angleList)}
             }
