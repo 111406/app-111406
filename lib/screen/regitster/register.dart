@@ -6,9 +6,10 @@ import 'package:sport_app/screen/components/app_logo.dart';
 import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/screen/components/page_title.dart';
 import 'package:sport_app/screen/components/textfield_inputbox.dart';
-import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/regitster/register_next.dart';
 import 'package:sport_app/utils/alertdialog.dart';
+
+import 'register_component.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -212,6 +213,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
 
   @override
+  void initState() {
+    _loadState();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     userIdController.dispose();
     passwordController.dispose();
@@ -275,15 +282,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     String confirmPassword = cpasswordController.text;
                     String email = emailController.text;
 
-                    bool _textFieldIsNotEmpty = userId.isNotEmpty &&
-                        password.isNotEmpty &&
-                        confirmPassword.isNotEmpty &&
-                        email.isNotEmpty;
+                    bool _textFieldIsNotEmpty = userId.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty && email.isNotEmpty;
                     bool _passwordCheck = (password == confirmPassword);
 
                     if (_textFieldIsNotEmpty && _passwordCheck) {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setString("userId", userId);
                       prefs.setString("password", password);
                       prefs.setString("email", email);
@@ -304,18 +307,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                 ),
                 const SizedBox(height: 20),
-                underScoreBtn(
-                  text: '我已有帳號，返回登入',
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, LoginPage.routeName);
-                  },
-                )
+                backToLoginButton(context),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _loadState() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userIdController.text = prefs.getString("userId") ?? "";
+      emailController.text = prefs.getString("email") ?? "";
+    });
   }
 }

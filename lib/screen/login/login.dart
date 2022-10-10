@@ -125,8 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                   text: '忘記密碼',
                   alignment: Alignment.centerRight,
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, ForgotPassword.routeName);
+                    Navigator.pushReplacementNamed(context, ForgotPassword.routeName);
                   },
                 ),
                 const SizedBox(height: 20),
@@ -152,8 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                       final userID = userIdController.text;
                       final password = passwordController.text;
 
-                      bool _textFieldIsNotEmpty =
-                          (userID.isNotEmpty && password.isNotEmpty);
+                      bool _textFieldIsNotEmpty = (userID.isNotEmpty && password.isNotEmpty);
                       if (_textFieldIsNotEmpty) {
                         try {
                           //讀取
@@ -162,8 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                             ..textColor = Colors.white
                             ..progressColor = Colors.white
                             ..maskColor = Colors.white70
-                            ..displayDuration =
-                                const Duration(milliseconds: 1500)
+                            ..displayDuration = const Duration(milliseconds: 1500)
                             ..loadingStyle = EasyLoadingStyle.custom
                             ..indicatorType = EasyLoadingIndicatorType.wave
                             ..maskType = EasyLoadingMaskType.custom
@@ -174,9 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                           _timer1 = Timer.periodic(
                             const Duration(milliseconds: 100),
                             (Timer timer) {
-                              EasyLoading.showProgress(_progress,
-                                  status:
-                                      '${(_progress * 100).toStringAsFixed(0)}%');
+                              EasyLoading.showProgress(_progress, status: '${(_progress * 100).toStringAsFixed(0)}%');
                               _progress += 0.04;
 
                               if (_progress >= 1) {
@@ -188,15 +183,11 @@ class _LoginPageState extends State<LoginPage> {
                           //讀取結束
                           final prefs = await SharedPreferences.getInstance();
                           prefs.clear();
-                          await HttpRequest
-                              .post('${HttpURL.host}/user/login', requestData)
-                              .then(
+                          await HttpRequest.post('${HttpURL.host}/user/login', requestData).then(
                             (response) async {
-                              final prefs =
-                                  await SharedPreferences.getInstance();
+                              final prefs = await SharedPreferences.getInstance();
                               prefs.setString("userId", userId);
-                              Navigator.pushReplacementNamed(
-                                  context, Main.routeName);
+                              Navigator.pushReplacementNamed(context, Main.routeName);
                             },
                           );
                         } on Exception catch (e) {
@@ -219,9 +210,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 underScoreBtn(
                   text: '尚未有帳號，註冊',
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, RegisterPage.routeName);
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.clear();
+                    Navigator.pushReplacementNamed(context, RegisterPage.routeName);
                   },
                 )
               ],
