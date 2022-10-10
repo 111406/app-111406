@@ -1,6 +1,7 @@
 ///註冊第二頁
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
@@ -192,6 +193,8 @@ class _RegisterPage02State extends State<RegisterPage02> {
                 appLogo(),
                 pageTitle('註冊'),
                 const SizedBox(height: 5),
+                  formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
+                  formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
                 Column(
                   children: [
                     textField(
