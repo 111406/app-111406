@@ -32,8 +32,7 @@ Widget _title() {
         opacity: 0.5,
         child: Text(
           '肌動GO',
-          style: TextStyle(
-              color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       )
     ],
@@ -43,24 +42,21 @@ Widget _title() {
 Widget _setLeftTitle() {
   return const Text(
     '剩餘組數',
-    style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+    style: TextStyle(color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );
 }
 
 Widget _setLeft(int sets) {
   return Text(
     sets.toString(),
-    style: const TextStyle(
-        color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
+    style: const TextStyle(color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
   );
 }
 
 Widget _countNumberTitle() {
   return const Text(
     '剩餘次數',
-    style: TextStyle(
-        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+    style: TextStyle(color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );
 }
 
@@ -84,10 +80,7 @@ Widget _endBtn(BuildContext context) {
       },
       child: const Text(
         '長按結束',
-        style: TextStyle(
-            color: primaryColor,
-            fontSize: 20,
-            decoration: TextDecoration.underline),
+        style: TextStyle(color: primaryColor, fontSize: 20, decoration: TextDecoration.underline),
       ),
     ),
   );
@@ -110,8 +103,7 @@ class _TrainingPageState extends State<TrainingPage> {
     remainingNum = 15;
     todoSet = 1;
     _loadStates();
-    subscription =
-        motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription = motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         _calcAngles(event.x, event.y, event.z);
       });
@@ -130,12 +122,8 @@ class _TrainingPageState extends State<TrainingPage> {
 
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch =
-        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
-            .floor();
-    var roll =
-        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
-            .floor();
+    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
+    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
 
     _checkPart(part, pitch, roll);
   }
@@ -204,60 +192,42 @@ class _TrainingPageState extends State<TrainingPage> {
       prefs.setInt("set", todoSet);
       Navigator.pushReplacementNamed(context, RestPage.routeName);
     } else {
-      showAlertDialog(context, message: "恭喜您已完成本次訓練，獲得代幣1枚！")
-          .then((value) async {
+      showAlertDialog(context, message: "恭喜您已完成本次訓練，獲得代幣1枚！").then((value) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String hand = prefs.getString("trainingHand")!;
         String userId = prefs.getString("userId")!;
-        UserTodo todo =
-            UserTodo.fromJson(jsonDecode(prefs.getString("userTodo")!));
+        UserTodo todo = UserTodo.fromJson(jsonDecode(prefs.getString("userTodo")!));
         String targetDate = todo.targetDate;
-        Map<String, dynamic> requestData = {"part": part.value, "times": totalTimes}; 
+        Map<String, dynamic> requestData = {"part": part.value, "times": totalTimes};
         if (hand != "") {
           requestData["hand"] = hand;
         }
 
-        await HttpRequest()
-            .get('${HttpURL.host}/user/$userId')
-            .then((response) async {
-          var ethsum = response['data']['eth_sum'] + 1;
-          ethwallet = response['data']['eth_account'];
+        // TODO 乙太幣後端有錯誤需調整
+        // await HttpRequest.get('${HttpURL.host}/user/$userId').then((response) async {
+        //   var ethsum = response['data']['eth_sum'] + 1;
+        //   ethwallet = response['data']['eth_account'];
 
-          // transcation
-          // ignore: unnecessary_string_interpolations
-          Object rawData = {"walletAddress": "$ethwallet"};
+        //   // transcation
+        //   Object rawData = {"walletAddress": ethwallet};
 
-          await TranscationHttpRequest().post(rawData).then((response) {
-            
-          });
-          String ethrequestData = """{
-                  "eth_sum": $ethsum
-                }""";
+        //   await HttpRequest.post("${HttpURL.ethHost}/getEthTrade", jsonEncode(rawData));
+        //   String ethrequestData = """{
+        //           "eth_sum": $ethsum
+        //         }""";
 
-          await HttpRequest()
-              .post('${HttpURL.host}/user/ethupdate/$userId', ethrequestData)
-              .then(
-                (response) async {},
-              );
-        });
+        //   await HttpRequest.post('${HttpURL.host}/user/ethupdate/$userId', ethrequestData);
+        // });
         // get eth balance
-        Object getaccountbalancerawData = {"walletAddress": ethwallet};
+        // Object getaccountbalancerawData = {"walletAddress": ethwallet};
 
-        GetAccountBalanceHttpRequest()
-            .post(getaccountbalancerawData)
-            .then((response) async {
-              sleep(const Duration(seconds: 5));
-          // ignore: avoid_print
-          print(int.parse(response) / 1000);
-          nowethsum = (int.parse(response) / 1000).round();
+        // HttpRequest.post("${HttpURL.ethHost}/getAccountBalance", jsonEncode(getaccountbalancerawData)).then((response) async {
+        //   sleep(const Duration(seconds: 5));
+        //   nowethsum = (int.parse(response) / 1000).round();
+        // });
 
-          
-        });
-        
-        
         await HttpRequest.post("${HttpURL.host}/target/$userId/$targetDate", jsonEncode(requestData));
-        
-        
+
         prefs.remove("times");
         prefs.remove("set");
         prefs.remove("total");
