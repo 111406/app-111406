@@ -31,7 +31,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     final _userId = prefs.getString("userId");
-    await HttpRequest().get('${HttpURL.host}/user/$_userId').then((response) {
+    await HttpRequest.get('${HttpURL.host}/user/$_userId').then((response) {
       var height = response['data']['height'];
       var weight = response['data']['weight'];
       var birth = response['data']['birthday'];

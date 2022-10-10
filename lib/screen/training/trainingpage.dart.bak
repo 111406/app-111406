@@ -200,7 +200,7 @@ class _TrainingPageState extends State<TrainingPage> {
           requestData["hand"] = hand;
         }
         
-        await HttpRequest().post("${HttpURL.host}/target/$userId/$targetDate", jsonEncode(requestData));
+        await HttpRequest.post("${HttpURL.host}/target/$userId/$targetDate", jsonEncode(requestData));
         prefs.remove("times");
         prefs.remove("set");
         prefs.remove("total");

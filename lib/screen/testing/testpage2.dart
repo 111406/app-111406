@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
@@ -13,6 +14,8 @@ import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/result/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
+
+import '../../enum/gender.dart';
 
 TrainingPart _part = TrainingPart.quadriceps;
 var _timerStart = false;
@@ -121,10 +124,7 @@ Widget _endBtn(BuildContext context) {
       },
       child: const Text(
         '長按結束',
-        style: TextStyle(
-            color: primaryColor,
-            fontSize: 20,
-            decoration: TextDecoration.underline),
+        style: TextStyle(color: primaryColor, fontSize: 20, decoration: TextDecoration.underline),
       ),
     ),
   );
@@ -145,8 +145,7 @@ class _TestPageState2 extends State<TestPage2> {
   void initState() {
     super.initState();
     _setTimerEvent();
-    subscription =
-        motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription = motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         _calcAngles(event.x, event.y, event.z);
       });
@@ -190,12 +189,8 @@ class _TestPageState2 extends State<TestPage2> {
 
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch =
-        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
-            .floor();
-    var roll =
-        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
-            .floor();
+    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
+    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
 
     _checkPart(_part, pitch, roll);
   }
@@ -254,33 +249,36 @@ class _TestPageState2 extends State<TestPage2> {
       if (_displayTimer == 0) {
         final prefs = await SharedPreferences.getInstance();
         String userId = prefs.getString("userId")!;
+
+        String birthday = prefs.getString("birthday")!;
+        final birthdayDatetime = DateTime.parse(birthday);
+        DateDuration duration = AgeCalculator.age(birthdayDatetime);
+
+        String genderString = prefs.getString("gender")!;
+        final gender = Gender.parse(genderString);
         timer.cancel();
         _timerStart = false;
+
         // TODO wrap in object
         String quadricepsReqeustData = """
             {
               "user_id": "$userId",
               "part": ${_part.code},
               "times": $_times,
-              "age": 100,
-              "gender": 0,
+              "age": ${duration.years},
+              "gender": ${gender.value},
               "angles": ${jsonEncode(_angleList)}
             }
         """;
         String bicepsRequestData = prefs.getString(TrainingPart.biceps.string)!;
-        dynamic bicepsResponse = await HttpRequest
-            .post("${HttpURL.host}/record", bicepsRequestData);
+        dynamic bicepsResponse = await HttpRequest.post("${HttpURL.host}/record", bicepsRequestData);
         dynamic bicepsData = jsonEncode(bicepsResponse['data']);
 
-        dynamic quadricepsResponse = await HttpRequest
-            .post("${HttpURL.host}/record", quadricepsReqeustData);
+        dynamic quadricepsResponse = await HttpRequest.post("${HttpURL.host}/record", quadricepsReqeustData);
         dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
         prefs.remove(TrainingPart.biceps.string);
 
-        Navigator.pushNamed(context, TestResultPage.routeName, arguments: {
-          "bicepsData": bicepsData,
-          "quadricepsData": quadricepsData
-        });
+        Navigator.pushNamed(context, TestResultPage.routeName, arguments: {"bicepsData": bicepsData, "quadricepsData": quadricepsData});
       }
       if (_ss == 1) {
         timer.cancel();

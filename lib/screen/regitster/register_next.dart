@@ -1,8 +1,12 @@
 ///註冊第二頁
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/enum/gender.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
 import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/screen/components/page_title.dart';
@@ -157,7 +161,7 @@ class RegisterPage02 extends StatefulWidget {
 // }
 
 class _RegisterPage02State extends State<RegisterPage02> {
-  String dropdownValue = '男';
+  int genderValue = 0;
 
   late String userId, password, email, walletAddress, privateKey;
   late int sum;
@@ -165,6 +169,7 @@ class _RegisterPage02State extends State<RegisterPage02> {
   DateTime birth = DateTime(1960, 1, 1);
   final heightController = TextEditingController();
   final weightController = TextEditingController();
+  final referenceController = TextEditingController();
 
   @override
   void initState() {
@@ -176,194 +181,143 @@ class _RegisterPage02State extends State<RegisterPage02> {
   void dispose() {
     heightController.dispose();
     weightController.dispose();
+    referenceController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
-            child: Column(
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+        child: Column(
+          children: [
+            appLogo(),
+            pageTitle('註冊'),
+            const SizedBox(height: 5),
+            Column(
               children: [
-                appLogo(),
-                pageTitle('註冊'),
-                const SizedBox(height: 5),
+                textField(
+                  textFieldName: '身高',
+                  hintText: '請輸入身高 (公分)',
+                  icon: Icons.account_box_rounded,
+                  controller: heightController,
+                  formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
+                ),
+                const SizedBox(height: 10),
+                textField(
+                  textFieldName: '體重',
+                  hintText: '請輸入體重 (公斤)',
+                  icon: Icons.account_box_rounded,
+                  controller: weightController,
+                  formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
+                ),
+                const SizedBox(height: 10),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    textField(
-                      textFieldName: '身高',
-                      hintText: '請輸入身高 (公分)',
-                      icon: Icons.account_box_rounded,
-                      controller: heightController,
+                    const Text(
+                      '性別',
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 10),
-                    textField(
-                      textFieldName: '體重',
-                      hintText: '請輸入體重 (公斤)',
-                      icon: Icons.account_box_rounded,
-                      controller: weightController,
-                    ),
-                    const SizedBox(height: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '性別',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.account_box_rounded, color: primaryColor),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: primaryColor, width: 1),
                         ),
-                        const SizedBox(height: 10),
-                        DropdownButtonFormField(
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.account_box_rounded,
-                                color: primaryColor),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor, width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor, width: 1),
-                            ),
-                          ),
-                          value: dropdownValue,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValue = newValue!;
-                            });
-                          },
-                          items:
-                              <String>['男', '女'].map<DropdownMenuItem<String>>(
-                            (String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(
-                                    color: textColor,
-                                    // fontSize: 18,
-                                  ),
-                                ),
-                              );
-                            },
-                          ).toList(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: primaryColor, width: 1),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '生日',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        InkWell(
-                          onTap: _datePicker,
-                          child: Container(
-                            height: 50,
-                            alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.only(left: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: primaryColor),
-                              borderRadius: BorderRadius.circular(5),
+                      ),
+                      value: genderValue,
+                      onChanged: (int? newValue) {
+                        genderValue = newValue!;
+                      },
+                      items: [Gender.male, Gender.female].map<DropdownMenuItem<int>>(
+                        (Gender gender) {
+                          return DropdownMenuItem<int>(
+                            value: gender.value,
+                            child: Text(
+                              gender.string,
+                              style: const TextStyle(
+                                color: textColor,
+                                // fontSize: 18,
+                              ),
                             ),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.account_box_rounded,
-                                    color: primaryColor),
-                                const SizedBox(width: 10),
-                                Text(
-                                  (initBirth)
-                                      ? DateFormat('yyyy / MM / dd')
-                                          .format(birth)
-                                      : '請選擇出生年月日(西元)',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color:
-                                        (initBirth) ? Colors.black : textColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                          );
+                        },
+                      ).toList(),
                     ),
                   ],
                 ),
-                const SizedBox(height: 40),
-                mainBtn(
-                  text: '完成 / 返回登入',
-                  onPressed: () async {
-                        // add account  
-                        Object accountrawData = {};
-                    
-                        await AddAccountHttpRequest()
-                            .post(accountrawData)
-                            .then((response) {
-                              walletAddress = response['walletAddress'];
-                              privateKey = response['privateKey'];
-                              sum = int.parse(response['sum']);
-                        });
-                        final height = heightController.text,
-                        weight = weightController.text,
-                        birthday = DateFormat('yyyyMMdd').format(birth);
-
-                    bool _textFieldIsNotEmpty =
-                        height.isNotEmpty && weight.isNotEmpty;
-                    bool _birthIsNotEmpty = initBirth;
-                    if (_textFieldIsNotEmpty && _birthIsNotEmpty) {
-                      String reqeustData = """{
-                                "user_id": "$userId",
-                                "password": "$password",
-                                "email": "$email",
-                                "gender": ${(dropdownValue == '男') ? 0 : 1},
-                                "role": 100,
-                                "height": $height,
-                                "weight": $weight,
-                                "birthday": "$birthday",
-                                "eth_account": "$walletAddress",
-                                "eth_password": "$privateKey",
-                                "eth_sum": $sum
-                              }""";
-                      await HttpRequest
-                          .post('${HttpURL.host}/user/signup', reqeustData)
-                          .then((response) {
-                        _showAlertDialog(context, response['message']);
-                      });
-                    } else {
-                      showAlertDialog(
-                        context,
-                        title: '輸入框不得為空白',
-                        message: '請重新輸入',
-                      );
-                    }
-                  },
-                ),
-                const SizedBox(height: 20),
-                underScoreBtn(
-                  text: '上一步',
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, RegisterPage.routeName);
-                  },
+                const SizedBox(height: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '生日',
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    InkWell(
+                      onTap: _datePicker,
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: primaryColor),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.account_box_rounded, color: primaryColor),
+                            const SizedBox(width: 10),
+                            Text(
+                              (initBirth) ? DateFormat('yyyy / MM / dd').format(birth) : '請選擇出生年月日(西元)',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: (initBirth) ? Colors.black : textColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ),
+            const SizedBox(height: 10),
+            textField(
+              textFieldName: '推薦人',
+              hintText: '請輸入推薦人 (選填)',
+              icon: Icons.account_box_rounded,
+              controller: referenceController,
+            ),
+            const SizedBox(height: 40),
+            mainBtn(
+              text: '完成 / 返回登入',
+              onPressed: _onPressed,
+            ),
+            const SizedBox(height: 20),
+            underScoreBtn(
+              text: '上一步',
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, RegisterPage.routeName);
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -392,28 +346,47 @@ class _RegisterPage02State extends State<RegisterPage02> {
     }
   }
 
-  // Show AlertDialog
-  void _showAlertDialog(context, message) {
-    // Init
-    AlertDialog dialog = AlertDialog(
-      title: Text(message),
-      actions: [
-        ElevatedButton(
-          child: const Text("確認"),
-          style: ElevatedButton.styleFrom(primary: primaryColor),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, LoginPage.routeName);
-          },
-        ),
-      ],
-    );
+  void _onPressed() async {
+    // add account
+    Object accountrawData = {};
 
-    // Show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return dialog;
-      },
-    );
+    await HttpRequest.post("${HttpURL.ethHost}/addAccount", jsonEncode(accountrawData)).then((response) {
+      walletAddress = response['walletAddress'];
+      privateKey = response['privateKey'];
+      sum = int.parse(response['sum']);
+    });
+    final height = heightController.text,
+        weight = weightController.text,
+        birthday = DateFormat('yyyyMMdd').format(birth),
+        reference = referenceController.text;
+
+    bool _textFieldIsNotEmpty = height.isNotEmpty && weight.isNotEmpty;
+    bool _birthIsNotEmpty = initBirth;
+    if (_textFieldIsNotEmpty && _birthIsNotEmpty) {
+      Map requestData = {
+        "user_id": userId,
+        "password": password,
+        "email": email,
+        "gender": genderValue,
+        "role": 100,
+        "height": height,
+        "weight": weight,
+        "birthday": birthday,
+        "eth_account": walletAddress,
+        "eth_password": privateKey,
+        "eth_sum": sum
+      };
+      if (reference.isNotEmpty) requestData['reference'] = reference;
+
+      final response = await HttpRequest.post('${HttpURL.host}/user/signup', jsonEncode(requestData));
+      showAlertDialog(context, message: response['message'])
+          .then((_) => Navigator.pushNamedAndRemoveUntil(context, LoginPage.routeName, (route) => false));
+    } else {
+      showAlertDialog(
+        context,
+        title: '輸入框不得為空白',
+        message: '請重新輸入',
+      );
+    }
   }
 }

@@ -7,6 +7,7 @@ Widget textField({
   bool obscureText = false,
   IconData? icon,
   TextEditingController? controller,
+  formatter,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,6 +48,7 @@ Widget textField({
             ),
           ),
           controller: controller,
+          inputFormatters: formatter,
         ),
       ),
     ],
