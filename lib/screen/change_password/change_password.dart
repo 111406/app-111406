@@ -58,6 +58,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       hintText: '請輸入舊密碼',
                       icon: Icons.lock,
                       controller: oldPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
                     ),
                     const SizedBox(height: 10),
                     textField(
@@ -66,6 +67,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       hintText: '請輸入新密碼',
                       icon: Icons.lock,
                       controller: newPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
                     ),
                     const SizedBox(height: 10),
                     textField(
@@ -74,6 +76,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       hintText: '確認密碼',
                       icon: Icons.lock,
                       controller: confirmPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
                     ),
                   ],
                 ),
@@ -85,7 +88,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                     final newPassword = newPasswordController.text;
                     final confirmPassword = confirmPasswordController.text;
 
-                    bool _textFieldIsNotEmpty = (oldPassword.isNotEmpty && newPassword.isNotEmpty && confirmPassword.isNotEmpty);
+                    bool _textFieldIsNotEmpty = (oldPassword.isNotEmpty &&
+                        newPassword.isNotEmpty &&
+                        confirmPassword.isNotEmpty);
                     bool _passwordCheck = (newPassword == confirmPassword);
 
                     if (!_textFieldIsNotEmpty) {
@@ -103,7 +108,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                       );
                     }
 
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                     final userId = prefs.getString("userId");
 
                     String requestData = """{
@@ -112,9 +118,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                     }""";
 
                     try {
-                      await HttpRequest.post('${HttpURL.host}/user/update/password/$userId', requestData).then(
-                            (response) async {},
-                          );
+                      await HttpRequest.post(
+                              '${HttpURL.host}/user/update/password/$userId',
+                              requestData)
+                          .then(
+                        (response) async {},
+                      );
                       showAlertDialog(
                         context,
                         title: '修改成功',
@@ -124,11 +133,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                         Navigator.pushReplacementNamed(context, Main.routeName);
                       });
                     } on Exception catch (e) {
-                      showAlertDialog(
-                        context,
-                        title: '修改失敗',
-                        message: e.toString().split(" ")[1]
-                      );
+                      showAlertDialog(context,
+                          title: '修改失敗', message: e.toString().split(" ")[1]);
                     }
                   },
                 ),

@@ -7,6 +7,7 @@ Widget textField({
   bool obscureText = false,
   IconData? icon,
   TextEditingController? controller,
+  keyboardType = TextInputType.text,
   formatter,
 }) {
   return Column(
@@ -25,7 +26,7 @@ Widget textField({
         alignment: Alignment.centerLeft,
         height: 50,
         child: TextField(
-          // keyboardType: TextInputType.number,
+          keyboardType: keyboardType,
           //是否隱藏輸入文字
           obscureText: obscureText,
           //輸入文字的顏色

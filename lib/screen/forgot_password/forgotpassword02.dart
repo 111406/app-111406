@@ -57,6 +57,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                       obscureText: true,
                       icon: Icons.lock,
                       controller: newPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
                     ),
                     const SizedBox(height: 10),
                     textField(
@@ -65,6 +66,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                       obscureText: true,
                       icon: Icons.lock,
                       controller: confirmNewPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
                     ),
                   ],
                 ),
@@ -105,12 +107,12 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
 
                     if (_textFieldIsNotEmpty && _passwordCheck) {
                       try {
-                        await HttpRequest
-                            .post('${HttpURL.host}/user/update/password',
+                        await HttpRequest.post(
+                                '${HttpURL.host}/user/update/password',
                                 requestData)
                             .then(
-                              (response) async {},
-                            );
+                          (response) async {},
+                        );
                         showAlertDialog(
                           context,
                           title: '修改成功',
