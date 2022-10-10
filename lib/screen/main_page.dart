@@ -80,17 +80,19 @@ class _MainState extends State<Main> {
     }
 
     // TODO check
-    // await HttpRequest.get('${HttpURL.host}/user/$userId').then((response) {
-    //   var height = response['data']['height'] ?? .0;
-    //   var weight = response['data']['weight'] ?? .0;
-    //   var birth = response['data']['birthday'];
-    //   var gender = response['data']['gender'];
+    await HttpRequest.get('${HttpURL.host}/user/$userId').then((response) {
+      var height = response['data']['height'] ?? .0;
+      var weight = response['data']['weight'] ?? .0;
+      var birth = response['data']['birthday'];
+      var gender = response['data']['gender'];
+      var ethsum = response['data']['eth_sum'];
 
-    //   prefs.setDouble("height", height);
-    //   prefs.setDouble("weight", weight);
-    //   prefs.setString("birth", birth);
-    //   prefs.setString("gender", gender);
-    // });
+      prefs.setDouble("height", height);
+      prefs.setDouble("weight", weight);
+      prefs.setString("birthday", birth);
+      prefs.setString("gender", gender);
+      prefs.setString("ethsum", ethsum.toString());
+    });
   }
 
   _asyncMethod() async {
