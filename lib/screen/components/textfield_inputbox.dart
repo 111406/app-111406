@@ -7,6 +7,7 @@ Widget textField({
   bool obscureText = false,
   IconData? icon,
   TextEditingController? controller,
+  keyboardType = TextInputType.text,
   formatter,
 }) {
   return Column(
@@ -25,7 +26,7 @@ Widget textField({
         alignment: Alignment.centerLeft,
         height: 50,
         child: TextField(
-          // keyboardType: TextInputType.number,
+          keyboardType: keyboardType,
           //是否隱藏輸入文字
           obscureText: obscureText,
           //輸入文字的顏色
@@ -41,10 +42,16 @@ Widget textField({
             //框框
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: primaryColor, width: 1),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
             //輸入時框框的樣式
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: primaryColor, width: 1),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
           ),
           controller: controller,

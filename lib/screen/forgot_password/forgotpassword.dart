@@ -60,6 +60,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       hintText: '請輸入電子郵件信箱',
                       icon: Icons.mail,
                       controller: emailAddressController,
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 10),
                     textField(
@@ -67,6 +68,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       hintText: '請輸入驗證碼',
                       icon: Icons.lock,
                       controller: optCodeController,
+                      keyboardType: TextInputType.number,
                     ),
                   ],
                 ),
@@ -83,8 +85,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 "email": "$email"
                               }""";
                             if (_countdownTime == 0 && email.isNotEmpty) {
-                              await HttpRequest
-                                  .post(
+                              await HttpRequest.post(
                                       '${HttpURL.host}/mail/code', requestData)
                                   .then(
                                 (response) async {
@@ -145,11 +146,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                     if (email.isNotEmpty && optCode.isNotEmpty) {
                       try {
-                        await HttpRequest
-                            .post('${HttpURL.host}/mail/validate', requestData)
+                        await HttpRequest.post(
+                                '${HttpURL.host}/mail/validate', requestData)
                             .then(
-                              (response) async {},
-                            );
+                          (response) async {},
+                        );
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         prefs.setString("email", email);
