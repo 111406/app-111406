@@ -42,10 +42,16 @@ Widget textField({
             //框框
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: primaryColor, width: 1),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
             //輸入時框框的樣式
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: primaryColor, width: 1),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
           ),
           controller: controller,
