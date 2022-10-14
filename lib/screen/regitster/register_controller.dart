@@ -1,10 +1,9 @@
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:sport_app/enum/gender.dart';
 
 class RegisterController extends GetxController {
   bool hypertension = false, hyperglycemia = false, hyperlipidemia = false;
   bool exerciseHabits = false;
-  Gender gender = Gender.male;
+  bool gender = false;
 
   void setHypertension(bool _hypertension) {
     hypertension = _hypertension;
@@ -27,7 +26,7 @@ class RegisterController extends GetxController {
   }
 
   void setGender(bool _gender) {
-    //TODO gender
+    gender = _gender;
     update();
   }
 }
