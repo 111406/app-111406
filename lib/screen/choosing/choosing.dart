@@ -260,7 +260,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {
-          Navigator.pushNamed(context, Main.routeName);
+          Navigator.pushReplacementNamed(context, Main.routeName);
         },
       ),
     );

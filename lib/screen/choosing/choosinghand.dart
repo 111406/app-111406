@@ -175,7 +175,7 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {
-          Navigator.pushNamed(context, Main.routeName);
+          Navigator.pushReplacementNamed(context, Main.routeName);
         },
       ),
     );

@@ -176,9 +176,9 @@ class _WarmupPageState extends State<WarmupPage> {
         timer.cancel();
         _timerStart = false;
         if (part != null) {
-          Navigator.pushNamed(context, TrainingPage.routeName);
+          Navigator.pushReplacementNamed(context, TrainingPage.routeName);
         } else {
-          Navigator.pushNamed(context, Prepare.routeName);
+          Navigator.pushReplacementNamed(context, Prepare.routeName);
         }
       }
       if (_ss == 1) {
