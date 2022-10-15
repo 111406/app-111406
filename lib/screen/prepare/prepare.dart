@@ -60,25 +60,24 @@ Widget _tutorialScreen(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       ImageSlideshow(
-        width: MediaQuery.of(context).size.width / 1.5,
-        height: MediaQuery.of(context).size.height / 2.5,
+        width: MediaQuery.of(context).size.width / 1.05,
+        height: MediaQuery.of(context).size.height / 1.8,
         children: [
           Image.network(
-            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            //ZERO
+            'https://cdn.discordapp.com/attachments/800700545169883189/1030792104995192872/unknown.png',
             fit: BoxFit.cover,
           ),
           Image.network(
-            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            'https://cdn.discordapp.com/attachments/800700545169883189/1030793521780756551/02.png',
             fit: BoxFit.cover,
           ),
           Image.network(
-            'https://media.gq.com.tw/photos/5fcdfa0ab27ba9fa77ec3274/2:3/w_941,h_1412,c_limit/GettyImages-699086757.jpg',
+            'https://cdn.discordapp.com/attachments/800700545169883189/1030793522183409664/03.png',
             fit: BoxFit.cover,
           ),
         ],
-        onPageChanged: (value) {
-          print('Page changed: $value');
-        },
+        onPageChanged: (value) {},
         autoPlayInterval: 3000,
         isLoop: true,
       ),
@@ -100,7 +99,6 @@ Widget _startBtn(BuildContext context) {
 }
 
 class _PrepareState extends State<Prepare> {
-
   @override
   void initState() {
     super.initState();

@@ -9,6 +9,7 @@ import 'package:sport_app/screen/manual/training_intropage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import '../main_page.dart';
+import '../manual/intropage.dart';
 
 class ChoosingHandPage extends StatefulWidget {
   const ChoosingHandPage({Key? key}) : super(key: key);
@@ -112,7 +113,8 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -159,7 +161,8 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -196,7 +199,8 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
       prefs.setInt("times", userTodo.targetTimes[part]['times']);
       prefs.setInt("set", userTodo.targetTimes[part]['set']);
       prefs.setInt("total", totalTimes);
-      Navigator.pushReplacementNamed(context, TrainingIntroPage.routeName);
+      await prefs.setInt('introScreen', 2);
+      Navigator.pushReplacementNamed(context, IntroPage.routeName);
     }
   }
 
