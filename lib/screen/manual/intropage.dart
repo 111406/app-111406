@@ -77,8 +77,8 @@ class _IntroPageState extends State<IntroPage> {
   bool _mode3 = false;
   bool _mode4 = false;
   //
-  var mode = 4;
-  var introScreen = 4;
+  var mode = 8;
+  var introScreen = 8;
   //控制widget的出現
   bool switchBtnofs = false;
   bool bicepsOfs = true;
@@ -173,7 +173,7 @@ class _IntroPageState extends State<IntroPage> {
                 });
               },
               child: const Text(
-                "上肢",
+                "二頭肌",
                 style: TextStyle(fontSize: 20),
               ),
               style: ElevatedButton.styleFrom(
@@ -203,7 +203,7 @@ class _IntroPageState extends State<IntroPage> {
                 });
               },
               child: const Text(
-                "下肢",
+                "坐蹲",
                 style: TextStyle(fontSize: 20),
               ),
               style: ElevatedButton.styleFrom(
@@ -233,7 +233,7 @@ class _IntroPageState extends State<IntroPage> {
   }
 
   Widget _bicepsTutorialScreen(BuildContext context) {
-    //對應上肢按鈕
+    //對應二頭按鈕
     return Offstage(
       offstage: bicepsOfs,
       child: Row(
@@ -241,19 +241,19 @@ class _IntroPageState extends State<IntroPage> {
         children: [
           ImageSlideshow(
             width: MediaQuery.of(context).size.width / 1.05,
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 1.8,
             children: [
               Image.network(
                 //ZERO
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Z%C3%A9ro.svg/800px-Z%C3%A9ro.svg.png',
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030792104995192872/unknown.png',
                 fit: BoxFit.cover,
               ),
               Image.network(
-                'https://sportsplanetmag-aws.hmgcdn.com/public/article/atl_20190325160036_156.jpg',
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793521780756551/02.png',
                 fit: BoxFit.cover,
               ),
               Image.network(
-                'https://img.edh.tw/c1/1/734/22770752080_b243f771c7.jpg',
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793522183409664/03.png',
                 fit: BoxFit.cover,
               ),
             ],
@@ -269,7 +269,7 @@ class _IntroPageState extends State<IntroPage> {
   Widget _quadricepsTutorialScreen02(
     BuildContext context,
   ) {
-    //對應下肢按鈕
+    //對應坐蹲按鈕
     return Offstage(
       offstage: quadricepsOfs,
       child: Row(
@@ -277,18 +277,14 @@ class _IntroPageState extends State<IntroPage> {
         children: [
           ImageSlideshow(
             width: MediaQuery.of(context).size.width / 1.05,
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 1.8,
             children: [
               Image.network(
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/2.svg/666px-2.svg.png',
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793571558756434/01.png',
                 fit: BoxFit.cover,
               ),
               Image.network(
-                'https://3c.yipee.cc/wp-content/uploads/2019/12/851efa3650781511ee0ac837a5f58918-620x413.jpg',
-                fit: BoxFit.cover,
-              ),
-              Image.network(
-                'https://3c.yipee.cc/wp-content/uploads/2019/12/851efa3650781511ee0ac837a5f58918-620x413.jpg',
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793572078850069/02.png',
                 fit: BoxFit.cover,
               ),
             ],
@@ -312,7 +308,7 @@ class _IntroPageState extends State<IntroPage> {
         children: [
           ImageSlideshow(
             width: MediaQuery.of(context).size.width / 1.05,
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 1.8,
             children: [
               Image.network(
                 //1
@@ -320,12 +316,32 @@ class _IntroPageState extends State<IntroPage> {
                 fit: BoxFit.contain,
               ),
               Image.network(
-                'http://p26.toutiaoimg.com/large/pgc-image/4ab5ff2aaaf04449bfde69db8853a3ad?from=detail&index=1',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793643495268473/02.png',
+                fit: BoxFit.contain,
               ),
               Image.network(
-                'http://p26.toutiaoimg.com/large/pgc-image/4ab5ff2aaaf04449bfde69db8853a3ad?from=detail&index=1',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793643931475988/03.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793644275404870/04.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793644711616572/05.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793645189767249/06.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793645672124446/07.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793646137679913/08.png',
+                fit: BoxFit.contain,
               ),
             ],
             onPageChanged: (value) {},
@@ -348,19 +364,39 @@ class _IntroPageState extends State<IntroPage> {
         children: [
           ImageSlideshow(
             width: MediaQuery.of(context).size.width / 1.05,
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 1.8,
             children: [
               Image.network(
-                'http://p26.toutiaoimg.com/large/pgc-image/4ab5ff2aaaf04449bfde69db8853a3ad?from=detail&index=1',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793723195445278/01.png',
+                fit: BoxFit.contain,
               ),
               Image.network(
-                'http://p26.toutiaoimg.com/large/pgc-image/4ab5ff2aaaf04449bfde69db8853a3ad?from=detail&index=1',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793723581321246/02.png',
+                fit: BoxFit.contain,
               ),
               Image.network(
-                'http://p26.toutiaoimg.com/large/pgc-image/4ab5ff2aaaf04449bfde69db8853a3ad?from=detail&index=1',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793723958808616/03.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793724927672440/04.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793725384867861/05.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793725804298260/06.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793726185979924/07.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/800700545169883189/1030793726584422450/08.png',
+                fit: BoxFit.contain,
               ),
             ],
             onPageChanged: (value) {},
@@ -373,17 +409,21 @@ class _IntroPageState extends State<IntroPage> {
   }
 
   Widget _videoHyperlinkbtn(BuildContext context) {
-    final Uri _url = Uri.parse('https://www.youtube.com/watch?v=i04-9bLb0O0');
+    Uri _url = Uri.parse('https://www.youtube.com/watch?v=QRUh75zgpM4');
+    if (testOfs == false) {
+      _url = Uri.parse('https://www.youtube.com/watch?v=QRUh75zgpM4');
+    }
+    if (trainOfs == false) {
+      _url = Uri.parse('https://www.youtube.com/watch?v=P5uZCj4_X3o');
+    }
     return Offstage(
         offstage: false,
         child: SizedBox(
           width: MediaQuery.of(context).size.width / 1.5,
           child: ElevatedButton(
             onPressed: () {
-              launch(
-                'https://www.youtube.com/watch?v=i04-9bLb0O0',
-                forceSafariVC: true,
-                forceWebView: false,
+              launchUrl(
+                _url,
               );
             },
             child: const Text('影片連結', style: TextStyle(fontSize: 24)),
@@ -399,7 +439,7 @@ class _IntroPageState extends State<IntroPage> {
     try {
       introScreen = prefs.getInt('introScreen')!;
       setState(() {
-        mode = 4;
+        mode = 8;
         switchBtnofs = false;
         mode = introScreen;
         if (mode == 0) {
@@ -417,6 +457,13 @@ class _IntroPageState extends State<IntroPage> {
           quadricepsOfs = true;
         }
         if (mode == 2) {
+          _startBtn1 = false;
+          switchBtnofs = true;
+          bicepsOfs = false;
+          testOfs = true;
+          quadricepsOfs = true;
+        }
+        if (mode == 4) {
           _startBtn1 = false;
           switchBtnofs = true;
           bicepsOfs = true;
@@ -442,7 +489,7 @@ class _IntroPageState extends State<IntroPage> {
         children: [
           Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               _switchCheckbox(),
               const SizedBox(height: 10),
               _bicepsTutorialScreen(context),
@@ -453,11 +500,11 @@ class _IntroPageState extends State<IntroPage> {
               _quadricepsTutorialScreen02(
                 context,
               ),
-              const SizedBox(height: 30),
+
               // _CurrentAngle(),
 
               // _ResetZero(context),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               _startBtn(context),
 
               _videoHyperlinkbtn(context),

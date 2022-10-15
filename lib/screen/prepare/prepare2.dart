@@ -51,19 +51,15 @@ Widget _tutorialScreen(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       ImageSlideshow(
-        width: MediaQuery.of(context).size.width / 1.5,
-        height: MediaQuery.of(context).size.height / 2.5,
+        width: MediaQuery.of(context).size.width / 1.05,
+        height: MediaQuery.of(context).size.height / 1.8,
         children: [
           Image.network(
-            'https://img.edh.tw/c1/1/734/22770752080_b243f771c7.jpg',
+            'https://cdn.discordapp.com/attachments/800700545169883189/1030793571558756434/01.png',
             fit: BoxFit.cover,
           ),
           Image.network(
-            'https://img.edh.tw/c2/6/5748/22770749660_e00feb3e74.jpg',
-            fit: BoxFit.cover,
-          ),
-          Image.network(
-            'https://img.edh.tw/c1/1/734/22770752080_b243f771c7.jpg',
+            'https://cdn.discordapp.com/attachments/800700545169883189/1030793572078850069/02.png',
             fit: BoxFit.cover,
           ),
         ],
@@ -91,7 +87,6 @@ Widget _startBtn(BuildContext context) {
 }
 
 class _PrepareState2 extends State<Prepare2> {
-
   @override
   void initState() {
     super.initState();
