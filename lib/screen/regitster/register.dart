@@ -262,7 +262,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       textField(
                         textFieldName: '單位/機構',
                         hintText: '請輸入現處單位或機構 (選填)',
-                        icon: Icons.account_box_rounded,
+                        icon: Icons.business_center_rounded,
                         controller: institutionController,
                       ),
                       const SizedBox(height: 10),
@@ -361,6 +361,7 @@ class _RegisterPageState extends State<RegisterPage> {
         "isHadExerciseHabits": controller.exerciseHabits,
       };
 
+      // TODO 欄位驗證
       Map requestData = {
         "user_id": userId,
         "password": password,
