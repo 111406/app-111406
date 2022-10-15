@@ -19,6 +19,7 @@ import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
 
+import '../../enum/gender.dart';
 import 'components/register_component.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -37,7 +38,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final cpasswordController = TextEditingController();
   final emailController = TextEditingController();
 
-  // int genderValue = 0;
   late String userId, password, email, walletAddress, privateKey;
   late int sum;
   bool initBirth = false;
@@ -66,8 +66,6 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  String? gender;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,8 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: SingleChildScrollView(
                 // physics: const NeverScrollableScrollPhysics(),
                 child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
                   child: Column(
                     children: [
                       appLogo(),
@@ -96,10 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             icon: Icons.account_box_rounded,
                             controller: userIdController,
                             keyboardType: TextInputType.name,
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[a-zA-Z0-9]"))
-                            ],
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]"))],
                           ),
                           const SizedBox(height: 10),
                           textField(
@@ -188,19 +182,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   child: Row(
                                     children: [
-                                      const Icon(Icons.account_box_rounded,
-                                          color: primaryColor),
+                                      const Icon(Icons.account_box_rounded, color: primaryColor),
                                       const SizedBox(width: 10),
                                       Text(
-                                        (initBirth)
-                                            ? DateFormat('yyyy / MM / dd')
-                                                .format(birth)
-                                            : '請選擇出生年月日(西元)',
+                                        (initBirth) ? DateFormat('yyyy / MM / dd').format(birth) : '請選擇出生年月日(西元)',
                                         style: TextStyle(
                                           fontSize: 18,
-                                          color: (initBirth)
-                                              ? Colors.black
-                                              : textColor,
+                                          color: (initBirth) ? Colors.black : textColor,
                                         ),
                                       ),
                                     ],
@@ -218,10 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
                             ),
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9.]"))
-                            ],
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
                           ),
                           const SizedBox(height: 10),
                           textField(
@@ -229,12 +214,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             hintText: '請輸入體重 (公斤)',
                             icon: Icons.account_box_rounded,
                             controller: weightController,
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9.]"))
-                            ],
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
                           ),
                         ],
                       ),
@@ -260,21 +241,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             child: Column(
                               children: [
-                                radioButton(
-                                    text: '高血壓',
-                                    groupValue: controller.hypertension,
-                                    updateGroupValue:
-                                        controller.setHypertension),
-                                radioButton(
-                                    text: '高血糖',
-                                    groupValue: controller.hyperglycemia,
-                                    updateGroupValue:
-                                        controller.setHyperglycemia),
-                                radioButton(
-                                    text: '高血脂',
-                                    groupValue: controller.hyperlipidemia,
-                                    updateGroupValue:
-                                        controller.setHyperlipidemia),
+                                radioButton(text: '高血壓', groupValue: controller.hypertension, updateGroupValue: controller.setHypertension),
+                                radioButton(text: '高血糖', groupValue: controller.hyperglycemia, updateGroupValue: controller.setHyperglycemia),
+                                radioButton(text: '高血脂', groupValue: controller.hyperlipidemia, updateGroupValue: controller.setHyperlipidemia),
                               ],
                             ),
                           ),
@@ -287,10 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           border: Border.all(color: primaryColor),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: radioButton(
-                            text: '運動習慣',
-                            groupValue: controller.exerciseHabits,
-                            updateGroupValue: controller.setExerciseHabits),
+                        child: radioButton(text: '運動習慣', groupValue: controller.exerciseHabits, updateGroupValue: controller.setExerciseHabits),
                       ),
                       const SizedBox(height: 10),
                       textField(
@@ -359,12 +325,8 @@ class _RegisterPageState extends State<RegisterPage> {
         reference = referenceController.text,
         institution = institutionController.text;
 
-    bool _textFieldIsNotEmpty = userId.isNotEmpty &&
-        password.isNotEmpty &&
-        confirmPassword.isNotEmpty &&
-        email.isNotEmpty &&
-        height.isNotEmpty &&
-        weight.isNotEmpty;
+    bool _textFieldIsNotEmpty =
+        userId.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty && email.isNotEmpty && height.isNotEmpty && weight.isNotEmpty;
 
     // bool _threeHighIsNotNull = (hypertension != null) &&
     //     (hypertension != null) &&
@@ -384,44 +346,43 @@ class _RegisterPageState extends State<RegisterPage> {
     // add account
     Object accountrawData = {};
 
-    await HttpRequest.post(
-            "${HttpURL.ethHost}/addAccount", jsonEncode(accountrawData))
-        .then((response) {
+    await HttpRequest.post("${HttpURL.ethHost}/addAccount", jsonEncode(accountrawData)).then((response) {
       walletAddress = response['walletAddress'];
       privateKey = response['privateKey'];
       sum = int.parse(response['sum']);
     });
 
     if (_textFieldIsNotEmpty && _birthIsNotEmpty) {
+      Gender gender = controller.gender ? Gender.female : Gender.male;
+      Map otherDetail = {
+        "isHadHypertension": controller.hypertension,
+        "isHadHyperglycemia": controller.hyperglycemia,
+        "isHadHyperlipidemia": controller.hyperlipidemia,
+        "isHadExerciseHabits": controller.exerciseHabits,
+      };
+
       Map requestData = {
         "user_id": userId,
         "password": password,
         "email": email,
-        // "gender": controller.gender,
-        "role": 100,
+        "gender": gender.value,
         "height": height,
         "weight": weight,
         "birthday": birthday,
         "eth_account": walletAddress,
         "eth_password": privateKey,
-        "eth_sum": sum
+        "eth_sum": sum,
+        "other_detail": jsonEncode(otherDetail)
       };
-      // TODO
-      // "hypertension": controller.hypertension,
-      // "hyperglycemia": controller.hyperglycemia,
-      // "hyperlipidemia": controller.hyperlipidemia,
-      // "exerciseHabits": controller.exerciseHabits,
 
+      // TODO wrap to method
       if (reference.isNotEmpty) requestData['reference'] = reference;
-      // TODO
-      // if (institution.isNotEmpty) requestData['institution'] = institution;
+      if (institution.isNotEmpty) requestData['institution'] = institution;
 
-      final response = await HttpRequest.post(
-          '${HttpURL.host}/user/signup', jsonEncode(requestData));
+      final response = await HttpRequest.post('${HttpURL.host}/user/signup', jsonEncode(requestData));
 
-      showAlertDialog(context, message: response['message']).then((_) =>
-          Navigator.pushNamedAndRemoveUntil(
-              context, LoginPage.routeName, (route) => false));
+      showAlertDialog(context, message: response['message'])
+          .then((_) => Navigator.pushNamedAndRemoveUntil(context, LoginPage.routeName, (route) => false));
     } else {
       showAlertDialog(
         context,
