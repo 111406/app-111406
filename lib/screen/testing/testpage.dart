@@ -118,7 +118,7 @@ Widget _endBtn(BuildContext context) {
     child: GestureDetector(
       onLongPress: () {
         _ss = 1;
-        Navigator.pushNamed(context, Main.routeName);
+        Navigator.pushReplacementNamed(context, Main.routeName);
       },
       child: const Text(
         '長按結束',
@@ -273,7 +273,7 @@ class _TestPageState extends State<TestPage> {
         """;
           prefs.setString(TrainingPart.biceps.string, reqeustData);
 
-          Navigator.pushNamed(context, Prepare2.routeName);
+          Navigator.pushReplacementNamed(context, Prepare2.routeName);
         }
         if (_ss == 1) {
           timer.cancel();

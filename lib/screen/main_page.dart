@@ -33,12 +33,11 @@ class _MainState extends State<Main> {
     _loadStates();
   }
 
-  bool checkComplete = false;
+  bool checkComplete = true;
   List checkCompleteList = [];
   void _loadStates() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove("trainingState");
-    final todoStringList = <String>[];
     final todoList = <UserTodo>[];
     final userId = prefs.getString("userId");
     await HttpRequest.get('${HttpURL.host}/target/$userId').then((response) async {
@@ -48,23 +47,20 @@ class _MainState extends State<Main> {
         for (var data in response['data']) {
           var todo = UserTodo.fromJson(data);
           checkCompleteList.add(todo.complete);
-          todoStringList.add(json.encode(todo));
           todoList.add(todo);
         }
         checkComplete = checkCompleteList.contains(false);
-        prefs.setStringList("todoList", todoStringList);
         // TODO 訓練表部分待調整
         if (checkComplete) {
           prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));
         }
       } else {
-        checkComplete = true;
         // 檢查是不是剛做完檢測，因為不會馬上指派任務
         await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
-          final target = response['data'];
+          final isHadTarget = response['data'];
           prefs.remove("todoList");
           prefs.remove("userTodo");
-          if (target != null) {
+          if (isHadTarget) {
             // 如果是剛檢測完會跑到這
             prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
           } else {

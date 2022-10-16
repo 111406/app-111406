@@ -120,7 +120,7 @@ Widget _endBtn(BuildContext context) {
     child: GestureDetector(
       onLongPress: () {
         _ss = 1;
-        Navigator.pushNamed(context, Main.routeName);
+        Navigator.pushReplacementNamed(context, Main.routeName);
       },
       child: const Text(
         '長按結束',
@@ -278,7 +278,7 @@ class _TestPageState2 extends State<TestPage2> {
         dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
         prefs.remove(TrainingPart.biceps.string);
 
-        Navigator.pushNamed(context, TestResultPage.routeName, arguments: {"bicepsData": bicepsData, "quadricepsData": quadricepsData});
+        Navigator.pushReplacementNamed(context, TestResultPage.routeName, arguments: {"bicepsData": bicepsData, "quadricepsData": quadricepsData});
       }
       if (_ss == 1) {
         timer.cancel();
