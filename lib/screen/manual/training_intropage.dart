@@ -19,8 +19,8 @@ Widget _tutorialScreen(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       ImageSlideshow(
-        width: MediaQuery.of(context).size.width / 1.5,
-        height: MediaQuery.of(context).size.height / 2.5,
+        width: MediaQuery.of(context).size.width / 1.05,
+        height: MediaQuery.of(context).size.height / 1.8,
         children: [
           Image.network(
             'https://cc.tvbs.com.tw/img/program/upload/2018/03/23/20180323124208-255596e5.jpg',
@@ -146,7 +146,6 @@ Widget _startBtn(BuildContext context) {
 }
 
 class _TrainingIntroPageState extends State<TrainingIntroPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
