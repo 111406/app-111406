@@ -21,20 +21,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var todoList = <String>[];
-
-  @override
-  initState() {
-    super.initState();
-    _loadPrefs();
-  }
-
-  Future<void> _loadPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      todoList = prefs.getStringList('todoList') ?? [];
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

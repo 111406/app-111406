@@ -38,7 +38,6 @@ class _MainState extends State<Main> {
   void _loadStates() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove("trainingState");
-    final todoStringList = <String>[];
     final todoList = <UserTodo>[];
     final userId = prefs.getString("userId");
     await HttpRequest.get('${HttpURL.host}/target/$userId').then((response) async {
@@ -48,11 +47,9 @@ class _MainState extends State<Main> {
         for (var data in response['data']) {
           var todo = UserTodo.fromJson(data);
           checkCompleteList.add(todo.complete);
-          todoStringList.add(json.encode(todo));
           todoList.add(todo);
         }
         checkComplete = checkCompleteList.contains(false);
-        prefs.setStringList("todoList", todoStringList);
         // TODO 訓練表部分待調整
         if (checkComplete) {
           prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));

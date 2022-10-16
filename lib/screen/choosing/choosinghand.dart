@@ -20,14 +20,6 @@ class ChoosingHandPage extends StatefulWidget {
 }
 
 class _ChoosingHandPageState extends State<ChoosingHandPage> {
-  late UserTodo userTodo;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,8 +105,7 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -161,8 +152,7 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -202,13 +192,5 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
       await prefs.setInt('introScreen', 2);
       Navigator.pushReplacementNamed(context, IntroPage.routeName);
     }
-  }
-
-  Future<void> _loadState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final todoString = prefs.getStringList("todoList")![0];
-    setState(() {
-      userTodo = UserTodo.fromJson(jsonDecode(todoString));
-    });
   }
 }

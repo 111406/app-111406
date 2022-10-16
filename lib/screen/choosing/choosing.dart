@@ -22,14 +22,6 @@ class ChoosingPage extends StatefulWidget {
 }
 
 class _ChoosingPageState extends State<ChoosingPage> {
-  late UserTodo userTodo;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,8 +143,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -199,8 +190,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -247,8 +237,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -278,8 +267,7 @@ class _ChoosingPageState extends State<ChoosingPage> {
     final userTodo = UserTodo.fromJson(jsonDecode(userTodoString));
     final totalTimes = userTodo.targetTimes[part]['total'];
     if (part != TrainingPart.quadriceps.value) {
-      if (userTodo.actualTimes[part]['left']['times'] >= totalTimes &&
-          userTodo.actualTimes[part]['right']['times'] >= totalTimes) {
+      if (userTodo.actualTimes[part]['left']['times'] >= totalTimes && userTodo.actualTimes[part]['right']['times'] >= totalTimes) {
         final trainpart = TrainingPart.parse(part);
         showAlertDialog(context, message: "${trainpart.string}訓練已完成！");
       } else {
@@ -296,13 +284,5 @@ class _ChoosingPageState extends State<ChoosingPage> {
         Navigator.pushReplacementNamed(context, IntroPage.routeName);
       }
     }
-  }
-
-  Future<void> _loadState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final todoString = prefs.getStringList("todoList")![0];
-    setState(() {
-      userTodo = UserTodo.fromJson(jsonDecode(todoString));
-    });
   }
 }
