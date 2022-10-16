@@ -57,10 +57,10 @@ class _MainState extends State<Main> {
       } else {
         // 檢查是不是剛做完檢測，因為不會馬上指派任務
         await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
-          final target = response['data'];
+          final isHadTarget = response['data'];
           prefs.remove("todoList");
           prefs.remove("userTodo");
-          if (target != null) {
+          if (isHadTarget) {
             // 如果是剛檢測完會跑到這
             prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
           } else {
