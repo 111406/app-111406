@@ -1,12 +1,17 @@
 ///主頁分頁
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
 import 'package:sport_app/screen/manual/intropage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/app_config.dart';
+import 'package:sport_app/utils/http_request.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -73,20 +78,16 @@ class _HomePageState extends State<HomePage> {
                         final trainingState = prefs.getString("trainingState");
                         switch (trainingState) {
                           case AppConfig.CANNOT_TRAINING:
-                            showAlertDialog(context,
-                                message: "請先進行運動測試再回來做訓練喔！");
+                            showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
                             break;
                           case AppConfig.TRAINING_FINISH:
-                            showAlertDialog(context,
-                                message: "您目前的訓練已完成，請等候下次的新任務喔！");
+                            showCheckDialog(context, message: "您目前的訓練已完成，是否要建立新的訓練？", func: addUserTodo);
                             break;
                           case AppConfig.WAITING_TRAINING:
-                            showAlertDialog(context,
-                                message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
+                            showAlertDialog(context, message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
                             break;
                           default:
-                            Navigator.pushReplacementNamed(
-                                context, ChoosingPage.routeName);
+                            Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
                         }
                       },
                       child: Ink(child: trainingBtn()),
@@ -177,8 +178,7 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -225,8 +225,7 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -250,5 +249,28 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
     );
+  }
+
+  Future<void> addUserTodo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString("userId");
+    String targetDate = DateFormat('yyyyMMdd').format(DateTime.now());
+    dynamic userTodo = {
+      "target_date": targetDate,
+      "target_times": [
+        {"times": 15, "set": 2, "total": 30},
+        {"times": 8, "set": 1, "total": 8},
+        {"times": 15, "set": 2, "total": 30}
+      ],
+      "complete": false
+    };
+    try {
+      await HttpRequest.post('${HttpURL.host}/target/add/todo/$userId', jsonEncode(userTodo));
+      Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
+    } catch (e) {
+      Navigator.pop(context);
+      final errorMessage = e.toString().split(" ")[1];
+      showAlertDialog(context, message: errorMessage);
+    }
   }
 }

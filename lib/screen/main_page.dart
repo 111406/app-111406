@@ -33,7 +33,7 @@ class _MainState extends State<Main> {
     _loadStates();
   }
 
-  bool checkComplete = false;
+  bool checkComplete = true;
   List checkCompleteList = [];
   void _loadStates() async {
     final prefs = await SharedPreferences.getInstance();
@@ -58,7 +58,6 @@ class _MainState extends State<Main> {
           prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));
         }
       } else {
-        checkComplete = true;
         // 檢查是不是剛做完檢測，因為不會馬上指派任務
         await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
           final target = response['data'];
