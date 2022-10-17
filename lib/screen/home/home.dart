@@ -5,10 +5,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
@@ -16,6 +12,7 @@ import 'package:sport_app/screen/manual/intropage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/app_config.dart';
+import 'package:sport_app/utils/http_request.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget {
@@ -327,7 +324,8 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -420,7 +418,8 @@ class _HomePageState extends State<HomePage> {
       "complete": false
     };
     try {
-      await HttpRequest.post('${HttpURL.host}/target/add/todo/$userId', jsonEncode(userTodo));
+      await HttpRequest.post(
+          '${HttpURL.host}/target/add/todo/$userId', jsonEncode(userTodo));
       Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
     } catch (e) {
       Navigator.pop(context);
