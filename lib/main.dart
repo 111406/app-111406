@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
@@ -46,6 +47,11 @@ Future<void> main() async {
     print('Error: $e.code\nError Message: $e.message');
   }
 
+  // initializeDateFormatting().then(
+  //   (_) => runApp((userId != '' && token != '')
+  //       ? MyApp(userId: userId, token: token)
+  //       : const MyApp(userId: '', token: '')),
+  // );
   runApp((userId != '' && token != '')
       ? MyApp(userId: userId, token: token)
       : const MyApp(userId: '', token: ''));
@@ -81,6 +87,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('zh', 'TW'),
+      ],
       title: '肌動GO',
       home: const LoginPage(),
       //initialRoute: MainPage.routeName,

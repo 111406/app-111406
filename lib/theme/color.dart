@@ -7,3 +7,11 @@ const thirdColor = Color(0xffEAEAEA);
 const textColor = Color(0xff7E7E7E);
 const editTextColor = Colors.blue;
 const backgroundColor = Color(0xffEAEAEA);
+
+TextStyle textStyle22() {
+  return const TextStyle(
+    fontSize: 22,
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+  );
+}

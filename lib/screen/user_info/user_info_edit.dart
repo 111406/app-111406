@@ -9,7 +9,7 @@ import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import '../main_page.dart';
 
 class UserInfoEditPage extends StatefulWidget {
@@ -50,7 +50,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       height = (prefs.getDouble("height") ?? 0).toString();
       weight = (prefs.getDouble("weight") ?? 0).toString();
       // gender = prefs.getString("gender") ?? "";
-      var _b = prefs.getString("birth") ?? "";
+      var _b = prefs.getString("birthday") ?? "";
       birth = DateTime.parse(_b);
     });
   }
@@ -70,6 +70,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
           style: ElevatedButton.styleFrom(primary: primaryColor),
           onPressed: () {
             setState(() {
+              //TODO 不能為空其他檢查一下 @cheese
               height = double.parse(heightController.text).toString();
             });
             Navigator.pop(context);
@@ -201,7 +202,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 225, 225, 225)),
                   ),
                 ),
                 // const SizedBox(height: 10),
@@ -275,7 +277,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 225, 225, 225)),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -314,7 +317,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 225, 225, 225)),
                   ),
                 ),
                 const SizedBox(height: 60),
@@ -324,15 +328,18 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                     String birthday = DateFormat('yyyyMMdd').format(birth);
 
                     String requestData = """{
-                  "birthday": "$birthday",
-                  "height": $height,
-                  "weight": $weight
-                }""";
+                    "birthday": "$birthday",
+                    "height": $height,
+                    "weight": $weight
+                  }""";
 
                     try {
-                      await HttpRequest.post('${HttpURL.host}/user/update/$userId', requestData).then(
-                            (response) async {},
-                          );
+                      await HttpRequest.post(
+                              '${HttpURL.host}/user/update/$userId',
+                              requestData)
+                          .then(
+                        (response) async {},
+                      );
                     } on Exception catch (e) {
                       // TODO
                     }
@@ -343,7 +350,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                       message: '',
                     );
 
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                     await prefs.setInt('returnMainPage', 1);
                     Timer(const Duration(seconds: 2), () {
                       Navigator.pushReplacementNamed(context, Main.routeName);
@@ -354,7 +362,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                 mainBtn(
                   text: '取消',
                   onPressed: () async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                     await prefs.setInt('returnMainPage', 1);
                     Navigator.pushReplacementNamed(context, Main.routeName);
                   },
@@ -386,10 +395,11 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
 
   void _datePicker() async {
     var result = await showDatePicker(
+      locale: const Locale('zh', 'TW'),
       context: context,
       initialDate: birth,
       firstDate: DateTime(1900, 01),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(1960, 01),
     );
 
     if (result != null) {
