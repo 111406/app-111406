@@ -82,10 +82,7 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: size.height * 0.57,
                     decoration: const BoxDecoration(
-                        color: secondColor,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(40),
-                            bottomRight: Radius.circular(40))),
+                        color: secondColor, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40))),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -126,10 +123,8 @@ class _HomePageState extends State<HomePage> {
                           availableCalendarFormats: availableCalendarFormats,
                           // availableGestures: AvailableGestures.all,
                           onDaySelected: _onDaySelected,
-                          selectedDayPredicate: (day) =>
-                              isSameDay(_selectedDay, day),
-                          onPageChanged: (focusedDay) =>
-                              _focusedDay = focusedDay,
+                          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                          onPageChanged: (focusedDay) => _focusedDay = focusedDay,
                           onFormatChanged: (format) {
                             if (_calendarFormat != format) {
                               setState(() => _calendarFormat = format);
@@ -169,24 +164,19 @@ class _HomePageState extends State<HomePage> {
                       child: InkWell(
                         onTap: () async {
                           final prefs = await SharedPreferences.getInstance();
-                          final trainingState =
-                              prefs.getString("trainingState");
+                          final trainingState = prefs.getString("trainingState");
                           switch (trainingState) {
                             case AppConfig.CANNOT_TRAINING:
-                              showAlertDialog(context,
-                                  message: "請先進行運動測試再回來做訓練喔！");
+                              showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
                               break;
                             case AppConfig.TRAINING_FINISH:
-                              showAlertDialog(context,
-                                  message: "您目前的訓練已完成，請等候下次的新任務喔！");
+                              showCheckDialog(context, message: "您目前的訓練已完成，是否要建立新的訓練？", func: addUserTodo);
                               break;
                             case AppConfig.WAITING_TRAINING:
-                              showAlertDialog(context,
-                                  message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
+                              showAlertDialog(context, message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
                               break;
                             default:
-                              Navigator.pushReplacementNamed(
-                                  context, ChoosingPage.routeName);
+                              Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
                           }
                         },
                         child: Ink(child: trainingBtn()),
@@ -324,8 +314,7 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -418,8 +407,7 @@ class _HomePageState extends State<HomePage> {
       "complete": false
     };
     try {
-      await HttpRequest.post(
-          '${HttpURL.host}/target/add/todo/$userId', jsonEncode(userTodo));
+      await HttpRequest.post('${HttpURL.host}/target/add/todo/$userId', jsonEncode(userTodo));
       Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
     } catch (e) {
       Navigator.pop(context);
@@ -482,25 +470,18 @@ class TabBarTable extends StatelessWidget {
           children: <Widget>[
             // biceps
             upperLimb(
-              actualLeft: actualTimes[TrainingPart.biceps.value]['left']
-                  ['times'],
-              actualRight: actualTimes[TrainingPart.biceps.value]['right']
-                  ['times'],
+              actualLeft: actualTimes[TrainingPart.biceps.value]['left']['times'],
+              actualRight: actualTimes[TrainingPart.biceps.value]['right']['times'],
               targetTimes: targetTimes[TrainingPart.biceps.value]['total'],
             ),
             //deltoid
             upperLimb(
-              actualLeft: actualTimes[TrainingPart.deltoid.value]['left']
-                  ['times'],
-              actualRight: actualTimes[TrainingPart.deltoid.value]['right']
-                  ['times'],
+              actualLeft: actualTimes[TrainingPart.deltoid.value]['left']['times'],
+              actualRight: actualTimes[TrainingPart.deltoid.value]['right']['times'],
               targetTimes: targetTimes[TrainingPart.deltoid.value]['total'],
             ),
             lowerLimb(
-                targetTimes: targetTimes[TrainingPart.quadriceps.value]
-                    ['total'],
-                actualTimes: actualTimes[TrainingPart.quadriceps.value]
-                    ['times']),
+                targetTimes: targetTimes[TrainingPart.quadriceps.value]['total'], actualTimes: actualTimes[TrainingPart.quadriceps.value]['times']),
           ],
         ),
       );
@@ -550,8 +531,7 @@ Widget upperLimb({
                       fontWeight: FontWeight.bold,
                     ),
                   )
-                : const Icon(Icons.check_rounded,
-                    color: Colors.white, size: 50.0),
+                : const Icon(Icons.check_rounded, color: Colors.white, size: 50.0),
             header: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: const Text(
@@ -580,8 +560,7 @@ Widget upperLimb({
                       fontWeight: FontWeight.bold,
                     ),
                   )
-                : const Icon(Icons.check_rounded,
-                    color: Colors.white, size: 50.0),
+                : const Icon(Icons.check_rounded, color: Colors.white, size: 50.0),
             header: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: const Text(
@@ -642,8 +621,7 @@ Widget lowerLimb({
                       fontWeight: FontWeight.bold,
                     ),
                   )
-                : const Icon(Icons.check_rounded,
-                    color: Colors.white, size: 50.0),
+                : const Icon(Icons.check_rounded, color: Colors.white, size: 50.0),
             header: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: const Text(
