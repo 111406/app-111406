@@ -245,16 +245,16 @@ class _IntroPageState extends State<IntroPage> {
             children: [
               Image.network(
                 //ZERO
-                'https://cdn.discordapp.com/attachments/800700545169883189/1030792104995192872/unknown.png',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1031564610802831461/01new.png',
+                fit: BoxFit.contain,
               ),
               Image.network(
-                'https://cdn.discordapp.com/attachments/800700545169883189/1030793521780756551/02.png',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1031564611469709352/02new.png',
+                fit: BoxFit.contain,
               ),
               Image.network(
-                'https://cdn.discordapp.com/attachments/800700545169883189/1030793522183409664/03.png',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1031564611872378890/03new.png',
+                fit: BoxFit.contain,
               ),
             ],
             onPageChanged: (value) {},
@@ -280,12 +280,12 @@ class _IntroPageState extends State<IntroPage> {
             height: MediaQuery.of(context).size.height / 1.8,
             children: [
               Image.network(
-                'https://cdn.discordapp.com/attachments/800700545169883189/1030793571558756434/01.png',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1031565024717721661/01new.png',
+                fit: BoxFit.contain,
               ),
               Image.network(
-                'https://cdn.discordapp.com/attachments/800700545169883189/1030793572078850069/02.png',
-                fit: BoxFit.cover,
+                'https://cdn.discordapp.com/attachments/800700545169883189/1031565025078423572/02new.png',
+                fit: BoxFit.contain,
               ),
             ],
             onPageChanged: (value) {},

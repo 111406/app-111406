@@ -65,20 +65,20 @@ Widget _tutorialScreen(BuildContext context) {
         children: [
           Image.network(
             //ZERO
-            'https://cdn.discordapp.com/attachments/800700545169883189/1030792104995192872/unknown.png',
-            fit: BoxFit.cover,
+            'https://cdn.discordapp.com/attachments/800700545169883189/1031564610802831461/01new.png',
+            fit: BoxFit.contain,
           ),
           Image.network(
-            'https://cdn.discordapp.com/attachments/800700545169883189/1030793521780756551/02.png',
-            fit: BoxFit.cover,
+            'https://cdn.discordapp.com/attachments/800700545169883189/1031564611469709352/02new.png',
+            fit: BoxFit.contain,
           ),
           Image.network(
-            'https://cdn.discordapp.com/attachments/800700545169883189/1030793522183409664/03.png',
-            fit: BoxFit.cover,
+            'https://cdn.discordapp.com/attachments/800700545169883189/1031564611872378890/03new.png',
+            fit: BoxFit.contain,
           ),
         ],
         onPageChanged: (value) {},
-        autoPlayInterval: 3000,
+        autoPlayInterval: 300000,
         isLoop: true,
       ),
     ],
