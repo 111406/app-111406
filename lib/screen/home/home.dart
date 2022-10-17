@@ -24,9 +24,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Map todoMap = {};
-  String todoMapString = '{}';
-  late Future<String> testText;
+  // Map todoMap = {};
+  // String todoMapString = '{}';
+  late Future<String> todoMapString;
 
   final kToday = DateTime.now();
   // late final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day - 7);
@@ -49,15 +49,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _loadPrefs() async {
-    testText = _prefs.then((SharedPreferences pref) {
+    todoMapString = _prefs.then((SharedPreferences pref) {
       return pref.getString('todoMap') ?? '{}';
     });
 
     // SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      // todoMapString = prefs.getString('todoMap') ?? "{}";
-      // todoMap = jsonDecode(todoMapString);
-    });
+    // setState(() {
+    //   // todoMapString = prefs.getString('todoMap') ?? "{}";
+    //   // todoMap = jsonDecode(todoMapString);
+    // });
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         FutureBuilder<String>(
-                          future: testText,
+                          future: todoMapString,
                           builder: (BuildContext context,
                               AsyncSnapshot<String> snapshot) {
                             switch (snapshot.connectionState) {

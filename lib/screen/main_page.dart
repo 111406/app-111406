@@ -23,6 +23,7 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _currentIndex = 0;
+  bool _isLoginForFirstTime = false;
   final pages = [const HomePage(), const UserInfoPage(), const OtherPage()];
 
   @override
@@ -30,6 +31,7 @@ class _MainState extends State<Main> {
     super.initState();
     _currentIndex = 0;
     _asyncMethod();
+    _getIsLoginForFirstTime();
     _loadStates();
   }
 
@@ -109,8 +111,26 @@ class _MainState extends State<Main> {
     prefs.remove('returnMainPage');
   }
 
+  _getIsLoginForFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoginForFirstTime = prefs.getBool('isLoginForFirstTime') ?? false;
+    setState(() {
+      _isLoginForFirstTime = isLoginForFirstTime;
+    });
+  }
+
+  _setIsLoginForFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoginForFirstTime', false);
+  }
+
   @override
   Widget build(BuildContext context) {
+    // TODO: 登入必轉教學頁面 需調整
+    if (_isLoginForFirstTime) {
+      _setIsLoginForFirstTime();
+      // return const IntroPage();
+    }
     return WillPopScope(
       child: Scaffold(
         body: pages[_currentIndex],

@@ -197,6 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                               final prefs =
                                   await SharedPreferences.getInstance();
                               prefs.setString("userId", userId);
+                              prefs.setBool('isLoginForFirstTime', true);
                               Navigator.pushReplacementNamed(
                                   context, Main.routeName);
                             },
