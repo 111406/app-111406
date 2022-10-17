@@ -52,6 +52,7 @@ Future<void> main() async {
   //       ? MyApp(userId: userId, token: token)
   //       : const MyApp(userId: '', token: '')),
   // );
+
   runApp((userId != '' && token != '')
       ? MyApp(userId: userId, token: token)
       : const MyApp(userId: '', token: ''));

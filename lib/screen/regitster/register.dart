@@ -145,13 +145,15 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               const SizedBox(height: 10),
                               Container(
-                                padding: const EdgeInsets.only(left: 20),
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
                                 decoration: BoxDecoration(
                                   border: Border.all(color: primaryColor),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: radioButton(
                                     text: '選擇性別',
+                                    fontSize: 20,
                                     groupValue: controller.gender,
                                     updateGroupValue: controller.setGender,
                                     falseName: "男",
@@ -251,7 +253,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const SizedBox(height: 10),
                           Container(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 20, right: 20),
                             decoration: BoxDecoration(
                               border: Border.all(color: primaryColor),
                               borderRadius: BorderRadius.circular(5),
@@ -280,13 +282,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(height: 15),
                       Container(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           border: Border.all(color: primaryColor),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: radioButton(
                             text: '運動習慣',
+                            fontSize: 20,
                             groupValue: controller.exerciseHabits,
                             updateGroupValue: controller.setExerciseHabits),
                       ),

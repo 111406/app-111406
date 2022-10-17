@@ -114,9 +114,9 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(height: 10),
                         TableCalendar(
                           headerStyle: headerStyle(),
-
                           calendarStyle: calenderStyle(),
                           daysOfWeekStyle: daysOfWeekStyle(),
+                          daysOfWeekHeight: 20,
                           locale: 'zh_TW',
                           firstDay: kFirstDay,
                           lastDay: kLastDay,
@@ -222,6 +222,10 @@ class _HomePageState extends State<HomePage> {
           color: Color.fromARGB(255, 255, 255, 255),
           fontWeight: FontWeight.bold,
         ),
+        // decoration: BoxDecoration(
+        //   border: Border.all(color: Colors.white),
+        //   borderRadius: BorderRadius.circular(10),
+        // ),
       );
 
   HeaderStyle headerStyle() => HeaderStyle(
@@ -395,12 +399,12 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.only(left: 10),
         child: Image.asset('assets/icon/logo_white.png'),
       ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.notifications_none),
-        ),
-      ],
+      // actions: [
+      //   IconButton(
+      //     onPressed: () {},
+      //     icon: const Icon(Icons.notifications_none),
+      //   ),
+      // ],
     );
   }
 

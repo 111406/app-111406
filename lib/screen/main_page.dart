@@ -49,13 +49,14 @@ class _MainState extends State<Main> {
         for (var data in response['data']) {
           var todo = UserTodo.fromJson(data);
           checkCompleteList.add(todo.complete);
-         
+
           todoMap[todo.targetDate] = todo;
           todoList.add(todo);
         }
         checkComplete = checkCompleteList.contains(false);
-        
+
         prefs.setString("todoMap", json.encode(todoMap));
+
         // TODO 訓練表部分待調整
         if (checkComplete) {
           prefs.setString("userTodo",
@@ -63,7 +64,8 @@ class _MainState extends State<Main> {
         }
       } else {
         // 檢查是不是剛做完檢測，因為不會馬上指派任務
-        await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
+        await HttpRequest.get('${HttpURL.host}/target/started/$userId')
+            .then((response) {
           final isHadTarget = response['data'];
           prefs.remove("todoList");
           prefs.remove("userTodo");

@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
 import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/manual/intropage.dart';
-import 'package:sport_app/screen/manual/manual.dart';
 import 'package:sport_app/theme/color.dart';
 
 class OtherPage extends StatefulWidget {
@@ -88,7 +87,7 @@ class _OtherPageState extends State<OtherPage> {
               ),
             ),
           ),
-          const SizedBox(height: 248),
+          const SizedBox(height: 50),
           InkWell(
             onTap: () async {
               Navigator.pushReplacementNamed(context, LoginPage.routeName);
