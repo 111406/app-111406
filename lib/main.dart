@@ -40,22 +40,11 @@ Future<void> main() async {
   String userId = prefs.getString('userId') ?? '';
   String token = prefs.getString('token') ?? '';
 
-  try {
-    cameras = await availableCameras();
-  } on CameraException catch (e) {
-    // ignore: avoid_print
-    print('Error: $e.code\nError Message: $e.message');
-  }
-
-  // initializeDateFormatting().then(
-  //   (_) => runApp((userId != '' && token != '')
-  //       ? MyApp(userId: userId, token: token)
-  //       : const MyApp(userId: '', token: '')),
-  // );
-
-  runApp((userId != '' && token != '')
-      ? MyApp(userId: userId, token: token)
-      : const MyApp(userId: '', token: ''));
+  runApp(
+    (userId != '' && token != '')
+        ? MyApp(userId: userId, token: token)
+        : const MyApp(userId: '', token: ''),
+  );
 }
 
 void configLoading() {
@@ -97,7 +86,6 @@ class MyApp extends StatelessWidget {
       ],
       title: '肌動GO',
       home: const LoginPage(),
-      //initialRoute: MainPage.routeName,
       initialRoute:
           (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
       routes: {

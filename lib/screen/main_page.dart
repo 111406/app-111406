@@ -55,7 +55,7 @@ class _MainState extends State<Main> {
         }
         checkComplete = checkCompleteList.contains(false);
 
-        prefs.setString("todoMap", json.encode(todoMap));
+        await prefs.setString("todoMap", json.encode(todoMap));
 
         // TODO 訓練表部分待調整
         if (checkComplete) {
