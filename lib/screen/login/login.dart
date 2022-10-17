@@ -8,6 +8,7 @@ import 'package:sport_app/screen/components/page_title.dart';
 import 'package:sport_app/screen/components/textfield_inputbox.dart';
 import 'package:sport_app/screen/forgot_password/forgotpassword.dart';
 import 'package:sport_app/screen/main_page.dart';
+import 'package:sport_app/screen/manual/manual.dart';
 import 'package:sport_app/screen/regitster/register.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
@@ -47,12 +48,10 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            showAlertDialog(
-              context,
-              title: "免責聲明",
-              message: "免責聲明",
-            );
+          onTap: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setInt('manualControll', 1);
+            Navigator.pushReplacementNamed(context, Manual.routeName);
           },
           child: const Text(
             '我已經詳閱並同意個人資料\n蒐集條款，與免責說明',
