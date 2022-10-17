@@ -70,10 +70,11 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
           style: ElevatedButton.styleFrom(primary: primaryColor),
           onPressed: () {
             setState(() {
-              //TODO 不能為空其他檢查一下 @cheese
-              height = double.parse(heightController.text).toString();
+              if (heightController.text.isNotEmpty) {
+                height = double.parse(heightController.text).toString();
+                Navigator.pop(context);
+              }
             });
-            Navigator.pop(context);
           },
         ),
         ElevatedButton(
@@ -111,9 +112,11 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
           style: ElevatedButton.styleFrom(primary: primaryColor),
           onPressed: () {
             setState(() {
-              weight = double.parse(weightController.text).toString();
+              if (weightController.text.isNotEmpty) {
+                weight = double.parse(weightController.text).toString();
+                Navigator.pop(context);
+              }
             });
-            Navigator.pop(context);
           },
         ),
         ElevatedButton(
