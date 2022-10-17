@@ -39,20 +39,27 @@ class _MainState extends State<Main> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove("trainingState");
     final todoList = <UserTodo>[];
+    final todoMap = {};
     final userId = prefs.getString("userId");
-    await HttpRequest.get('${HttpURL.host}/target/$userId').then((response) async {
+    await HttpRequest.get('${HttpURL.host}/target/$userId')
+        .then((response) async {
       final dataList = response['data'] as List;
       if (dataList.isNotEmpty) {
         // 有本周訓練資料
         for (var data in response['data']) {
           var todo = UserTodo.fromJson(data);
           checkCompleteList.add(todo.complete);
+         
+          todoMap[todo.targetDate] = todo;
           todoList.add(todo);
         }
         checkComplete = checkCompleteList.contains(false);
+        
+        prefs.setString("todoMap", json.encode(todoMap));
         // TODO 訓練表部分待調整
         if (checkComplete) {
-          prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));
+          prefs.setString("userTodo",
+              json.encode(todoList.firstWhere((element) => !element.complete)));
         }
       } else {
         // 檢查是不是剛做完檢測，因為不會馬上指派任務
