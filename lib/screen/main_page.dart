@@ -35,9 +35,9 @@ class _MainState extends State<Main> {
     _loadStates();
   }
 
-  bool checkComplete = true;
-  List checkCompleteList = [];
   void _loadStates() async {
+    bool checkComplete = true;
+    List checkCompleteList = [];
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove("trainingState");
     final todoList = <UserTodo>[];

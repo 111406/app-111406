@@ -1,5 +1,3 @@
-///登入頁
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
@@ -145,17 +143,14 @@ class _LoginPageState extends State<LoginPage> {
                         message: "請勾選同意條款聲明",
                       );
                     } else {
-                      String userId = userIdController.text;
+                      final userId = userIdController.text;
+                      final password = passwordController.text;
                       String requestData = """{
                         "user_id": "$userId",
                         "password": "${passwordController.text}"
                         }""";
-
-                      final userID = userIdController.text;
-                      final password = passwordController.text;
-
                       bool _textFieldIsNotEmpty =
-                          (userID.isNotEmpty && password.isNotEmpty);
+                          (userId.isNotEmpty && password.isNotEmpty);
                       if (_textFieldIsNotEmpty) {
                         try {
                           //讀取
