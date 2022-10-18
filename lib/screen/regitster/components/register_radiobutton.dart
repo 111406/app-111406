@@ -7,15 +7,16 @@ Widget radioButton({
   required updateGroupValue,
   falseName = "無",
   trueName = "有",
+  double fontSize = 22.0,
 }) {
   return Row(
     children: [
       Expanded(
         child: Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             color: primaryColor,
-            fontSize: 22,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
         ),

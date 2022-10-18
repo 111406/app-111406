@@ -23,6 +23,7 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _currentIndex = 0;
+  bool _isLoginForFirstTime = false;
   final pages = [const HomePage(), const UserInfoPage(), const OtherPage()];
 
   @override
@@ -30,12 +31,13 @@ class _MainState extends State<Main> {
     super.initState();
     _currentIndex = 0;
     _asyncMethod();
+    _getIsLoginForFirstTime();
     _loadStates();
   }
 
-  bool checkComplete = true;
-  List checkCompleteList = [];
   void _loadStates() async {
+    bool checkComplete = true;
+    List checkCompleteList = [];
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove("trainingState");
     final todoList = <UserTodo>[];
@@ -49,13 +51,14 @@ class _MainState extends State<Main> {
         for (var data in response['data']) {
           var todo = UserTodo.fromJson(data);
           checkCompleteList.add(todo.complete);
-         
+
           todoMap[todo.targetDate] = todo;
           todoList.add(todo);
         }
         checkComplete = checkCompleteList.contains(false);
-        
-        prefs.setString("todoMap", json.encode(todoMap));
+
+        await prefs.setString("todoMap", json.encode(todoMap));
+
         // TODO 訓練表部分待調整
         if (checkComplete) {
           prefs.setString("userTodo",
@@ -63,7 +66,8 @@ class _MainState extends State<Main> {
         }
       } else {
         // 檢查是不是剛做完檢測，因為不會馬上指派任務
-        await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
+        await HttpRequest.get('${HttpURL.host}/target/started/$userId')
+            .then((response) {
           final isHadTarget = response['data'];
           prefs.remove("todoList");
           prefs.remove("userTodo");
@@ -107,8 +111,26 @@ class _MainState extends State<Main> {
     prefs.remove('returnMainPage');
   }
 
+  _getIsLoginForFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoginForFirstTime = prefs.getBool('isLoginForFirstTime') ?? false;
+    setState(() {
+      _isLoginForFirstTime = isLoginForFirstTime;
+    });
+  }
+
+  _setIsLoginForFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoginForFirstTime', false);
+  }
+
   @override
   Widget build(BuildContext context) {
+    // TODO: 登入必轉教學頁面 需調整
+    if (_isLoginForFirstTime) {
+      _setIsLoginForFirstTime();
+      // return const IntroPage();
+    }
     return WillPopScope(
       child: Scaffold(
         body: pages[_currentIndex],

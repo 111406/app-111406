@@ -23,12 +23,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String todoMapString = '{}';
-  Map todoMap = {};
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  // Map todoMap = {};
+  // String todoMapString = '{}';
+  late Future<String> todoMapString;
 
   final kToday = DateTime.now();
-  late final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day - 7);
-  late final kLastDay = DateTime(kToday.year, kToday.month, kToday.day + 7);
+  // late final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day - 7);
+  // late final kLastDay = DateTime(kToday.year, kToday.month, kToday.day + 7);
+  late final kFirstDay = kToday.subtract(Duration(days: kToday.weekday - 1));
+  late final kLastDay =
+      kToday.add(Duration(days: DateTime.daysPerWeek - kToday.weekday));
   CalendarFormat _calendarFormat = CalendarFormat.week;
   Map<CalendarFormat, String> availableCalendarFormats = const {
     // CalendarFormat.month: 'Month',
@@ -43,12 +48,16 @@ class _HomePageState extends State<HomePage> {
     _loadPrefs();
   }
 
-  void _loadPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      todoMapString = prefs.getString('todoMap') ?? "{}";
-      todoMap = jsonDecode(todoMapString);
+  Future<void> _loadPrefs() async {
+    todoMapString = _prefs.then((SharedPreferences pref) {
+      return pref.getString('todoMap') ?? '{}';
     });
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // setState(() {
+    //   // todoMapString = prefs.getString('todoMap') ?? "{}";
+    //   // todoMap = jsonDecode(todoMapString);
+    // });
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -111,9 +120,9 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(height: 10),
                         TableCalendar(
                           headerStyle: headerStyle(),
-
                           calendarStyle: calenderStyle(),
                           daysOfWeekStyle: daysOfWeekStyle(),
+                          daysOfWeekHeight: 20,
                           locale: 'zh_TW',
                           firstDay: kFirstDay,
                           lastDay: kLastDay,
@@ -130,13 +139,6 @@ class _HomePageState extends State<HomePage> {
                               setState(() => _calendarFormat = format);
                             }
                           },
-                          // eventLoader: (day) {
-                          //   if (day.weekday == DateTime.thursday ||
-                          //       day.weekday == DateTime.monday) {
-                          //     return [DateTime];
-                          //   }
-                          //   return [];
-                          // },
                         ),
                         TabBar(
                           tabs: myTabs,
@@ -147,11 +149,43 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TabBarTable(
-                          size: size,
-                          selectedDay: _selectedDay,
-                          todoMap: todoMap,
+                        FutureBuilder<String>(
+                          future: todoMapString,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<String> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return const CircularProgressIndicator();
+                              default:
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  jsonDecode(snapshot.data.toString());
+                                  return SizedBox(
+                                    height: size.height * 0.32,
+                                    child: SingleChildScrollView(
+                                      child: TabBarTable(
+                                        size: size,
+                                        selectedDay: _selectedDay,
+                                        todoMap: jsonDecode(
+                                            snapshot.data.toString()),
+                                      ),
+                                    ),
+                                  );
+                                }
+                            }
+                          },
                         ),
+                        // SizedBox(
+                        //   height: size.height * 0.32,
+                        //   child: SingleChildScrollView(
+                        //     child: TabBarTable(
+                        //       size: size,
+                        //       selectedDay: _selectedDay,
+                        //       todoMap: todoMap,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -212,6 +246,10 @@ class _HomePageState extends State<HomePage> {
           color: Color.fromARGB(255, 255, 255, 255),
           fontWeight: FontWeight.bold,
         ),
+        // decoration: BoxDecoration(
+        //   border: Border.all(color: Colors.white),
+        //   borderRadius: BorderRadius.circular(10),
+        // ),
       );
 
   HeaderStyle headerStyle() => HeaderStyle(
@@ -384,12 +422,12 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.only(left: 10),
         child: Image.asset('assets/icon/logo_white.png'),
       ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.notifications_none),
-        ),
-      ],
+      // actions: [
+      //   IconButton(
+      //     onPressed: () {},
+      //     icon: const Icon(Icons.notifications_none),
+      //   ),
+      // ],
     );
   }
 
@@ -432,8 +470,8 @@ class TabBarTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (todoMap.isEmpty) {
-      return SizedBox(
-        height: size.height * 0.2,
+      return Container(
+        padding: const EdgeInsets.all(20),
         child: const Center(
           child: Text(
             "載入中...",
@@ -447,8 +485,8 @@ class TabBarTable extends StatelessWidget {
       );
     }
     if (todoMap[DateFormat('yyyyMMdd').format(selectedDay)] == null) {
-      return SizedBox(
-        height: size.height * 0.2,
+      return Container(
+        padding: const EdgeInsets.all(20),
         child: const Center(
           child: Text(
             "本日無預計運動計畫",
