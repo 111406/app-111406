@@ -13,7 +13,7 @@ import 'package:sport_app/theme/color.dart';
 
 var _timerStart = false;
 var _displayTimer = 60;
-var _ss = 0;
+late Timer timer;
 
 class WarmupPage extends StatefulWidget {
   const WarmupPage({Key? key}) : super(key: key);
@@ -78,7 +78,8 @@ Widget _countNumberTitle() {
 Widget _warmUpGit() {
   return FadeInImage.assetNetwork(
     placeholder: 'assets/icon/warmup.gif',
-    image: 'https://www.heyueptc.com/heyueptc/6-education/edu_stretch/edu_sports_warm_up/_imagecache/edu_sports%20warm%20up%2003.gif',
+    image:
+        'https://www.heyueptc.com/heyueptc/6-education/edu_stretch/edu_sports_warm_up/_imagecache/edu_sports%20warm%20up%2003.gif',
   );
 }
 
@@ -86,10 +87,8 @@ Widget _endBtn(BuildContext context) {
   return Container(
     alignment: Alignment.center,
     child: GestureDetector(
-      onLongPress: () {
-        _ss = 1;
-        Navigator.pushReplacementNamed(context, Main.routeName);
-      },
+      onLongPress: () =>
+          Navigator.pushReplacementNamed(context, Main.routeName),
       child: const Text(
         '長按結束',
         style: TextStyle(
@@ -106,7 +105,7 @@ class _WarmupPageState extends State<WarmupPage> {
   FlutterTts flutterTts = FlutterTts();
   var displayAngle = 0, _startTime = 0;
   final List<ChartData> _angleList = [];
-  final int _timer = 60;
+  late final int tobeMinused = 60;
 
   @override
   void initState() {
@@ -116,6 +115,8 @@ class _WarmupPageState extends State<WarmupPage> {
 
   @override
   void dispose() {
+    timer.cancel();
+    _displayTimer = 60;
     super.dispose();
   }
 
@@ -165,26 +166,20 @@ class _WarmupPageState extends State<WarmupPage> {
   void _setTimerEvent() {
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
-    Timer.periodic(period, (timer) async {
-      _displayTimer = _timer - timer.tick;
+    timer = Timer.periodic(period, (_timer) async {
       setState(() {
-        _displayTimer;
+        _displayTimer = tobeMinused - _timer.tick;
       });
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      int? part = prefs.getInt("trainingPart");
       if (_displayTimer == 0) {
-        timer.cancel();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        int? part = prefs.getInt("trainingPart");
+        _timer.cancel();
         _timerStart = false;
         if (part != null) {
           Navigator.pushReplacementNamed(context, TrainingPage.routeName);
         } else {
           Navigator.pushReplacementNamed(context, Prepare.routeName);
         }
-      }
-      if (_ss == 1) {
-        timer.cancel();
-        _timerStart = false;
-        _ss = 0;
       }
     });
   }
