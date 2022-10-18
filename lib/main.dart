@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -29,6 +30,10 @@ import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:sport_app/test/pose_detector_view.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sport_app/screen/warmup/warmuppage.dart';
+import 'package:sport_app/utils/app_config.dart';
+import 'package:sport_app/utils/http_request.dart';
+
+import 'model/user_todo.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -39,6 +44,71 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String userId = prefs.getString('userId') ?? '';
   String token = prefs.getString('token') ?? '';
+
+  if (userId != '' && token != '') {
+    bool checkComplete = true;
+    List checkCompleteList = [];
+    await prefs.remove("trainingState");
+    final todoList = <UserTodo>[];
+    final todoMap = {};
+    await HttpRequest.get('${HttpURL.host}/target/$userId')
+        .then((response) async {
+      final dataList = response['data'] as List;
+      if (dataList.isNotEmpty) {
+        // 有本周訓練資料
+        for (var data in response['data']) {
+          var todo = UserTodo.fromJson(data);
+          checkCompleteList.add(todo.complete);
+
+          todoMap[todo.targetDate] = todo;
+          todoList.add(todo);
+        }
+        checkComplete = checkCompleteList.contains(false);
+
+        await prefs.setString("todoMap", json.encode(todoMap));
+
+        // TODO 訓練表部分待調整
+        if (checkComplete) {
+          prefs.setString("userTodo",
+              json.encode(todoList.firstWhere((element) => !element.complete)));
+        }
+      } else {
+        // 檢查是不是剛做完檢測，因為不會馬上指派任務
+        await HttpRequest.get('${HttpURL.host}/target/started/$userId')
+            .then((response) {
+          final isHadTarget = response['data'];
+          prefs.remove("todoList");
+          prefs.remove("userTodo");
+          if (isHadTarget) {
+            // 如果是剛檢測完會跑到這
+            prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
+          } else {
+            // 代表還沒做檢測
+            prefs.setString("trainingState", AppConfig.CANNOT_TRAINING);
+          }
+        });
+      }
+    });
+    if (!checkComplete) {
+      // 進到這裡表示本周任務已完成
+      prefs.setString("trainingState", AppConfig.TRAINING_FINISH);
+    }
+
+    // TODO check
+    await HttpRequest.get('${HttpURL.host}/user/$userId').then((response) {
+      var height = response['data']['height'] ?? .0;
+      var weight = response['data']['weight'] ?? .0;
+      var birth = response['data']['birthday'];
+      var gender = response['data']['gender'];
+      var ethsum = response['data']['eth_sum'];
+
+      prefs.setDouble("height", height);
+      prefs.setDouble("weight", weight);
+      prefs.setString("birthday", birth);
+      prefs.setString("gender", gender);
+      prefs.setString("ethsum", ethsum.toString());
+    });
+  }
 
   runApp(
     (userId != '' && token != '')
