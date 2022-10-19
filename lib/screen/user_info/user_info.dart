@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:sport_app/theme/color.dart' as colors;
 import 'package:sport_app/theme/color.dart';
-import 'package:sport_app/utils/http_request.dart';
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({Key? key}) : super(key: key);
@@ -46,6 +44,14 @@ class _UserInfoPageState extends State<UserInfoPage> {
     return Scaffold(
       backgroundColor: colors.backgroundColor,
       appBar: appBar(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   child: const Text("編輯"),
+      //   backgroundColor: primaryColor,
+      //   onPressed: () {
+      //     Navigator.pushReplacementNamed(context, UserInfoEditPage.routeName);
+      //   },
+      // ),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -70,6 +76,43 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 ),
               ),
               const SizedBox(height: 30),
+              Container(
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        '代幣數量',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      _ethsum.toString(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 20, right: 15),
+                constraints: const BoxConstraints(maxHeight: 56),
+                decoration: BoxDecoration(
+                  // color: Colors.white,
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: primaryColor,
+                    width: 5,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
               Container(
                 child: Row(
                   children: [
@@ -206,41 +249,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       color: const Color.fromARGB(255, 225, 225, 225)),
                 ),
               ),
-              const SizedBox(height: 10),
-              Container(
-                child: Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        '代幣數量',
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: textColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      // (gender == 0) ? '男' : '女',
-                      _ethsum.toString(),
-                      style: const TextStyle(
-                        fontSize: 22,
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 20, right: 15),
-                constraints: const BoxConstraints(maxHeight: 56),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 225, 225, 225)),
-                ),
-              ),
+              // const SizedBox(height: 10),
               // const SizedBox(height: 60),
               // mainBtn(
               //   text: '編輯',
@@ -269,7 +278,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
             Navigator.pushReplacementNamed(context, UserInfoEditPage.routeName);
           },
           child: const Text('編輯'),
-          style: ElevatedButton.styleFrom(primary: secondColor),
+          style: ElevatedButton.styleFrom(
+            primary: secondColor,
+            elevation: 0,
+          ),
         ),
       ],
     );
