@@ -24,9 +24,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  // Map todoMap = {};
+  Map todoMap = {};
   // String todoMapString = '{}';
   late Future<String> todoMapString;
+  var _ethsum = '載入中';
 
   final kToday = DateTime.now();
   // late final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day - 7);
@@ -53,11 +54,11 @@ class _HomePageState extends State<HomePage> {
       return pref.getString('todoMap') ?? '{}';
     });
 
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // setState(() {
-    //   // todoMapString = prefs.getString('todoMap') ?? "{}";
-    //   // todoMap = jsonDecode(todoMapString);
-    // });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      todoMap = jsonDecode(prefs.getString('todoMap') ?? "{}");
+      _ethsum = prefs.getString("ethsum") ?? "";
+    });
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -91,7 +92,12 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: size.height * 0.57,
                     decoration: const BoxDecoration(
-                        color: secondColor, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40))),
+                      color: secondColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(40),
+                        bottomRight: Radius.circular(40),
+                      ),
+                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -132,12 +138,21 @@ class _HomePageState extends State<HomePage> {
                           availableCalendarFormats: availableCalendarFormats,
                           // availableGestures: AvailableGestures.all,
                           onDaySelected: _onDaySelected,
-                          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                          onPageChanged: (focusedDay) => _focusedDay = focusedDay,
+                          selectedDayPredicate: (day) =>
+                              isSameDay(_selectedDay, day),
+                          onPageChanged: (focusedDay) =>
+                              _focusedDay = focusedDay,
                           onFormatChanged: (format) {
                             if (_calendarFormat != format) {
                               setState(() => _calendarFormat = format);
                             }
+                          },
+                          eventLoader: (day) {
+                            if (todoMap.keys
+                                .contains(DateFormat('yyyyMMdd').format(day))) {
+                              return [1];
+                            }
+                            return [];
                           },
                         ),
                         TabBar(
@@ -198,19 +213,25 @@ class _HomePageState extends State<HomePage> {
                       child: InkWell(
                         onTap: () async {
                           final prefs = await SharedPreferences.getInstance();
-                          final trainingState = prefs.getString("trainingState");
+                          final trainingState =
+                              prefs.getString("trainingState");
                           switch (trainingState) {
                             case AppConfig.CANNOT_TRAINING:
-                              showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
+                              showAlertDialog(context,
+                                  message: "請先進行運動測試再回來做訓練喔！");
                               break;
                             case AppConfig.TRAINING_FINISH:
-                              showCheckDialog(context, message: "您目前的訓練已完成，是否要建立新的訓練？", func: addUserTodo);
+                              showCheckDialog(context,
+                                  message: "您目前的訓練已完成，是否要建立新的訓練？",
+                                  func: addUserTodo);
                               break;
                             case AppConfig.WAITING_TRAINING:
-                              showAlertDialog(context, message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
+                              showAlertDialog(context,
+                                  message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
                               break;
                             default:
-                              Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
+                              Navigator.pushReplacementNamed(
+                                  context, ChoosingPage.routeName);
                           }
                         },
                         child: Ink(child: trainingBtn()),
@@ -275,20 +296,20 @@ class _HomePageState extends State<HomePage> {
       );
 
   CalendarStyle calenderStyle() => const CalendarStyle(
-        // outsideDaysVisible: true,
-        isTodayHighlighted: false,
+        outsideDaysVisible: true,
+        // isTodayHighlighted: false,
         defaultTextStyle: TextStyle(
           fontSize: 22,
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
         todayTextStyle: TextStyle(
-          fontSize: 22,
-          color: Colors.white,
+          fontSize: 24,
+          color: Color.fromARGB(255, 232, 93, 102),
           fontWeight: FontWeight.bold,
         ),
         todayDecoration: BoxDecoration(
-          color: primaryColor,
+          // color: ,
           shape: BoxShape.circle,
         ),
         selectedTextStyle: TextStyle(
@@ -309,6 +330,12 @@ class _HomePageState extends State<HomePage> {
           fontSize: 22,
           color: Color.fromARGB(255, 173, 173, 173),
           fontWeight: FontWeight.bold,
+        ),
+        markerSize: 6,
+        markerMargin: EdgeInsets.symmetric(horizontal: 2),
+        markerDecoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
         ),
       );
 
@@ -352,7 +379,8 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -418,16 +446,32 @@ class _HomePageState extends State<HomePage> {
       centerTitle: false,
       elevation: 0,
       title: const Text('肌動Go'),
+      titleTextStyle: const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
       leading: Container(
         margin: const EdgeInsets.only(left: 10),
         child: Image.asset('assets/icon/logo_white.png'),
       ),
-      // actions: [
-      //   IconButton(
-      //     onPressed: () {},
-      //     icon: const Icon(Icons.notifications_none),
-      //   ),
-      // ],
+      actions: [
+        Container(
+          margin: const EdgeInsets.only(right: 25),
+          child: Row(
+            children: [
+              const Icon(Icons.copyright_sharp),
+              Text(
+                // "：$_ethsum",
+                "代幣：$_ethsum",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -445,7 +489,8 @@ class _HomePageState extends State<HomePage> {
       "complete": false
     };
     try {
-      await HttpRequest.post('${HttpURL.host}/target/add/todo/$userId', jsonEncode(userTodo));
+      await HttpRequest.post(
+          '${HttpURL.host}/target/add/todo/$userId', jsonEncode(userTodo));
       Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
     } catch (e) {
       Navigator.pop(context);
@@ -508,18 +553,25 @@ class TabBarTable extends StatelessWidget {
           children: <Widget>[
             // biceps
             upperLimb(
-              actualLeft: actualTimes[TrainingPart.biceps.value]['left']['times'],
-              actualRight: actualTimes[TrainingPart.biceps.value]['right']['times'],
+              actualLeft: actualTimes[TrainingPart.biceps.value]['left']
+                  ['times'],
+              actualRight: actualTimes[TrainingPart.biceps.value]['right']
+                  ['times'],
               targetTimes: targetTimes[TrainingPart.biceps.value]['total'],
             ),
             //deltoid
             upperLimb(
-              actualLeft: actualTimes[TrainingPart.deltoid.value]['left']['times'],
-              actualRight: actualTimes[TrainingPart.deltoid.value]['right']['times'],
+              actualLeft: actualTimes[TrainingPart.deltoid.value]['left']
+                  ['times'],
+              actualRight: actualTimes[TrainingPart.deltoid.value]['right']
+                  ['times'],
               targetTimes: targetTimes[TrainingPart.deltoid.value]['total'],
             ),
             lowerLimb(
-                targetTimes: targetTimes[TrainingPart.quadriceps.value]['total'], actualTimes: actualTimes[TrainingPart.quadriceps.value]['times']),
+                targetTimes: targetTimes[TrainingPart.quadriceps.value]
+                    ['total'],
+                actualTimes: actualTimes[TrainingPart.quadriceps.value]
+                    ['times']),
           ],
         ),
       );
@@ -569,7 +621,8 @@ Widget upperLimb({
                       fontWeight: FontWeight.bold,
                     ),
                   )
-                : const Icon(Icons.check_rounded, color: Colors.white, size: 50.0),
+                : const Icon(Icons.check_rounded,
+                    color: Colors.white, size: 50.0),
             header: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: const Text(
@@ -598,7 +651,8 @@ Widget upperLimb({
                       fontWeight: FontWeight.bold,
                     ),
                   )
-                : const Icon(Icons.check_rounded, color: Colors.white, size: 50.0),
+                : const Icon(Icons.check_rounded,
+                    color: Colors.white, size: 50.0),
             header: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: const Text(
@@ -659,7 +713,8 @@ Widget lowerLimb({
                       fontWeight: FontWeight.bold,
                     ),
                   )
-                : const Icon(Icons.check_rounded, color: Colors.white, size: 50.0),
+                : const Icon(Icons.check_rounded,
+                    color: Colors.white, size: 50.0),
             header: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: const Text(
