@@ -221,31 +221,23 @@ class _TrainingPageState extends State<TrainingPage> {
         requestData["hand"] = hand;
       }
 
-      // TODO 乙太幣後端有錯誤需調整，並且更新prefs.ethsum
-      // await HttpRequest.get('${HttpURL.host}/user/$userId').then((response) async {
-      //   var ethsum = response['data']['eth_sum'] + 1;
-      //   ethwallet = response['data']['eth_account'];
+      String userId = prefs.getString("userId")!;
+      HttpRequest.get('${HttpURL.host}/user/$userId').then((response) async {
+        var ethsum = response['data']['eth_sum'] + 1;
+        ethwallet = response['data']['eth_account'];
 
-      //   // transcation
-      //   Object rawData = {"walletAddress": ethwallet};
+        // transcation
+        Object rawData = {"walletAddress": ethwallet};
 
-      //   await HttpRequest.post("${HttpURL.ethHost}/getEthTrade", jsonEncode(rawData));
-      //   String ethrequestData = """{
-      //           "eth_sum": $ethsum
-      //         }""";
-
-      //   await HttpRequest.post('${HttpURL.host}/user/ethupdate/$userId', ethrequestData);
-      // });
-      // get eth balance
-      // Object getaccountbalancerawData = {"walletAddress": ethwallet};
-
-      // HttpRequest.post("${HttpURL.ethHost}/getAccountBalance", jsonEncode(getaccountbalancerawData)).then((response) async {
-      //   sleep(const Duration(seconds: 5));
-      //   nowethsum = (int.parse(response) / 1000).round();
-      // });
+        await HttpRequest.post("${HttpURL.ethHost}/getEthTrade", jsonEncode(rawData));
+        String ethrequestData = """{
+                "eth_sum": $ethsum
+              }""";
+        prefs.setString("ethsum", ethsum.toString());
+        await HttpRequest.post('${HttpURL.host}/user/ethupdate/$userId', ethrequestData);
+      });
 
       showAlertDialog(context, message: "恭喜您已完成本次訓練，獲得代幣1枚！").then((value) async {
-        String userId = prefs.getString("userId")!;
         UserTodo todo = UserTodo.fromJson(jsonDecode(prefs.getString("userTodo")!));
         String targetDate = todo.targetDate;
         final responseData = await HttpRequest.post("${HttpURL.host}/target/$userId/$targetDate", jsonEncode(requestData));
