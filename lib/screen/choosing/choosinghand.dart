@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/enum/training_hand.dart';
 import 'package:sport_app/model/user_todo.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/manual/training_intropage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import '../main_page.dart';
@@ -20,6 +19,7 @@ class ChoosingHandPage extends StatefulWidget {
 }
 
 class _ChoosingHandPageState extends State<ChoosingHandPage> {
+  late dynamic targetTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,17 +180,23 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
     final userTodoString = prefs.getString("userTodo")!;
     final part = prefs.getInt("trainingPart")!;
     final userTodo = UserTodo.fromJson(jsonDecode(userTodoString));
-    final totalTimes = userTodo.targetTimes[part]['total'];
     final hand = TrainingHand.parse(trainingHand);
-    if (userTodo.actualTimes[part][trainingHand]['times'] >= totalTimes) {
+    if (_checkUpperLimbIsComplete(userTodo, part, trainingHand)) {
       showAlertDialog(context, message: "${hand.string}訓練已完成！");
     } else {
       prefs.setString("trainingHand", trainingHand);
-      prefs.setInt("times", userTodo.targetTimes[part]['times']);
-      prefs.setInt("set", userTodo.targetTimes[part]['set']);
-      prefs.setInt("total", totalTimes);
+      prefs.setInt("times", targetTime['times']);
+      prefs.setInt("set", targetTime['set']);
+      prefs.setInt("total", targetTime['total']);
       await prefs.setInt('introScreen', 2);
       Navigator.pushReplacementNamed(context, IntroPage.routeName);
     }
+  }
+
+  bool _checkUpperLimbIsComplete(UserTodo userTodo, int part, String trainingHand) {
+    targetTime = userTodo.targetTimes.where((element) => element['part'] == part).first;
+    final toTrainTotalTimes = targetTime['total'];
+    final actualTime = userTodo.actualTimes.where((element) => element['part'] == part && element['hand'] == trainingHand).first;
+    return actualTime['times'] >= toTrainTotalTimes;
   }
 }
