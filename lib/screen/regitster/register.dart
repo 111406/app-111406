@@ -431,8 +431,8 @@ class _RegisterPageState extends State<RegisterPage> {
       } on Exception catch (e) {
         showAlertDialog(
           context,
-          title: e.toString,
-          message: e.toString,
+          title: '發生錯誤',
+          message: e.toString().split(' ')[1],
         );
       }
     } else {

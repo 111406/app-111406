@@ -14,6 +14,8 @@ import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/http_request.dart';
 
+import '../../utils/app_config.dart';
+
 var currentState = "up";
 var testResultList = <String, dynamic>{};
 
@@ -205,11 +207,13 @@ Widget _endBtn(BuildContext context) {
           onPressed: () async {
             final prefs = await SharedPreferences.getInstance();
             String userId = prefs.getString("userId")!;
+            prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
 
             // 確認是否還有訓練未做完，有的話就不會新增訓練計劃表
             final responseData = await HttpRequest.get("${HttpURL.host}/target/existed/$userId");
             bool checkExisted = responseData["data"];
             if (!checkExisted) {
+              // TODO 改寫至後端?
               List userTodoList = [];
               DateTime now = DateTime.now();
               DateTime startDateTime = now.add(Duration(days: 8 - now.weekday));
@@ -219,13 +223,13 @@ Widget _endBtn(BuildContext context) {
                 DateTime targetDateTime =
                     i % 2 == 0 ? startDateTime.add(Duration(days: 7 * (i ~/ 2))) : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
                 String targetDate = DateFormat('yyyyMMdd').format(targetDateTime);
-                // TODO 目前為預設值，做資料分析才能做出完整計畫，待調整
+                // TODO 目前為預設值，做資料分析才能做出完整計畫，可能需要額外增表去對照，待調整
                 dynamic userTodo = {
                   "target_date": targetDate,
                   "target_times": [
-                    {"times": 15, "set": 2, "total": 30},
-                    {"times": 8, "set": 1, "total": 8},
-                    {"times": 15, "set": 2, "total": 30}
+                    {"times": 15, "set": 2, "total": 30, "part": 0},
+                    {"times": 8, "set": 1, "total": 8, "part": 1},
+                    {"times": 15, "set": 2, "total": 30, "part": 2}
                   ],
                   "complete": false
                 };

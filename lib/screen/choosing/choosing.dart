@@ -7,7 +7,6 @@ import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/model/user_todo.dart';
 import 'package:sport_app/screen/choosing/choosinghand.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/manual/training_intropage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import '../main_page.dart';
@@ -22,6 +21,7 @@ class ChoosingPage extends StatefulWidget {
 }
 
 class _ChoosingPageState extends State<ChoosingPage> {
+  late dynamic targetTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -262,27 +262,45 @@ class _ChoosingPageState extends State<ChoosingPage> {
   void goNextPage(int part) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt("trainingPart", part);
+    final trainpart = TrainingPart.parse(part);
 
     final userTodoString = prefs.getString("userTodo")!;
     final userTodo = UserTodo.fromJson(jsonDecode(userTodoString));
-    final totalTimes = userTodo.targetTimes[part]['total'];
-    if (part != TrainingPart.quadriceps.value) {
-      if (userTodo.actualTimes[part]['left']['times'] >= totalTimes && userTodo.actualTimes[part]['right']['times'] >= totalTimes) {
-        final trainpart = TrainingPart.parse(part);
-        showAlertDialog(context, message: "${trainpart.string}訓練已完成！");
-      } else {
-        Navigator.pushReplacementNamed(context, ChoosingHandPage.routeName);
-      }
-    } else {
-      if (userTodo.actualTimes[part]['times'] >= totalTimes) {
-        showAlertDialog(context, message: "滑牆深蹲訓練已完成！");
-      } else {
-        prefs.setInt("times", userTodo.targetTimes[part]['times']);
-        prefs.setInt("set", userTodo.targetTimes[part]['set']);
-        prefs.setInt("total", totalTimes);
-        await prefs.setInt('introScreen', 4);
-        Navigator.pushReplacementNamed(context, IntroPage.routeName);
-      }
+    switch (trainpart) {
+      case TrainingPart.biceps:
+      case TrainingPart.deltoid:
+        if (_checkUpperLimbIsComplete(userTodo, part)) {
+          showAlertDialog(context, message: "${trainpart.string}訓練已完成！");
+        } else {
+          Navigator.pushReplacementNamed(context, ChoosingHandPage.routeName);
+        }
+        break;
+      case TrainingPart.quadriceps:
+        if (_checkLowerLimbIsComplete(userTodo, part)) {
+          showAlertDialog(context, message: "滑牆深蹲訓練已完成！");
+        } else {
+          prefs.setInt("times", targetTime['times']);
+          prefs.setInt("set", targetTime['set']);
+          prefs.setInt("total", targetTime['total']);
+          await prefs.setInt('introScreen', 4);
+          Navigator.pushReplacementNamed(context, IntroPage.routeName);
+        }
+        break;
     }
+  }
+
+  bool _checkUpperLimbIsComplete(UserTodo userTodo, int part) {
+    targetTime = userTodo.targetTimes.where((element) => element['part'] == part).first;
+    final toTrainTotalTimes = targetTime['total'];
+    final actualLeft = userTodo.actualTimes.where((element) => element['part'] == part && element['hand'] == 'left').first;
+    final actualRight = userTodo.actualTimes.where((element) => element['part'] == part && element['hand'] == 'right').first;
+    return actualLeft['times'] >= toTrainTotalTimes && actualRight['times'] >= toTrainTotalTimes;
+  }
+
+  bool _checkLowerLimbIsComplete(UserTodo userTodo, int part) {
+    targetTime = userTodo.targetTimes.where((element) => element['part'] == part).first;
+    final toTrainTotalTimes = targetTime['total'];
+    final actualTime = userTodo.actualTimes.where((element) => element['part'] == part).first;
+    return actualTime['times'] >= toTrainTotalTimes;
   }
 }
