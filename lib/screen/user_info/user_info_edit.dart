@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/button.dart';
@@ -325,6 +326,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
               mainBtn(
                 text: "完成",
                 onPressed: () async {
+                  _loadingCircle();
                   String birthday = DateFormat('yyyyMMdd').format(birth);
 
                   String requestData = """{
@@ -342,19 +344,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   } on Exception catch (e) {
                     // TODO
                   }
-
-                  showAlertDialog(
-                    context,
-                    title: '修改成功',
-                    message: '',
-                  );
-
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  await prefs.setInt('returnMainPage', 1);
-                  Timer(const Duration(seconds: 2), () {
-                    Navigator.pushReplacementNamed(context, Main.routeName);
-                  });
                 },
               ),
               const SizedBox(height: 10),
@@ -405,5 +396,54 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
         birth = result;
       });
     }
+  }
+
+  Future<void> _loadingCircle() async {
+    //讀取
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changeDone', false);
+    Timer? _timer1;
+    late double _progress;
+    EasyLoading.instance
+      ..backgroundColor = primaryColor
+      ..textColor = Colors.white
+      ..progressColor = Colors.white
+      ..maskColor = Colors.white70
+      ..displayDuration = const Duration(milliseconds: 10000)
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorType = EasyLoadingIndicatorType.wave
+      ..maskType = EasyLoadingMaskType.custom
+      ..userInteractions = false;
+
+    _progress = 0;
+    _timer1?.cancel();
+    _timer1 = Timer.periodic(
+      const Duration(milliseconds: 150),
+      (Timer timer) async {
+        EasyLoading.showProgress(_progress,
+            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        _progress += 0.05;
+
+        if (_progress >= 1) {
+          await prefs.setBool('changeDone', true);
+          _timer1?.cancel();
+          EasyLoading.dismiss();
+          if (prefs.getBool('changeDone') == true) {
+            showAlertDialog(
+              context,
+              title: '修改成功',
+              message: '',
+            );
+            await prefs.setBool('changeDone', false);
+
+            await prefs.setInt('returnMainPage', 1);
+            Timer(const Duration(seconds: 2), () {
+              Navigator.pushReplacementNamed(context, Main.routeName);
+            });
+          }
+        }
+      },
+    );
+    //讀取結束
   }
 }

@@ -33,7 +33,8 @@ class _HomePageState extends State<HomePage> {
   // late final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day - 7);
   // late final kLastDay = DateTime(kToday.year, kToday.month, kToday.day + 7);
   late final kFirstDay = kToday.subtract(Duration(days: kToday.weekday - 1));
-  late final kLastDay = kToday.add(Duration(days: DateTime.daysPerWeek - kToday.weekday));
+  late final kLastDay =
+      kToday.add(Duration(days: DateTime.daysPerWeek - kToday.weekday));
   CalendarFormat _calendarFormat = CalendarFormat.week;
   Map<CalendarFormat, String> availableCalendarFormats = const {
     // CalendarFormat.month: 'Month',
@@ -54,6 +55,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changePage', true);
     setState(() {
       todoMap = jsonDecode(prefs.getString('todoMap') ?? "{}");
       _ethsum = prefs.getString("ethsum") ?? "";
@@ -137,15 +139,18 @@ class _HomePageState extends State<HomePage> {
                           availableCalendarFormats: availableCalendarFormats,
                           // availableGestures: AvailableGestures.all,
                           onDaySelected: _onDaySelected,
-                          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                          onPageChanged: (focusedDay) => _focusedDay = focusedDay,
+                          selectedDayPredicate: (day) =>
+                              isSameDay(_selectedDay, day),
+                          onPageChanged: (focusedDay) =>
+                              _focusedDay = focusedDay,
                           onFormatChanged: (format) {
                             if (_calendarFormat != format) {
                               setState(() => _calendarFormat = format);
                             }
                           },
                           eventLoader: (day) {
-                            if (todoMap.keys.contains(DateFormat('yyyyMMdd').format(day))) {
+                            if (todoMap.keys
+                                .contains(DateFormat('yyyyMMdd').format(day))) {
                               return [1];
                             }
                             return [];
@@ -162,7 +167,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                         FutureBuilder<String>(
                           future: todoMapString,
-                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                          builder: (BuildContext context,
+                              AsyncSnapshot<String> snapshot) {
                             switch (snapshot.connectionState) {
                               case ConnectionState.waiting:
                                 return const CircularProgressIndicator();
@@ -177,7 +183,8 @@ class _HomePageState extends State<HomePage> {
                                       child: TabBarTable(
                                         size: size,
                                         selectedDay: _selectedDay,
-                                        todoMap: jsonDecode(snapshot.data.toString()),
+                                        todoMap: jsonDecode(
+                                            snapshot.data.toString()),
                                       ),
                                     ),
                                   );
@@ -207,19 +214,25 @@ class _HomePageState extends State<HomePage> {
                       child: InkWell(
                         onTap: () async {
                           final prefs = await SharedPreferences.getInstance();
-                          final trainingState = prefs.getString("trainingState");
+                          final trainingState =
+                              prefs.getString("trainingState");
                           switch (trainingState) {
                             case AppConfig.CANNOT_TRAINING:
-                              showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
+                              showAlertDialog(context,
+                                  message: "請先進行運動測試再回來做訓練喔！");
                               break;
                             case AppConfig.TRAINING_FINISH:
-                              showCheckDialog(context, message: "您目前的訓練已完成，是否要建立新的訓練？", func: addUserTodo);
+                              showCheckDialog(context,
+                                  message: "您目前的訓練已完成，是否要建立新的訓練？",
+                                  func: addUserTodo);
                               break;
                             case AppConfig.WAITING_TRAINING:
-                              showAlertDialog(context, message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
+                              showAlertDialog(context,
+                                  message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
                               break;
                             default:
-                              Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
+                              Navigator.pushReplacementNamed(
+                                  context, ChoosingPage.routeName);
                           }
                         },
                         child: Ink(child: trainingBtn()),
@@ -367,7 +380,8 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -468,7 +482,8 @@ class _HomePageState extends State<HomePage> {
     final userId = prefs.getString("userId");
     String targetDate = DateFormat('yyyyMMdd').format(DateTime.now());
     try {
-      final responseData = await HttpRequest.patch('${HttpURL.host}/target/add/todo/$userId/$targetDate', null);
+      final responseData = await HttpRequest.patch(
+          '${HttpURL.host}/target/add/todo/$userId/$targetDate', null);
       prefs.setString("userTodo", jsonEncode(responseData['data']));
 
       Map todoMap = jsonDecode(prefs.getString("todoMap")!);
