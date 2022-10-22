@@ -7,6 +7,7 @@ import 'package:sport_app/model/user_todo.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
+import '../../enum/training_part.dart';
 import '../main_page.dart';
 import '../manual/intropage.dart';
 
@@ -105,7 +106,8 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -152,7 +154,8 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -188,15 +191,25 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
       prefs.setInt("times", targetTime['times']);
       prefs.setInt("set", targetTime['set']);
       prefs.setInt("total", targetTime['total']);
-      await prefs.setInt('introScreen', 2);
+      if (part == TrainingPart.biceps.value) {
+        await prefs.setInt('introScreen', 2);
+      }
+      if (part == TrainingPart.deltoid.value) {
+        await prefs.setInt('introScreen', 3);
+      }
       Navigator.pushReplacementNamed(context, IntroPage.routeName);
     }
   }
 
-  bool _checkUpperLimbIsComplete(UserTodo userTodo, int part, String trainingHand) {
-    targetTime = userTodo.targetTimes.where((element) => element['part'] == part).first;
+  bool _checkUpperLimbIsComplete(
+      UserTodo userTodo, int part, String trainingHand) {
+    targetTime =
+        userTodo.targetTimes.where((element) => element['part'] == part).first;
     final toTrainTotalTimes = targetTime['total'];
-    final actualTime = userTodo.actualTimes.where((element) => element['part'] == part && element['hand'] == trainingHand).first;
+    final actualTime = userTodo.actualTimes
+        .where((element) =>
+            element['part'] == part && element['hand'] == trainingHand)
+        .first;
     return actualTime['times'] >= toTrainTotalTimes;
   }
 }
