@@ -55,11 +55,23 @@ Widget _tutorialScreen(BuildContext context) {
         height: MediaQuery.of(context).size.height / 1.8,
         children: [
           Image.network(
-            'https://cdn.discordapp.com/attachments/800700545169883189/1031565024717721661/01new.png',
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254876332961833/0new.png',
             fit: BoxFit.contain,
           ),
           Image.network(
-            'https://cdn.discordapp.com/attachments/800700545169883189/1031565025078423572/02new.png',
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254876660109385/01new.png',
+            fit: BoxFit.contain,
+          ),
+          Image.network(
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254877075357816/02new.png',
+            fit: BoxFit.contain,
+          ),
+          Image.network(
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254877486395393/03new.png',
+            fit: BoxFit.contain,
+          ),
+          Image.network(
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254877855502396/04new.png',
             fit: BoxFit.contain,
           ),
         ],
