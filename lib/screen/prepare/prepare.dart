@@ -65,15 +65,23 @@ Widget _tutorialScreen(BuildContext context) {
         children: [
           Image.network(
             //ZERO
-            'https://cdn.discordapp.com/attachments/800700545169883189/1031564610802831461/01new.png',
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254710897033307/00new.png',
             fit: BoxFit.contain,
           ),
           Image.network(
-            'https://cdn.discordapp.com/attachments/800700545169883189/1031564611469709352/02new.png',
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254711362584626/01new.png',
             fit: BoxFit.contain,
           ),
           Image.network(
-            'https://cdn.discordapp.com/attachments/800700545169883189/1031564611872378890/03new.png',
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254711748472882/02new.png',
+            fit: BoxFit.contain,
+          ),
+          Image.network(
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254712125968424/03new.png',
+            fit: BoxFit.contain,
+          ),
+          Image.network(
+            'https://cdn.discordapp.com/attachments/1033254616411951154/1033254712595718215/04new.png',
             fit: BoxFit.contain,
           ),
         ],

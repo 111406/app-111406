@@ -129,7 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                   text: '忘記密碼',
                   alignment: Alignment.centerRight,
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, ForgotPassword.routeName);
+                    Navigator.pushReplacementNamed(
+                        context, ForgotPassword.routeName);
                   },
                 ),
                 const SizedBox(height: 20),
@@ -152,42 +153,19 @@ class _LoginPageState extends State<LoginPage> {
                         "user_id": "$userId",
                         "password": "${passwordController.text}"
                         }""";
-                      bool _textFieldIsNotEmpty = (userId.isNotEmpty && password.isNotEmpty);
+                      bool _textFieldIsNotEmpty =
+                          (userId.isNotEmpty && password.isNotEmpty);
                       if (_textFieldIsNotEmpty) {
                         try {
-                          //讀取
-                          EasyLoading.instance
-                            ..backgroundColor = primaryColor
-                            ..textColor = Colors.white
-                            ..progressColor = Colors.white
-                            ..maskColor = Colors.white70
-                            ..displayDuration =
-                                const Duration(milliseconds: 1500)
-                            ..loadingStyle = EasyLoadingStyle.custom
-                            ..indicatorType = EasyLoadingIndicatorType.wave
-                            ..maskType = EasyLoadingMaskType.custom
-                            ..userInteractions = false;
-
-                          _progress = 0;
-                          _timer1?.cancel();
-                          _timer1 = Timer.periodic(
-                            const Duration(milliseconds: 100),
-                            (Timer timer) {
-                              EasyLoading.showProgress(_progress, status: '${(_progress * 100).toStringAsFixed(0)}%');
-                              _progress += 0.02;
-
-                              if (_progress >= 1) {
-                                _timer1?.cancel();
-                                EasyLoading.dismiss();
-                              }
-                            },
-                          );
-                          //讀取結束
+                          _loadingCircle();
                           final prefs = await SharedPreferences.getInstance();
                           prefs.clear();
-                          await HttpRequest.post('${HttpURL.host}/user/login', requestData).then(
+                          await HttpRequest.post(
+                                  '${HttpURL.host}/user/login', requestData)
+                              .then(
                             (response) async {
-                              final prefs = await SharedPreferences.getInstance();
+                              final prefs =
+                                  await SharedPreferences.getInstance();
                               prefs.setString("userId", userId);
                               prefs.setBool('isLoginForFirstTime', true);
                               bool checkComplete = true;
@@ -195,7 +173,9 @@ class _LoginPageState extends State<LoginPage> {
                               await prefs.remove("trainingState");
                               final todoList = <UserTodo>[];
                               final todoMap = {};
-                              await HttpRequest.get('${HttpURL.host}/target/$userId').then((response) async {
+                              await HttpRequest.get(
+                                      '${HttpURL.host}/target/$userId')
+                                  .then((response) async {
                                 final dataList = response['data'] as List;
                                 if (dataList.isNotEmpty) {
                                   // 有本周訓練資料
@@ -206,37 +186,49 @@ class _LoginPageState extends State<LoginPage> {
                                     todoMap[todo.targetDate] = todo;
                                     todoList.add(todo);
                                   }
-                                  checkComplete = checkCompleteList.contains(false);
+                                  checkComplete =
+                                      checkCompleteList.contains(false);
 
-                                  await prefs.setString("todoMap", json.encode(todoMap));
+                                  await prefs.setString(
+                                      "todoMap", json.encode(todoMap));
 
                                   // TODO 訓練表部分待調整
                                   if (checkComplete) {
-                                    prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));
+                                    prefs.setString(
+                                        "userTodo",
+                                        json.encode(todoList.firstWhere(
+                                            (element) => !element.complete)));
                                   }
                                 } else {
                                   // 檢查是不是剛做完檢測，因為不會馬上指派任務
-                                  await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
+                                  await HttpRequest.get(
+                                          '${HttpURL.host}/target/started/$userId')
+                                      .then((response) {
                                     final isHadTarget = response['data'];
                                     prefs.remove("todoList");
                                     prefs.remove("userTodo");
                                     if (isHadTarget) {
                                       // 如果是剛檢測完會跑到這
-                                      prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
+                                      prefs.setString("trainingState",
+                                          AppConfig.WAITING_TRAINING);
                                     } else {
                                       // 代表還沒做檢測
-                                      prefs.setString("trainingState", AppConfig.CANNOT_TRAINING);
+                                      prefs.setString("trainingState",
+                                          AppConfig.CANNOT_TRAINING);
                                     }
                                   });
                                 }
                               });
                               if (!checkComplete) {
                                 // 進到這裡表示本周任務已完成
-                                prefs.setString("trainingState", AppConfig.TRAINING_FINISH);
+                                prefs.setString(
+                                    "trainingState", AppConfig.TRAINING_FINISH);
                               }
 
                               // TODO check
-                              await HttpRequest.get('${HttpURL.host}/user/$userId').then((response) {
+                              await HttpRequest.get(
+                                      '${HttpURL.host}/user/$userId')
+                                  .then((response) {
                                 var height = response['data']['height'] ?? .0;
                                 var weight = response['data']['weight'] ?? .0;
                                 var birth = response['data']['birthday'];
@@ -249,7 +241,8 @@ class _LoginPageState extends State<LoginPage> {
                                 prefs.setString("gender", gender);
                                 prefs.setString("ethsum", ethsum.toString());
                               });
-                              Navigator.pushReplacementNamed(context, Main.routeName);
+                              Navigator.pushReplacementNamed(
+                                  context, Main.routeName);
                             },
                           );
                         } on Exception catch (e) {
@@ -275,7 +268,8 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.clear();
-                    Navigator.pushReplacementNamed(context, RegisterPage.routeName);
+                    Navigator.pushReplacementNamed(
+                        context, RegisterPage.routeName);
                   },
                 )
               ],
@@ -284,5 +278,41 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _loadingCircle() async {
+    //讀取
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changePage', false);
+    Timer? _timer1;
+    late double _progress;
+    EasyLoading.instance
+      ..backgroundColor = primaryColor
+      ..textColor = Colors.white
+      ..progressColor = Colors.white
+      ..maskColor = Colors.white70
+      ..displayDuration = const Duration(milliseconds: 10000)
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorType = EasyLoadingIndicatorType.wave
+      ..maskType = EasyLoadingMaskType.custom
+      ..userInteractions = false;
+
+    _progress = 0;
+    _timer1?.cancel();
+    _timer1 = Timer.periodic(
+      const Duration(milliseconds: 750),
+      (Timer timer) async {
+        EasyLoading.showProgress(_progress,
+            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        _progress += 0.05;
+
+        if (_progress >= 1 || prefs.getBool('changePage') == true) {
+          _timer1?.cancel();
+          EasyLoading.dismiss();
+          await prefs.setBool('changePage', false);
+        }
+      },
+    );
+    //讀取結束
   }
 }

@@ -143,7 +143,8 @@ class _ChoosingPageState extends State<ChoosingPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -190,7 +191,8 @@ class _ChoosingPageState extends State<ChoosingPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -237,7 +239,8 @@ class _ChoosingPageState extends State<ChoosingPage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded,
+                size: 30, color: Colors.black),
           )
         ],
       ),
@@ -282,7 +285,9 @@ class _ChoosingPageState extends State<ChoosingPage> {
           prefs.setInt("times", targetTime['times']);
           prefs.setInt("set", targetTime['set']);
           prefs.setInt("total", targetTime['total']);
-          await prefs.setInt('introScreen', 4);
+          if (part == TrainingPart.quadriceps.value) {
+            await prefs.setInt('introScreen', 5);
+          }
           Navigator.pushReplacementNamed(context, IntroPage.routeName);
         }
         break;
@@ -290,17 +295,27 @@ class _ChoosingPageState extends State<ChoosingPage> {
   }
 
   bool _checkUpperLimbIsComplete(UserTodo userTodo, int part) {
-    targetTime = userTodo.targetTimes.where((element) => element['part'] == part).first;
+    targetTime =
+        userTodo.targetTimes.where((element) => element['part'] == part).first;
     final toTrainTotalTimes = targetTime['total'];
-    final actualLeft = userTodo.actualTimes.where((element) => element['part'] == part && element['hand'] == 'left').first;
-    final actualRight = userTodo.actualTimes.where((element) => element['part'] == part && element['hand'] == 'right').first;
-    return actualLeft['times'] >= toTrainTotalTimes && actualRight['times'] >= toTrainTotalTimes;
+    final actualLeft = userTodo.actualTimes
+        .where(
+            (element) => element['part'] == part && element['hand'] == 'left')
+        .first;
+    final actualRight = userTodo.actualTimes
+        .where(
+            (element) => element['part'] == part && element['hand'] == 'right')
+        .first;
+    return actualLeft['times'] >= toTrainTotalTimes &&
+        actualRight['times'] >= toTrainTotalTimes;
   }
 
   bool _checkLowerLimbIsComplete(UserTodo userTodo, int part) {
-    targetTime = userTodo.targetTimes.where((element) => element['part'] == part).first;
+    targetTime =
+        userTodo.targetTimes.where((element) => element['part'] == part).first;
     final toTrainTotalTimes = targetTime['total'];
-    final actualTime = userTodo.actualTimes.where((element) => element['part'] == part).first;
+    final actualTime =
+        userTodo.actualTimes.where((element) => element['part'] == part).first;
     return actualTime['times'] >= toTrainTotalTimes;
   }
 }

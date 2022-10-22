@@ -1,9 +1,11 @@
 ///註冊第一頁
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -325,6 +327,41 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  Future<void> _loadingCircle() async {
+    //讀取
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changePage', false);
+    Timer? _timer1;
+    late double _progress;
+    EasyLoading.instance
+      ..backgroundColor = primaryColor
+      ..textColor = Colors.white
+      ..progressColor = Colors.white
+      ..maskColor = Colors.white70
+      ..displayDuration = const Duration(milliseconds: 10000)
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorType = EasyLoadingIndicatorType.wave
+      ..maskType = EasyLoadingMaskType.custom
+      ..userInteractions = false;
+
+    _progress = 0;
+    _timer1?.cancel();
+    _timer1 = Timer.periodic(
+      const Duration(milliseconds: 500),
+      (Timer timer) async {
+        EasyLoading.showProgress(_progress,
+            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        _progress += 0.05;
+
+        if (_progress >= 1) {
+          _timer1?.cancel();
+          EasyLoading.dismiss();
+        }
+      },
+    );
+    //讀取結束
+  }
+
   void _datePicker() async {
     initBirth = true;
     var result = await showDatePicker(
@@ -373,6 +410,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
     bool _birthIsNotEmpty = initBirth;
     bool _passwordCheck = (password == confirmPassword);
+
+    _loadingCircle();
 
     if (!_passwordCheck) {
       showAlertDialog(
