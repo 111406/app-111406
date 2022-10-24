@@ -210,7 +210,8 @@ Widget _endBtn(BuildContext context) {
             prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
 
             // 確認是否還有訓練未做完，有的話就不會新增訓練計劃表
-            final responseData = await HttpRequest.get("${HttpURL.host}/target/existed/$userId");
+            final responseData =
+                await HttpRequest.get("${HttpURL.host}/target/existed/$userId");
             bool checkExisted = responseData["data"];
             if (!checkExisted) {
               // TODO 改寫至後端?
@@ -218,11 +219,14 @@ Widget _endBtn(BuildContext context) {
               DateTime now = DateTime.now();
               DateTime startDateTime = now.add(Duration(days: 8 - now.weekday));
               String startDate = DateFormat('yyyyMMdd').format(startDateTime);
-              String endDate = DateFormat('yyyyMMdd').format(startDateTime.add(const Duration(days: 28)));
+              String endDate = DateFormat('yyyyMMdd')
+                  .format(startDateTime.add(const Duration(days: 28)));
               for (int i = 0; i < 8; i++) {
-                DateTime targetDateTime =
-                    i % 2 == 0 ? startDateTime.add(Duration(days: 7 * (i ~/ 2))) : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
-                String targetDate = DateFormat('yyyyMMdd').format(targetDateTime);
+                DateTime targetDateTime = i % 2 == 0
+                    ? startDateTime.add(Duration(days: 7 * (i ~/ 2)))
+                    : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
+                String targetDate =
+                    DateFormat('yyyyMMdd').format(targetDateTime);
                 // TODO 目前為預設值，做資料分析才能做出完整計畫，可能需要額外增表去對照，待調整
                 dynamic userTodo = {
                   "target_date": targetDate,
@@ -241,7 +245,8 @@ Widget _endBtn(BuildContext context) {
                 endDate,
                 userTodoList,
               );
-              await HttpRequest.post("${HttpURL.host}/target", jsonEncode(target.toJson()));
+              await HttpRequest.post(
+                  "${HttpURL.host}/target", jsonEncode(target.toJson()));
             }
 
             Navigator.pushReplacementNamed(context, Main.routeName);
@@ -268,10 +273,13 @@ Widget _testMode(BuildContext context, TestResultController controller) {
           child: ElevatedButton(
             onPressed: () async {
               currentState = "up";
-              controller.setCurrentRecord(currentState, testResultList[currentState]);
+              controller.setCurrentRecord(
+                  currentState, testResultList[currentState]);
             },
             child: const Text("上肢"),
-            style: controller.checkCurrentState("up") ? _hasPressedButton() : _hasNotPressedButton(),
+            style: controller.checkCurrentState("up")
+                ? _hasPressedButton()
+                : _hasNotPressedButton(),
           ),
         ),
         SizedBox(
@@ -280,10 +288,13 @@ Widget _testMode(BuildContext context, TestResultController controller) {
           child: ElevatedButton(
             onPressed: () async {
               currentState = "down";
-              controller.setCurrentRecord(currentState, testResultList[currentState]);
+              controller.setCurrentRecord(
+                  currentState, testResultList[currentState]);
             },
             child: const Text("下肢"),
-            style: controller.checkCurrentState("down") ? _hasPressedButton() : _hasNotPressedButton(),
+            style: controller.checkCurrentState("down")
+                ? _hasPressedButton()
+                : _hasNotPressedButton(),
           ),
         ),
       ],
@@ -318,10 +329,24 @@ class _TestResultPageState extends State<TestResultPage> {
   final controller = Get.put(TestResultController());
 
   @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  void _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setBool('changePage', true);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     Record bicepsTestResult = Record.fromJson(jsonDecode(args['bicepsData']));
-    Record quadricepsTestResult = Record.fromJson(jsonDecode(args['quadricepsData']));
+    Record quadricepsTestResult =
+        Record.fromJson(jsonDecode(args['quadricepsData']));
     testResultList["up"] = bicepsTestResult;
     testResultList["down"] = quadricepsTestResult;
 
@@ -353,7 +378,8 @@ class _TestResultPageState extends State<TestResultPage> {
                 const SizedBox(height: 15),
                 _resultPR(context, controller.currentRecord.pr),
                 const SizedBox(height: 15),
-                if (!isHasDiff) _resultGap(context, controller.currentRecord.difference),
+                if (!isHasDiff)
+                  _resultGap(context, controller.currentRecord.difference),
                 if (!isHasDiff) const SizedBox(height: 30),
                 // 顯示角度變化圖表
                 // _resultChart(context, chartData),

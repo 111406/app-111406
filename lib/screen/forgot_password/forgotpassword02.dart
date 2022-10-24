@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
 import 'package:sport_app/screen/components/button.dart';
@@ -81,6 +82,8 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                         confirmNewPassword.isNotEmpty);
                     bool _passwordCheck = (newPassword == confirmNewPassword);
 
+                    _loadingCircle();
+
                     if (!_textFieldIsNotEmpty) {
                       showAlertDialog(
                         context,
@@ -113,6 +116,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                             .then(
                           (response) async {},
                         );
+                        await prefs.setBool('loadingdone', true);
                         showAlertDialog(
                           context,
                           title: '修改成功',
@@ -147,5 +151,41 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
         ),
       ),
     );
+  }
+
+  Future<void> _loadingCircle() async {
+    //讀取
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changePage', false);
+    Timer? _timer1;
+    late double _progress;
+    EasyLoading.instance
+      ..backgroundColor = primaryColor
+      ..textColor = Colors.white
+      ..progressColor = Colors.white
+      ..maskColor = Colors.white70
+      ..displayDuration = const Duration(milliseconds: 10000)
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorType = EasyLoadingIndicatorType.wave
+      ..maskType = EasyLoadingMaskType.custom
+      ..userInteractions = false;
+
+    _progress = 0;
+    _timer1?.cancel();
+    _timer1 = Timer.periodic(
+      const Duration(milliseconds: 500),
+      (Timer timer) async {
+        EasyLoading.showProgress(_progress,
+            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        _progress += 0.05;
+
+        if (_progress >= 1 || prefs.getBool('loadingdone') == true) {
+          _timer1?.cancel();
+          EasyLoading.dismiss();
+          await prefs.setBool('loadingdone', false);
+        }
+      },
+    );
+    //讀取結束
   }
 }

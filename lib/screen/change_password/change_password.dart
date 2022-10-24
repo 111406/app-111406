@@ -2,12 +2,14 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/components/app_logo.dart';
 import 'package:sport_app/screen/components/button.dart';
 import 'package:sport_app/screen/components/page_title.dart';
 import 'package:sport_app/screen/components/textfield_inputbox.dart';
 import 'package:sport_app/screen/main_page.dart';
+import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
 
@@ -88,6 +90,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     final newPassword = newPasswordController.text;
                     final confirmPassword = confirmPasswordController.text;
 
+                    _loadingCircle();
+
                     bool _textFieldIsNotEmpty = (oldPassword.isNotEmpty &&
                         newPassword.isNotEmpty &&
                         confirmPassword.isNotEmpty);
@@ -124,6 +128,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           .then(
                         (response) async {},
                       );
+                      await prefs.setBool('loadingdone', true);
                       showAlertDialog(
                         context,
                         title: '修改成功',
@@ -151,5 +156,41 @@ class _ChangePasswordState extends State<ChangePassword> {
         ),
       ),
     );
+  }
+
+  Future<void> _loadingCircle() async {
+    //讀取
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changePage', false);
+    Timer? _timer1;
+    late double _progress;
+    EasyLoading.instance
+      ..backgroundColor = primaryColor
+      ..textColor = Colors.white
+      ..progressColor = Colors.white
+      ..maskColor = Colors.white70
+      ..displayDuration = const Duration(milliseconds: 10000)
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorType = EasyLoadingIndicatorType.wave
+      ..maskType = EasyLoadingMaskType.custom
+      ..userInteractions = false;
+
+    _progress = 0;
+    _timer1?.cancel();
+    _timer1 = Timer.periodic(
+      const Duration(milliseconds: 500),
+      (Timer timer) async {
+        EasyLoading.showProgress(_progress,
+            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        _progress += 0.05;
+
+        if (_progress >= 1 || prefs.getBool('loadingdone') == true) {
+          _timer1?.cancel();
+          EasyLoading.dismiss();
+          await prefs.setBool('loadingdone', false);
+        }
+      },
+    );
+    //讀取結束
   }
 }
