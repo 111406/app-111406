@@ -9,25 +9,23 @@ import 'package:sport_app/screen/choosing/choosing.dart';
 import 'package:sport_app/screen/choosing/choosinghand.dart';
 import 'package:sport_app/screen/forgot_password/forgotpassword.dart';
 import 'package:sport_app/screen/forgot_password/forgotpassword02.dart';
-import 'package:sport_app/screen/manual/intropage.dart';
-
+import 'package:sport_app/screen/intro/intropage.dart';
+import 'package:sport_app/screen/intro/prepare/prepare.dart';
+import 'package:sport_app/screen/intro/prepare/prepare2.dart';
+import 'package:sport_app/screen/intro/warmup/warmuppage.dart';
 import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/manual/training_intropage.dart';
+import 'package:sport_app/screen/intro/training_intropage.dart';
 import 'package:sport_app/screen/manual/manual.dart';
-import 'package:sport_app/screen/prepare/prepare.dart';
-import 'package:sport_app/screen/prepare/prepare2.dart';
 import 'package:sport_app/screen/regitster/register.dart';
-import 'package:sport_app/screen/restpage.dart';
+import 'package:sport_app/screen/intro/restpage.dart';
 import 'package:sport_app/screen/testing/testpage.dart';
 import 'package:sport_app/screen/testing/testpage2.dart';
 import 'package:sport_app/screen/result/testresultpage.dart';
 import 'package:sport_app/screen/training/trainingpage.dart';
-
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:sport_app/screen/warmup/warmuppage.dart';
 import 'package:sport_app/utils/app_config.dart';
 import 'package:sport_app/utils/http_request.dart';
 

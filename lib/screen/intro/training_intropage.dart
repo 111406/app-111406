@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:sport_app/screen/intro/warmup/warmuppage.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/warmup/warmuppage.dart';
 import 'package:sport_app/theme/color.dart';
 
 /// 訓練教學頁

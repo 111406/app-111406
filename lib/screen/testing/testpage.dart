@@ -11,8 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/enum/gender.dart';
 import 'package:sport_app/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
+import 'package:sport_app/screen/intro/prepare/prepare2.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/prepare/prepare2.dart';
 import 'package:sport_app/theme/color.dart';
 
 TrainingPart _part = TrainingPart.biceps;
@@ -134,10 +134,7 @@ Widget _endBtn(BuildContext context) {
 
 class _TestPageState extends State<TestPage> {
   FlutterTts flutterTts = FlutterTts();
-  var _times = 0,
-      _displayAngle = 0,
-      _startTime = 0,
-      _checkAddNum = 0.0;
+  var _times = 0, _displayAngle = 0, _startTime = 0, _checkAddNum = 0.0;
   final List<ChartData> _angleList = [];
   final int tobeMinused = 30;
 
@@ -146,7 +143,8 @@ class _TestPageState extends State<TestPage> {
   void initState() {
     super.initState();
     _setTimerEvent();
-    subscription = motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription =
+        motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         _calcAngles(event.x, event.y, event.z);
       });
@@ -191,8 +189,12 @@ class _TestPageState extends State<TestPage> {
 
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
-    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
+    var pitch =
+        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
+            .floor();
+    var roll =
+        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
+            .floor();
 
     _checkPart(_part, pitch, roll);
   }
@@ -250,7 +252,7 @@ class _TestPageState extends State<TestPage> {
         if (_displayTimer == 0) {
           final prefs = await SharedPreferences.getInstance();
           String userId = prefs.getString("userId")!;
-          
+
           String birthday = prefs.getString("birthday")!;
           final birthdayDatetime = DateTime.parse(birthday);
           DateDuration duration = AgeCalculator.age(birthdayDatetime);

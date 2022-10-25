@@ -9,7 +9,7 @@ import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import '../../enum/training_part.dart';
 import '../main_page.dart';
-import '../manual/intropage.dart';
+import '../intro/intropage.dart';
 
 class ChoosingHandPage extends StatefulWidget {
   const ChoosingHandPage({Key? key}) : super(key: key);

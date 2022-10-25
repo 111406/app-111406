@@ -18,7 +18,7 @@ import 'dart:async';
 
 import '../../model/user_todo.dart';
 import '../../utils/app_config.dart';
-import '../manual/intropage.dart';
+import '../intro/intropage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
