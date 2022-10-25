@@ -5,7 +5,7 @@ import 'package:sport_app/screen/training/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 var _displayTimer = 60;
-var _ss = 0;
+late Timer timer;
 
 class RestPage extends StatefulWidget {
   const RestPage({Key? key}) : super(key: key);
@@ -79,7 +79,6 @@ Widget _endBtn(BuildContext context) {
     alignment: Alignment.center,
     child: GestureDetector(
       onLongPress: () {
-        _ss = 1;
         Navigator.pushReplacementNamed(context, Main.routeName);
       },
       child: const Text(
@@ -95,7 +94,7 @@ Widget _endBtn(BuildContext context) {
 }
 
 class _RestPageState extends State<RestPage> {
-  final int _timer = 60;
+  late final int tobeMinused = 60;
 
   @override
   void initState() {
@@ -105,6 +104,8 @@ class _RestPageState extends State<RestPage> {
 
   @override
   void dispose() {
+    timer.cancel();
+    _displayTimer = 60;
     super.dispose();
   }
 
@@ -138,18 +139,13 @@ class _RestPageState extends State<RestPage> {
 
   ///設定倒數計時器
   void _setTimerEvent() {
-    Timer.periodic(period, (timer) async {
-      _displayTimer = _timer - timer.tick;
+    timer = Timer.periodic(period, (_timer) async {
       setState(() {
-        _displayTimer;
+        _displayTimer = tobeMinused - _timer.tick;
       });
       if (_displayTimer == 0) {
-        timer.cancel();
+        _timer.cancel();
         Navigator.pushReplacementNamed(context, TrainingPage.routeName);
-      }
-      if (_ss == 1) {
-        timer.cancel();
-        _ss = 0;
       }
     });
   }

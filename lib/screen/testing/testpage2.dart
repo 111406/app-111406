@@ -20,7 +20,8 @@ import '../../enum/gender.dart';
 
 TrainingPart _part = TrainingPart.quadriceps;
 var _timerStart = false;
-var _ss = 0;
+var _displayTimer = 30;
+late Timer timer;
 
 class TestPage2 extends StatefulWidget {
   const TestPage2({Key? key}) : super(key: key);
@@ -120,7 +121,6 @@ Widget _endBtn(BuildContext context) {
     alignment: Alignment.center,
     child: GestureDetector(
       onLongPress: () {
-        _ss = 1;
         Navigator.pushReplacementNamed(context, Main.routeName);
       },
       child: const Text(
@@ -138,11 +138,10 @@ class _TestPageState2 extends State<TestPage2> {
   FlutterTts flutterTts = FlutterTts();
   var _times = 0,
       _displayAngle = 0,
-      _displayTimer = 30,
       _startTime = 0,
       _checkAddNum = 0.0;
   final List<ChartData> _angleList = [];
-  final int _timer = 30;
+  final int tobeMinused = 30;
 
   late StreamSubscription<AccelerometerEvent> subscription;
   @override
@@ -160,6 +159,7 @@ class _TestPageState2 extends State<TestPage2> {
   @override
   void dispose() {
     subscription.cancel();
+    timer.cancel();
     super.dispose();
   }
 
@@ -253,8 +253,8 @@ class _TestPageState2 extends State<TestPage2> {
   void _setTimerEvent() {
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
-    Timer.periodic(period, (timer) async {
-      _displayTimer = _timer - timer.tick;
+    timer = Timer.periodic(period, (_timer) async {
+      _displayTimer = tobeMinused - _timer.tick;
       if (_displayTimer == 0) {
         final prefs = await SharedPreferences.getInstance();
         String userId = prefs.getString("userId")!;
@@ -265,7 +265,7 @@ class _TestPageState2 extends State<TestPage2> {
 
         String genderString = prefs.getString("gender")!;
         final gender = Gender.parse(genderString);
-        timer.cancel();
+        _timer.cancel();
         _timerStart = false;
 
         // TODO wrap in object
@@ -294,11 +294,6 @@ class _TestPageState2 extends State<TestPage2> {
         //         "bicepsData": bicepsData,
         //         "quadricepsData": quadricepsData
         //       });
-      }
-      if (_ss == 1) {
-        timer.cancel();
-        _timerStart = false;
-        _ss = 0;
       }
     });
   }
