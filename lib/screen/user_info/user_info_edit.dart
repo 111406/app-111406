@@ -326,6 +326,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
               mainBtn(
                 text: "完成",
                 onPressed: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   String birthday = DateFormat('yyyyMMdd').format(birth);
 
                   String requestData = """{
@@ -339,13 +341,19 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                     await HttpRequest.post(
                             '${HttpURL.host}/user/update/$userId', requestData)
                         .then(
-                      (response) async {},
+                      (response) async {
+                        prefs.setDouble("height", double.parse(height));
+                        prefs.setDouble("weight", double.parse(weight));
+                        prefs.setString("birthday", birthday);
+                      },
                     );
                   } on Exception catch (e) {
-                    // TODO
+                    showAlertDialog(
+                      context,
+                      title: '發生錯誤',
+                      message: '修改失敗',
+                    );
                   }
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
                 },
               ),
               const SizedBox(height: 10),
