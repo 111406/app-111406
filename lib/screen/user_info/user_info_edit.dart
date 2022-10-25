@@ -326,7 +326,6 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
               mainBtn(
                 text: "完成",
                 onPressed: () async {
-                  _loadingCircle();
                   String birthday = DateFormat('yyyyMMdd').format(birth);
 
                   String requestData = """{
@@ -336,6 +335,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   }""";
 
                   try {
+                    _loadingCircle();
                     await HttpRequest.post(
                             '${HttpURL.host}/user/update/$userId', requestData)
                         .then(

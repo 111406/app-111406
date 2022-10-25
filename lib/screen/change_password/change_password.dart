@@ -90,8 +90,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     final newPassword = newPasswordController.text;
                     final confirmPassword = confirmPasswordController.text;
 
-                    _loadingCircle();
-
                     bool _textFieldIsNotEmpty = (oldPassword.isNotEmpty &&
                         newPassword.isNotEmpty &&
                         confirmPassword.isNotEmpty);
@@ -122,6 +120,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     }""";
 
                     try {
+                      _loadingCircle();
+
                       await HttpRequest.post(
                               '${HttpURL.host}/user/update/password/$userId',
                               requestData)

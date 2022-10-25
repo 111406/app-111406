@@ -411,8 +411,6 @@ class _RegisterPageState extends State<RegisterPage> {
     bool _birthIsNotEmpty = initBirth;
     bool _passwordCheck = (password == confirmPassword);
 
-    _loadingCircle();
-
     if (!_passwordCheck) {
       showAlertDialog(
         context,
@@ -461,6 +459,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (institution.isNotEmpty) requestData['institution'] = institution;
 
       try {
+        _loadingCircle();
         final response = await HttpRequest.post(
             '${HttpURL.host}/user/signup', jsonEncode(requestData));
         final prefs = await SharedPreferences.getInstance();

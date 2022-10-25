@@ -82,8 +82,6 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                         confirmNewPassword.isNotEmpty);
                     bool _passwordCheck = (newPassword == confirmNewPassword);
 
-                    _loadingCircle();
-
                     if (!_textFieldIsNotEmpty) {
                       showAlertDialog(
                         context,
@@ -110,6 +108,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
 
                     if (_textFieldIsNotEmpty && _passwordCheck) {
                       try {
+                        _loadingCircle();
                         await HttpRequest.post(
                                 '${HttpURL.host}/user/update/password',
                                 requestData)
@@ -127,7 +126,6 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                               context, LoginPage.routeName);
                         });
                       } on Exception catch (e) {
-                        // TODO
                         showAlertDialog(
                           context,
                           title: '',
