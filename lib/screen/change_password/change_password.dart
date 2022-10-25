@@ -25,6 +25,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   final oldPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  late Timer _timer;
 
   @override
   void initState() {
@@ -94,52 +95,53 @@ class _ChangePasswordState extends State<ChangePassword> {
                         newPassword.isNotEmpty &&
                         confirmPassword.isNotEmpty);
                     bool _passwordCheck = (newPassword == confirmPassword);
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    final userId = prefs.getString("userId");
 
+                    String requestData = """{
+                      "user_id": "$userId",
+                      "old_password": "$oldPassword",
+                      "new_password": "$newPassword"
+                    }""";
                     if (!_textFieldIsNotEmpty) {
                       showAlertDialog(
                         context,
                         title: '輸入框不得為空白',
                         message: '請重新輸入',
                       );
-                    }
-                    if (!_passwordCheck && _textFieldIsNotEmpty) {
+                    } else if (!_passwordCheck && _textFieldIsNotEmpty) {
                       showAlertDialog(
                         context,
                         title: '確認密碼不相同',
                         message: '請重新輸入',
                       );
-                    }
+                    } else {
+                      try {
+                        _loadingCircle();
 
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    final userId = prefs.getString("userId");
-
-                    String requestData = """{
-                      "old_password": "$oldPassword",
-                      "new_password": "$newPassword"
-                    }""";
-
-                    try {
-                      _loadingCircle();
-
-                      await HttpRequest.post(
-                              '${HttpURL.host}/user/update/password/$userId',
-                              requestData)
-                          .then(
-                        (response) async {},
-                      );
-                      await prefs.setBool('loadingdone', true);
-                      showAlertDialog(
-                        context,
-                        title: '修改成功',
-                        message: '',
-                      );
-                      Timer(const Duration(seconds: 2), () {
-                        Navigator.pushReplacementNamed(context, Main.routeName);
-                      });
-                    } on Exception catch (e) {
-                      showAlertDialog(context,
-                          title: '修改失敗', message: e.toString().split(" ")[1]);
+                        await HttpRequest.post(
+                                '${HttpURL.host}/user/update/password',
+                                requestData)
+                            .then(
+                          (response) async {},
+                        );
+                        await prefs.setBool('loadingdone', true);
+                        showAlertDialog(
+                          context,
+                          title: '修改成功',
+                          message: '',
+                        );
+                        Timer(const Duration(seconds: 2), () {
+                          Navigator.pushReplacementNamed(
+                              context, Main.routeName);
+                        });
+                      } on Exception catch (e) {
+                        _timer.cancel();
+                        EasyLoading.dismiss();
+                        showAlertDialog(context,
+                            title: '修改失敗', message: e.toString().split(" ")[1]);
+                      }
                     }
                   },
                 ),
@@ -162,7 +164,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     //讀取
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', false);
-    Timer? _timer1;
+
     late double _progress;
     EasyLoading.instance
       ..backgroundColor = primaryColor
@@ -176,8 +178,8 @@ class _ChangePasswordState extends State<ChangePassword> {
       ..userInteractions = false;
 
     _progress = 0;
-    _timer1?.cancel();
-    _timer1 = Timer.periodic(
+    // _timer.cancel();
+    _timer = Timer.periodic(
       const Duration(milliseconds: 500),
       (Timer timer) async {
         EasyLoading.showProgress(_progress,
@@ -185,7 +187,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         _progress += 0.05;
 
         if (_progress >= 1 || prefs.getBool('loadingdone') == true) {
-          _timer1?.cancel();
+          _timer.cancel();
           EasyLoading.dismiss();
           await prefs.setBool('loadingdone', false);
         }

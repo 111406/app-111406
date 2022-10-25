@@ -49,6 +49,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final referenceController = TextEditingController();
   final institutionController = TextEditingController();
 
+  late Timer _timer;
+
   @override
   void initState() {
     _loadState();
@@ -290,10 +292,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: radioButton(
-                            text: '運動習慣',
-                            fontSize: 20,
-                            groupValue: controller.exerciseHabits,
-                            updateGroupValue: controller.setExerciseHabits),
+                          text: '運動習慣',
+                          fontSize: 20,
+                          groupValue: controller.exerciseHabits,
+                          updateGroupValue: controller.setExerciseHabits,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       textField(
@@ -331,7 +334,6 @@ class _RegisterPageState extends State<RegisterPage> {
     //讀取
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', false);
-    Timer? _timer1;
     late double _progress;
     EasyLoading.instance
       ..backgroundColor = primaryColor
@@ -345,8 +347,8 @@ class _RegisterPageState extends State<RegisterPage> {
       ..userInteractions = false;
 
     _progress = 0;
-    _timer1?.cancel();
-    _timer1 = Timer.periodic(
+    // _timer.cancel();
+    _timer = Timer.periodic(
       const Duration(milliseconds: 500),
       (Timer timer) async {
         EasyLoading.showProgress(_progress,
@@ -354,7 +356,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _progress += 0.05;
 
         if (_progress >= 1) {
-          _timer1?.cancel();
+          _timer.cancel();
           EasyLoading.dismiss();
         }
       },
@@ -430,7 +432,7 @@ class _RegisterPageState extends State<RegisterPage> {
       sum = int.parse(response['sum']);
     });
 
-    if (_textFieldIsNotEmpty && _birthIsNotEmpty) {
+    if (_textFieldIsNotEmpty && _birthIsNotEmpty && _passwordCheck) {
       Gender gender = controller.gender ? Gender.female : Gender.male;
       Map otherDetail = {
         "isHadHypertension": controller.hypertension,
@@ -468,6 +470,8 @@ class _RegisterPageState extends State<RegisterPage> {
             Navigator.pushNamedAndRemoveUntil(
                 context, LoginPage.routeName, (route) => false));
       } on Exception catch (e) {
+        _timer.cancel();
+        EasyLoading.dismiss();
         showAlertDialog(
           context,
           title: '發生錯誤',

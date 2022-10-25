@@ -241,22 +241,27 @@ class _LoginPageState extends State<LoginPage> {
                                 prefs.setString("ethsum", ethsum.toString());
                               });
                               if (prefs.getBool('routeTointro') == true) {
+                                // _timer.cancel();
+                                // EasyLoading.dismiss();
                                 Navigator.pushReplacementNamed(
                                     context, IntroPage.routeName);
                                 prefs.setBool('routeTointro', false);
                               } else {
+                                _timer.cancel();
+                                EasyLoading.dismiss();
                                 Navigator.pushReplacementNamed(
                                     context, Main.routeName);
                               }
                             },
                           );
                         } on Exception catch (e) {
+                          _timer.cancel();
+                          EasyLoading.dismiss();
                           showAlertDialog(
                             context,
                             title: '帳號或密碼錯誤',
                             message: '請重新輸入',
                           );
-                          _timer.cancel();
                         }
                       } else {
                         showAlertDialog(
