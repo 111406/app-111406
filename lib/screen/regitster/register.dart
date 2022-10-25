@@ -463,7 +463,8 @@ class _RegisterPageState extends State<RegisterPage> {
       try {
         final response = await HttpRequest.post(
             '${HttpURL.host}/user/signup', jsonEncode(requestData));
-
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setBool('routeTointro', true);
         showAlertDialog(context, message: response['message']).then((_) =>
             Navigator.pushNamedAndRemoveUntil(
                 context, LoginPage.routeName, (route) => false));

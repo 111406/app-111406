@@ -715,9 +715,14 @@ class _IntroPageState extends State<IntroPage> {
   }
 
   @override
-  void initState() {
-    _asyncMethod();
+  initState() {
     super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changePage', true);
   }
 
   @override

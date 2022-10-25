@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:age_calculator/age_calculator.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
@@ -124,7 +125,10 @@ Widget _endBtn(BuildContext context) {
       },
       child: const Text(
         '長按結束',
-        style: TextStyle(color: primaryColor, fontSize: 20, decoration: TextDecoration.underline),
+        style: TextStyle(
+            color: primaryColor,
+            fontSize: 20,
+            decoration: TextDecoration.underline),
       ),
     ),
   );
@@ -145,7 +149,8 @@ class _TestPageState2 extends State<TestPage2> {
   void initState() {
     super.initState();
     _setTimerEvent();
-    subscription = motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription =
+        motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         _calcAngles(event.x, event.y, event.z);
       });
@@ -189,8 +194,12 @@ class _TestPageState2 extends State<TestPage2> {
 
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
-    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
+    var pitch =
+        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
+            .floor();
+    var roll =
+        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
+            .floor();
 
     _checkPart(_part, pitch, roll);
   }
@@ -271,14 +280,20 @@ class _TestPageState2 extends State<TestPage2> {
             }
         """;
         String bicepsRequestData = prefs.getString(TrainingPart.biceps.string)!;
-        dynamic bicepsResponse = await HttpRequest.post("${HttpURL.host}/record", bicepsRequestData);
+        dynamic bicepsResponse =
+            await HttpRequest.post("${HttpURL.host}/record", bicepsRequestData);
         dynamic bicepsData = jsonEncode(bicepsResponse['data']);
 
-        dynamic quadricepsResponse = await HttpRequest.post("${HttpURL.host}/record", quadricepsReqeustData);
+        dynamic quadricepsResponse = await HttpRequest.post(
+            "${HttpURL.host}/record", quadricepsReqeustData);
         dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
         prefs.remove(TrainingPart.biceps.string);
-
-        Navigator.pushReplacementNamed(context, TestResultPage.routeName, arguments: {"bicepsData": bicepsData, "quadricepsData": quadricepsData});
+        _loadingCircle(bicepsData, quadricepsData);
+        // Navigator.pushReplacementNamed(context, TestResultPage.routeName,
+        //       arguments: {
+        //         "bicepsData": bicepsData,
+        //         "quadricepsData": quadricepsData
+        //       });
       }
       if (_ss == 1) {
         timer.cancel();
@@ -286,5 +301,48 @@ class _TestPageState2 extends State<TestPage2> {
         _ss = 0;
       }
     });
+  }
+
+  Future<void> _loadingCircle(dynamic biceps, dynamic quadriceps) async {
+    //讀取
+    dynamic bicepsData = biceps;
+    dynamic quadricepsData = quadriceps;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changePage', false);
+    Timer? _timer1;
+    late double _progress;
+    EasyLoading.instance
+      ..backgroundColor = primaryColor
+      ..textColor = Colors.white
+      ..progressColor = Colors.white
+      ..maskColor = Colors.white70
+      ..displayDuration = const Duration(milliseconds: 10000)
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorType = EasyLoadingIndicatorType.wave
+      ..maskType = EasyLoadingMaskType.custom
+      ..userInteractions = false;
+
+    _progress = 0;
+    _timer1?.cancel();
+    _timer1 = Timer.periodic(
+      const Duration(milliseconds: 750),
+      (Timer timer) async {
+        EasyLoading.showProgress(_progress,
+            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        _progress += 0.05;
+
+        if (_progress >= 1 || prefs.getBool('changePage') == true) {
+          _timer1?.cancel();
+          EasyLoading.dismiss();
+          await prefs.setBool('changePage', false);
+          Navigator.pushReplacementNamed(context, TestResultPage.routeName,
+              arguments: {
+                "bicepsData": bicepsData,
+                "quadricepsData": quadricepsData
+              });
+        }
+      },
+    );
+    //讀取結束
   }
 }

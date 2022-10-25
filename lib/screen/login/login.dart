@@ -18,6 +18,7 @@ import 'dart:async';
 
 import '../../model/user_todo.dart';
 import '../../utils/app_config.dart';
+import '../manual/intropage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -159,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                         try {
                           _loadingCircle();
                           final prefs = await SharedPreferences.getInstance();
-                          prefs.clear();
+                          //prefs.clear(); 我先蛀掉 CHEESE
                           await HttpRequest.post(
                                   '${HttpURL.host}/user/login', requestData)
                               .then(
@@ -241,8 +242,14 @@ class _LoginPageState extends State<LoginPage> {
                                 prefs.setString("gender", gender);
                                 prefs.setString("ethsum", ethsum.toString());
                               });
-                              Navigator.pushReplacementNamed(
-                                  context, Main.routeName);
+                              if (prefs.getBool('routeTointro') == true) {
+                                Navigator.pushReplacementNamed(
+                                    context, IntroPage.routeName);
+                                prefs.setBool('routeTointro', false);
+                              } else {
+                                Navigator.pushReplacementNamed(
+                                    context, Main.routeName);
+                              }
                             },
                           );
                         } on Exception catch (e) {
