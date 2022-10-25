@@ -165,7 +165,6 @@ class MyApp extends StatelessWidget {
         ChangePassword.routeName: (context) => const ChangePassword(),
         TrainingIntroPage.routeName: (context) => const TrainingIntroPage(),
         ChoosingHandPage.routeName: (context) => const ChoosingHandPage(),
-        TrainingResultPage.routeName: (context) => const TrainingResultPage(),
         RestPage.routeName: (context) => const RestPage(),
       },
       builder: EasyLoading.init(),
