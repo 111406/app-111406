@@ -1,17 +1,13 @@
 ///主頁面
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/model/user_todo.dart';
 import 'package:sport_app/screen/home/home.dart';
 import 'package:sport_app/screen/other/other_page.dart';
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
-import 'package:sport_app/utils/app_config.dart';
-import 'package:sport_app/utils/http_request.dart';
 
 class Main extends StatefulWidget {
   const Main({Key? key}) : super(key: key);
