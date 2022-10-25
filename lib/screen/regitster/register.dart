@@ -43,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
   late String userId, password, email, walletAddress, privateKey;
   late int sum;
   bool initBirth = false;
-  DateTime birth = DateTime(1960, 1, 1);
+  DateTime birth = DateTime(1975, 1, 1);
   final heightController = TextEditingController();
   final weightController = TextEditingController();
   final referenceController = TextEditingController();
@@ -368,7 +368,7 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       initialDate: birth,
       firstDate: DateTime(1900, 01),
-      lastDate: DateTime(1960, 01),
+      lastDate: DateTime(1975, 01),
     );
 
     if (result != null) {

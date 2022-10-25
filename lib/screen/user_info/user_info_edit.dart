@@ -25,7 +25,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
   TextEditingController weightController = TextEditingController();
 
   var userId = '載入中';
-  var birth = DateTime(1960, 1, 1);
+  var birth = DateTime(1975, 1, 1);
   var height = '載入中';
   var weight = '載入中';
 // var gender = '載入中';
@@ -388,7 +388,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       context: context,
       initialDate: birth,
       firstDate: DateTime(1900, 01),
-      lastDate: DateTime(1960, 01),
+      lastDate: DateTime(1975, 01),
     );
 
     if (result != null) {
