@@ -175,8 +175,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
     _timer = Timer.periodic(
       const Duration(milliseconds: 500),
       (Timer timer) async {
-        EasyLoading.showProgress(_progress,
-            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        EasyLoading.showProgress(_progress, status: '載入中...');
         _progress += 0.05;
 
         if (_progress >= 1 || prefs.getBool('loadingdone') == true) {

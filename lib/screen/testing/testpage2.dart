@@ -255,6 +255,7 @@ class _TestPageState2 extends State<TestPage2> {
       (_timer) async {
         _displayTimer = tobeMinused - _timer.tick;
         if (_displayTimer == 0) {
+          _loadingCircle();
           final prefs = await SharedPreferences.getInstance();
           String userId = prefs.getString("userId")!;
 
@@ -288,16 +289,21 @@ class _TestPageState2 extends State<TestPage2> {
               "${HttpURL.host}/record", quadricepsReqeustData);
           dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
           prefs.remove(TrainingPart.biceps.string);
-          _loadingCircle(bicepsData, quadricepsData);
+          Navigator.pushReplacementNamed(
+            context,
+            TestResultPage.routeName,
+            arguments: {
+              "bicepsData": bicepsData,
+              "quadricepsData": quadricepsData
+            },
+          );
         }
       },
     );
   }
 
-  Future<void> _loadingCircle(dynamic biceps, dynamic quadriceps) async {
+  Future<void> _loadingCircle() async {
     //讀取
-    dynamic bicepsData = biceps;
-    dynamic quadricepsData = quadriceps;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', false);
     Timer? _timer1;
@@ -318,19 +324,13 @@ class _TestPageState2 extends State<TestPage2> {
     _timer1 = Timer.periodic(
       const Duration(milliseconds: 750),
       (Timer timer) async {
-        EasyLoading.showProgress(_progress,
-            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        EasyLoading.showProgress(_progress, status: '載入中...');
         _progress += 0.05;
 
         if (_progress >= 1 || prefs.getBool('changePage') == true) {
           _timer1?.cancel();
           EasyLoading.dismiss();
           await prefs.setBool('changePage', false);
-          Navigator.pushReplacementNamed(context, TestResultPage.routeName,
-              arguments: {
-                "bicepsData": bicepsData,
-                "quadricepsData": quadricepsData
-              });
         }
       },
     );
