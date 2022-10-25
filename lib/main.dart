@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,8 +29,6 @@ import 'package:sport_app/utils/app_config.dart';
 import 'package:sport_app/utils/http_request.dart';
 
 import 'model/user_todo.dart';
-
-List<CameraDescription> cameras = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
