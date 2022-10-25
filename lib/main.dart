@@ -10,7 +10,7 @@ import 'package:sport_app/screen/choosing/choosinghand.dart';
 import 'package:sport_app/screen/forgot_password/forgotpassword.dart';
 import 'package:sport_app/screen/forgot_password/forgotpassword02.dart';
 import 'package:sport_app/screen/manual/intropage.dart';
-import 'package:sport_app/screen/OLDPAGES/loadingpage.dart';
+
 import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/manual/training_intropage.dart';
@@ -23,7 +23,7 @@ import 'package:sport_app/screen/testing/testpage.dart';
 import 'package:sport_app/screen/testing/testpage2.dart';
 import 'package:sport_app/screen/result/testresultpage.dart';
 import 'package:sport_app/screen/training/trainingpage.dart';
-import 'package:sport_app/screen/OLDPAGES/trainingresultpage.dart';
+
 import 'package:sport_app/screen/user_info/user_info.dart';
 import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -152,7 +152,6 @@ class MyApp extends StatelessWidget {
         UserInfoEditPage.routeName: (context) => const UserInfoEditPage(),
         ForgotPassword.routeName: (context) => const ForgotPassword(),
         ForgotPassword02.routeName: (context) => const ForgotPassword02(),
-        LoadingPage.routeName: (context) => const LoadingPage(),
         Prepare.routeName: (context) => const Prepare(),
         Prepare2.routeName: (context) => const Prepare2(),
         LoginPage.routeName: (context) => const LoginPage(),
