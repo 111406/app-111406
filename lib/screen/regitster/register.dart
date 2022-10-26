@@ -43,11 +43,13 @@ class _RegisterPageState extends State<RegisterPage> {
   late String userId, password, email, walletAddress, privateKey;
   late int sum;
   bool initBirth = false;
-  DateTime birth = DateTime(1960, 1, 1);
+  DateTime birth = DateTime(1975, 1, 1);
   final heightController = TextEditingController();
   final weightController = TextEditingController();
   final referenceController = TextEditingController();
   final institutionController = TextEditingController();
+
+  late Timer _timer;
 
   @override
   void initState() {
@@ -290,10 +292,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: radioButton(
-                            text: '運動習慣',
-                            fontSize: 20,
-                            groupValue: controller.exerciseHabits,
-                            updateGroupValue: controller.setExerciseHabits),
+                          text: '運動習慣',
+                          fontSize: 20,
+                          groupValue: controller.exerciseHabits,
+                          updateGroupValue: controller.setExerciseHabits,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       textField(
@@ -331,7 +334,6 @@ class _RegisterPageState extends State<RegisterPage> {
     //讀取
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', false);
-    Timer? _timer1;
     late double _progress;
     EasyLoading.instance
       ..backgroundColor = primaryColor
@@ -345,16 +347,15 @@ class _RegisterPageState extends State<RegisterPage> {
       ..userInteractions = false;
 
     _progress = 0;
-    _timer1?.cancel();
-    _timer1 = Timer.periodic(
+    // _timer.cancel();
+    _timer = Timer.periodic(
       const Duration(milliseconds: 500),
       (Timer timer) async {
-        EasyLoading.showProgress(_progress,
-            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        EasyLoading.showProgress(_progress, status: '載入中...');
         _progress += 0.05;
 
         if (_progress >= 1) {
-          _timer1?.cancel();
+          _timer.cancel();
           EasyLoading.dismiss();
         }
       },
@@ -368,7 +369,7 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       initialDate: birth,
       firstDate: DateTime(1900, 01),
-      lastDate: DateTime(1960, 01),
+      lastDate: DateTime(1975, 01),
     );
 
     if (result != null) {
@@ -411,8 +412,6 @@ class _RegisterPageState extends State<RegisterPage> {
     bool _birthIsNotEmpty = initBirth;
     bool _passwordCheck = (password == confirmPassword);
 
-    _loadingCircle();
-
     if (!_passwordCheck) {
       showAlertDialog(
         context,
@@ -432,7 +431,7 @@ class _RegisterPageState extends State<RegisterPage> {
       sum = int.parse(response['sum']);
     });
 
-    if (_textFieldIsNotEmpty && _birthIsNotEmpty) {
+    if (_textFieldIsNotEmpty && _birthIsNotEmpty && _passwordCheck) {
       Gender gender = controller.gender ? Gender.female : Gender.male;
       Map otherDetail = {
         "isHadHypertension": controller.hypertension,
@@ -461,14 +460,19 @@ class _RegisterPageState extends State<RegisterPage> {
       if (institution.isNotEmpty) requestData['institution'] = institution;
 
       try {
+        _loadingCircle();
         final response = await HttpRequest.post(
             '${HttpURL.host}/user/signup', jsonEncode(requestData));
         final prefs = await SharedPreferences.getInstance();
         prefs.setBool('routeTointro', true);
+        _timer.cancel();
+        EasyLoading.dismiss();
         showAlertDialog(context, message: response['message']).then((_) =>
             Navigator.pushNamedAndRemoveUntil(
                 context, LoginPage.routeName, (route) => false));
       } on Exception catch (e) {
+        _timer.cancel();
+        EasyLoading.dismiss();
         showAlertDialog(
           context,
           title: '發生錯誤',

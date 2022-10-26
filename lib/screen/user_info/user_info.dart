@@ -15,7 +15,7 @@ class UserInfoPage extends StatefulWidget {
 
 class _UserInfoPageState extends State<UserInfoPage> {
   var userId = '載入中';
-  var birth = '19600101';
+  var birth = '19750101';
   var _height = '載入中';
   var _weight = '載入中';
   var _gender = '載入中';
@@ -34,7 +34,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
       _height = (prefs.getDouble("height") ?? 0).toString();
       _weight = (prefs.getDouble("weight") ?? 0).toString();
       _gender = prefs.getString("gender") ?? "";
-      birth = prefs.getString("birthday") ?? "19600101";
+      birth = prefs.getString("birthday") ?? "19750101";
       _ethsum = prefs.getString("ethsum") ?? "";
     });
   }

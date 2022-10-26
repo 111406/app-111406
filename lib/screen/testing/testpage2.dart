@@ -136,10 +136,7 @@ Widget _endBtn(BuildContext context) {
 
 class _TestPageState2 extends State<TestPage2> {
   FlutterTts flutterTts = FlutterTts();
-  var _times = 0,
-      _displayAngle = 0,
-      _startTime = 0,
-      _checkAddNum = 0.0;
+  var _times = 0, _displayAngle = 0, _startTime = 0, _checkAddNum = 0.0;
   final List<ChartData> _angleList = [];
   final int tobeMinused = 30;
 
@@ -253,23 +250,26 @@ class _TestPageState2 extends State<TestPage2> {
   void _setTimerEvent() {
     _timerStart = true;
     _startTime = DateTime.now().millisecondsSinceEpoch;
-    timer = Timer.periodic(period, (_timer) async {
-      _displayTimer = tobeMinused - _timer.tick;
-      if (_displayTimer == 0) {
-        final prefs = await SharedPreferences.getInstance();
-        String userId = prefs.getString("userId")!;
+    timer = Timer.periodic(
+      period,
+      (_timer) async {
+        _displayTimer = tobeMinused - _timer.tick;
+        if (_displayTimer == 0) {
+          _loadingCircle();
+          final prefs = await SharedPreferences.getInstance();
+          String userId = prefs.getString("userId")!;
 
-        String birthday = prefs.getString("birthday")!;
-        final birthdayDatetime = DateTime.parse(birthday);
-        DateDuration duration = AgeCalculator.age(birthdayDatetime);
+          String birthday = prefs.getString("birthday")!;
+          final birthdayDatetime = DateTime.parse(birthday);
+          DateDuration duration = AgeCalculator.age(birthdayDatetime);
 
-        String genderString = prefs.getString("gender")!;
-        final gender = Gender.parse(genderString);
-        _timer.cancel();
-        _timerStart = false;
+          String genderString = prefs.getString("gender")!;
+          final gender = Gender.parse(genderString);
+          _timer.cancel();
+          _timerStart = false;
 
-        // TODO wrap in object
-        String quadricepsReqeustData = """
+          // TODO wrap in object
+          String quadricepsReqeustData = """
             {
               "user_id": "$userId",
               "part": ${_part.code},
@@ -279,29 +279,31 @@ class _TestPageState2 extends State<TestPage2> {
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-        String bicepsRequestData = prefs.getString(TrainingPart.biceps.string)!;
-        dynamic bicepsResponse =
-            await HttpRequest.post("${HttpURL.host}/record", bicepsRequestData);
-        dynamic bicepsData = jsonEncode(bicepsResponse['data']);
+          String bicepsRequestData =
+              prefs.getString(TrainingPart.biceps.string)!;
+          dynamic bicepsResponse = await HttpRequest.post(
+              "${HttpURL.host}/record", bicepsRequestData);
+          dynamic bicepsData = jsonEncode(bicepsResponse['data']);
 
-        dynamic quadricepsResponse = await HttpRequest.post(
-            "${HttpURL.host}/record", quadricepsReqeustData);
-        dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
-        prefs.remove(TrainingPart.biceps.string);
-        _loadingCircle(bicepsData, quadricepsData);
-        // Navigator.pushReplacementNamed(context, TestResultPage.routeName,
-        //       arguments: {
-        //         "bicepsData": bicepsData,
-        //         "quadricepsData": quadricepsData
-        //       });
-      }
-    });
+          dynamic quadricepsResponse = await HttpRequest.post(
+              "${HttpURL.host}/record", quadricepsReqeustData);
+          dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
+          prefs.remove(TrainingPart.biceps.string);
+          Navigator.pushReplacementNamed(
+            context,
+            TestResultPage.routeName,
+            arguments: {
+              "bicepsData": bicepsData,
+              "quadricepsData": quadricepsData
+            },
+          );
+        }
+      },
+    );
   }
 
-  Future<void> _loadingCircle(dynamic biceps, dynamic quadriceps) async {
+  Future<void> _loadingCircle() async {
     //讀取
-    dynamic bicepsData = biceps;
-    dynamic quadricepsData = quadriceps;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', false);
     Timer? _timer1;
@@ -322,19 +324,13 @@ class _TestPageState2 extends State<TestPage2> {
     _timer1 = Timer.periodic(
       const Duration(milliseconds: 750),
       (Timer timer) async {
-        EasyLoading.showProgress(_progress,
-            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        EasyLoading.showProgress(_progress, status: '載入中...');
         _progress += 0.05;
 
         if (_progress >= 1 || prefs.getBool('changePage') == true) {
           _timer1?.cancel();
           EasyLoading.dismiss();
           await prefs.setBool('changePage', false);
-          Navigator.pushReplacementNamed(context, TestResultPage.routeName,
-              arguments: {
-                "bicepsData": bicepsData,
-                "quadricepsData": quadricepsData
-              });
         }
       },
     );

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:motion_sensors/motion_sensors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/model/chart_data.dart';
+import 'package:sport_app/screen/intro/prepare/prepare.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/prepare/prepare.dart';
 import 'package:sport_app/screen/training/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
 

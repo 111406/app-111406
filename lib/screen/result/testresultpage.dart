@@ -1,6 +1,5 @@
 ///測試結果頁
 
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -10,7 +10,7 @@ import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import '../main_page.dart';
-import '../manual/intropage.dart';
+import '../intro/intropage.dart';
 
 class ChoosingPage extends StatefulWidget {
   const ChoosingPage({Key? key}) : super(key: key);

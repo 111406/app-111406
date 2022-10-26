@@ -24,6 +24,7 @@ class ForgotPassword02 extends StatefulWidget {
 class _ForgotPassword02State extends State<ForgotPassword02> {
   final newPasswordController = TextEditingController();
   final confirmNewPasswordController = TextEditingController();
+  late Timer _timer;
 
   @override
   void initState() {
@@ -82,8 +83,6 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                         confirmNewPassword.isNotEmpty);
                     bool _passwordCheck = (newPassword == confirmNewPassword);
 
-                    _loadingCircle();
-
                     if (!_textFieldIsNotEmpty) {
                       showAlertDialog(
                         context,
@@ -110,8 +109,9 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
 
                     if (_textFieldIsNotEmpty && _passwordCheck) {
                       try {
+                        _loadingCircle();
                         await HttpRequest.post(
-                                '${HttpURL.host}/user/update/password',
+                                '${HttpURL.host}/user/update/forget/password',
                                 requestData)
                             .then(
                           (response) async {},
@@ -127,10 +127,11 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                               context, LoginPage.routeName);
                         });
                       } on Exception catch (e) {
-                        // TODO
+                        _timer.cancel();
+                        EasyLoading.dismiss();
                         showAlertDialog(
                           context,
-                          title: '',
+                          title: '修改失敗',
                           message: '',
                         );
                       }
@@ -157,7 +158,6 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
     //讀取
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', false);
-    Timer? _timer1;
     late double _progress;
     EasyLoading.instance
       ..backgroundColor = primaryColor
@@ -171,16 +171,15 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
       ..userInteractions = false;
 
     _progress = 0;
-    _timer1?.cancel();
-    _timer1 = Timer.periodic(
+    // _timer.cancel();
+    _timer = Timer.periodic(
       const Duration(milliseconds: 500),
       (Timer timer) async {
-        EasyLoading.showProgress(_progress,
-            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        EasyLoading.showProgress(_progress, status: '載入中...');
         _progress += 0.05;
 
         if (_progress >= 1 || prefs.getBool('loadingdone') == true) {
-          _timer1?.cancel();
+          _timer.cancel();
           EasyLoading.dismiss();
           await prefs.setBool('loadingdone', false);
         }

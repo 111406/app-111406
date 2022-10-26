@@ -24,8 +24,10 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
   TextEditingController heightController = TextEditingController();
   TextEditingController weightController = TextEditingController();
 
+  late Timer _timer;
+
   var userId = '載入中';
-  var birth = DateTime(1960, 1, 1);
+  var birth = DateTime(1975, 1, 1);
   var height = '載入中';
   var weight = '載入中';
 // var gender = '載入中';
@@ -326,7 +328,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
               mainBtn(
                 text: "完成",
                 onPressed: () async {
-                  _loadingCircle();
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   String birthday = DateFormat('yyyyMMdd').format(birth);
 
                   String requestData = """{
@@ -336,16 +339,25 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   }""";
 
                   try {
+                    _loadingCircle();
                     await HttpRequest.post(
                             '${HttpURL.host}/user/update/$userId', requestData)
                         .then(
-                      (response) async {},
+                      (response) async {
+                        prefs.setDouble("height", double.parse(height));
+                        prefs.setDouble("weight", double.parse(weight));
+                        prefs.setString("birthday", birthday);
+                      },
                     );
                   } on Exception catch (e) {
-                    // TODO
+                    _timer.cancel();
+                    EasyLoading.dismiss();
+                    showAlertDialog(
+                      context,
+                      title: '發生錯誤',
+                      message: '修改失敗',
+                    );
                   }
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
                 },
               ),
               const SizedBox(height: 10),
@@ -388,7 +400,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       context: context,
       initialDate: birth,
       firstDate: DateTime(1900, 01),
-      lastDate: DateTime(1960, 01),
+      lastDate: DateTime(1975, 01),
     );
 
     if (result != null) {
@@ -402,7 +414,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
     //讀取
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changeDone', false);
-    Timer? _timer1;
+
     late double _progress;
     EasyLoading.instance
       ..backgroundColor = primaryColor
@@ -416,17 +428,16 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       ..userInteractions = false;
 
     _progress = 0;
-    _timer1?.cancel();
-    _timer1 = Timer.periodic(
+    // _timer.cancel();
+    _timer = Timer.periodic(
       const Duration(milliseconds: 150),
       (Timer timer) async {
-        EasyLoading.showProgress(_progress,
-            status: '${(_progress * 100).toStringAsFixed(0)}%');
+        EasyLoading.showProgress(_progress, status: '載入中...');
         _progress += 0.05;
 
         if (_progress >= 1) {
           await prefs.setBool('changeDone', true);
-          _timer1?.cancel();
+          _timer.cancel();
           EasyLoading.dismiss();
           if (prefs.getBool('changeDone') == true) {
             showAlertDialog(

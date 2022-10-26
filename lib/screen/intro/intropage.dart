@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/intro/warmup/warmuppage.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/warmup/warmuppage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -130,13 +130,9 @@ class _IntroPageState extends State<IntroPage> {
               ),
             ),
           ),
-          const SizedBox(
-            width: 10,
-          ),
+          const SizedBox(width: 10),
           Container(
-            padding: const EdgeInsets.only(
-              top: 30,
-            ),
+            padding: const EdgeInsets.only(top: 30),
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -316,17 +312,18 @@ class _IntroPageState extends State<IntroPage> {
 
   Widget _startBtn(BuildContext context) {
     return Offstage(
-        offstage: _startBtn1,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width / 1.5,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, WarmupPage.routeName);
-            },
-            child: const Text('開始熱身', style: TextStyle(fontSize: 24)),
-            style: ElevatedButton.styleFrom(primary: primaryColor),
-          ),
-        ));
+      offstage: _startBtn1,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 1.5,
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, WarmupPage.routeName);
+          },
+          child: const Text('開始熱身', style: TextStyle(fontSize: 24)),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
+        ),
+      ),
+    );
   }
 
   Widget _bicepsTutorialScreen(BuildContext context) {
@@ -608,41 +605,45 @@ class _IntroPageState extends State<IntroPage> {
   }
 
   Widget _videoHyperlinkbtn(BuildContext context) {
-    String _urll = 'https://youtu.be/QsvvNAenL5k';
+    Uri _urll = Uri.parse('https://youtu.be/QsvvNAenL5k');
+
     if (testOfs == false) {
-      _urll = 'https://youtu.be/QsvvNAenL5k';
+      _urll = Uri.parse('https://youtu.be/QsvvNAenL5k');
     }
     if (trainOfs == false) {
-      _urll = 'https://www.youtube.com/watch?v=xCXtPI32Hgk';
+      _urll = Uri.parse('https://www.youtube.com/watch?v=xCXtPI32Hgk');
     }
     if (bicepsOfs == false) {
-      _urll = 'https://www.youtube.com/watch?v=N3Ex1fonMUs';
+      _urll = Uri.parse('https://www.youtube.com/watch?v=N3Ex1fonMUs');
     }
     if (deltoidOfs == false) {
-      _urll = 'https://www.youtube.com/watch?v=Kcd570UidXY';
+      _urll = Uri.parse('https://www.youtube.com/watch?v=Kcd570UidXY');
     }
     if (quadricepsOfs == false) {
-      _urll = 'https://www.youtube.com/watch?v=K9Ju-2ZF8g8';
+      _urll = Uri.parse('https://www.youtube.com/watch?v=K9Ju-2ZF8g8');
     }
     if (quadricepschairOfs == false) {
-      _urll = 'https://www.youtube.com/watch?v=8_1Qpq4WPbY';
+      _urll = Uri.parse('https://www.youtube.com/watch?v=8_1Qpq4WPbY');
     }
 
     return Offstage(
-        offstage: false,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width / 1.5,
-          child: ElevatedButton(
-            onPressed: () {
-              launch(_urll,
-                  forceSafariVC: false,
-                  forceWebView: false,
-                  universalLinksOnly: true);
-            },
-            child: const Text('影片連結', style: TextStyle(fontSize: 24)),
-            style: ElevatedButton.styleFrom(primary: primaryColor),
-          ),
-        ));
+      offstage: false,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 1.5,
+        child: ElevatedButton(
+          onPressed: () {
+            launchUrl(
+              _urll,
+              // forceSafariVC: false,
+              // forceWebView: false,
+              // universalLinksOnly: true,
+            );
+          },
+          child: const Text('影片連結', style: TextStyle(fontSize: 24)),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
+        ),
+      ),
+    );
   }
 
 //introPage用途與圖片內容待修改
@@ -718,6 +719,7 @@ class _IntroPageState extends State<IntroPage> {
   initState() {
     super.initState();
     _loadPrefs();
+    _asyncMethod();
   }
 
   Future<void> _loadPrefs() async {
@@ -738,22 +740,15 @@ class _IntroPageState extends State<IntroPage> {
               _switchCheckbox1(),
               const SizedBox(height: 10),
               _bicepsTutorialScreen(context),
-              _testTutorialScreen01(
-                context,
-              ),
+              _testTutorialScreen01(context),
               _trainTutorialScreen01(context),
-              _deltoidTutorialScreen02(
-                context,
-              ),
+              _deltoidTutorialScreen02(context),
               _quadricepsTutorialScreen(context),
               _quadricepschairTutorialScreen(context),
-
               // _CurrentAngle(),
-
               // _ResetZero(context),
               const SizedBox(height: 20),
               _startBtn(context),
-
               _videoHyperlinkbtn(context),
             ],
           ),

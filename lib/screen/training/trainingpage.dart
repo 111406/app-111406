@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_tts/flutter_tts.dart';
@@ -10,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/model/user_todo.dart';
 import 'package:sport_app/screen/main_page.dart';
-import 'package:sport_app/screen/restpage.dart';
+import 'package:sport_app/screen/intro/restpage.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
@@ -32,7 +31,8 @@ Widget _title() {
         opacity: 0.5,
         child: Text(
           '肌動GO',
-          style: TextStyle(color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: primaryColor, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       )
     ],
@@ -42,21 +42,24 @@ Widget _title() {
 Widget _setLeftTitle() {
   return const Text(
     '剩餘組數',
-    style: TextStyle(color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+    style: TextStyle(
+        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );
 }
 
 Widget _setLeft(int sets) {
   return Text(
     sets.toString(),
-    style: const TextStyle(color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
+    style: const TextStyle(
+        color: primaryColor, fontSize: 42, fontWeight: FontWeight.bold),
   );
 }
 
 Widget _countNumberTitle() {
   return const Text(
     '剩餘次數',
-    style: TextStyle(color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
+    style: TextStyle(
+        color: primaryColor, fontSize: 32, fontWeight: FontWeight.bold),
   );
 }
 
@@ -80,7 +83,10 @@ Widget _endBtn(BuildContext context) {
       },
       child: const Text(
         '長按結束',
-        style: TextStyle(color: primaryColor, fontSize: 20, decoration: TextDecoration.underline),
+        style: TextStyle(
+            color: primaryColor,
+            fontSize: 20,
+            decoration: TextDecoration.underline),
       ),
     ),
   );
@@ -103,7 +109,8 @@ class _TrainingPageState extends State<TrainingPage> {
     remainingNum = 15;
     todoSet = 1;
     _loadStates();
-    subscription = motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription =
+        motionSensors.accelerometer.listen((AccelerometerEvent event) {
       _calcAngles(event.x, event.y, event.z);
     });
   }
@@ -123,8 +130,12 @@ class _TrainingPageState extends State<TrainingPage> {
 
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
-    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
+    var pitch =
+        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
+            .floor();
+    var roll =
+        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
+            .floor();
 
     _checkPart(part, pitch, roll);
   }
@@ -211,11 +222,18 @@ class _TrainingPageState extends State<TrainingPage> {
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final trainingEndTime = DateTime.now();
-      final trainingStartTime = DateTime.fromMillisecondsSinceEpoch(prefs.getInt("trainingStartTime")!);
-      final spendingTime = trainingEndTime.difference(trainingStartTime).inSeconds;
+      final trainingStartTime = DateTime.fromMillisecondsSinceEpoch(
+          prefs.getInt("trainingStartTime")!);
+      final spendingTime =
+          trainingEndTime.difference(trainingStartTime).inSeconds;
       final preActualTotalTimes = prefs.getInt("actualTotalTimes") ?? 0;
       final fails = actualTotalTimes + preActualTotalTimes - targetTotalTimes;
-      Map<String, dynamic> requestData = {"part": part.value, "times": targetTotalTimes, "spending_time": spendingTime, "fails": fails};
+      Map<String, dynamic> requestData = {
+        "part": part.value,
+        "times": targetTotalTimes,
+        "spending_time": spendingTime,
+        "fails": fails
+      };
       String? hand = prefs.getString("trainingHand");
       if (hand != null) {
         requestData["hand"] = hand;
@@ -229,18 +247,24 @@ class _TrainingPageState extends State<TrainingPage> {
         // transcation
         Object rawData = {"walletAddress": ethwallet};
 
-        await HttpRequest.post("${HttpURL.ethHost}/getEthTrade", jsonEncode(rawData));
+        await HttpRequest.post(
+            "${HttpURL.ethHost}/getEthTrade", jsonEncode(rawData));
         String ethrequestData = """{
                 "eth_sum": $ethsum
               }""";
         prefs.setString("ethsum", ethsum.toString());
-        await HttpRequest.post('${HttpURL.host}/user/ethupdate/$userId', ethrequestData);
+        await HttpRequest.post(
+            '${HttpURL.host}/user/ethupdate/$userId', ethrequestData);
       });
 
-      showAlertDialog(context, message: "恭喜您已完成本次訓練，獲得代幣1枚！").then((value) async {
-        UserTodo todo = UserTodo.fromJson(jsonDecode(prefs.getString("userTodo")!));
+      showAlertDialog(context, message: "恭喜您已完成本次訓練，獲得代幣1枚！")
+          .then((value) async {
+        UserTodo todo =
+            UserTodo.fromJson(jsonDecode(prefs.getString("userTodo")!));
         String targetDate = todo.targetDate;
-        final responseData = await HttpRequest.post("${HttpURL.host}/target/$userId/$targetDate", jsonEncode(requestData));
+        final responseData = await HttpRequest.post(
+            "${HttpURL.host}/target/$userId/$targetDate",
+            jsonEncode(requestData));
         Map todoMap = jsonDecode(prefs.getString("todoMap")!);
         Map updatedTodo = responseData['data'];
         todoMap.update(targetDate, (value) => updatedTodo);
