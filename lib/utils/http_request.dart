@@ -15,7 +15,9 @@ class HttpRequest {
             },
             body: requestData)
         .then((response) {
-      var responseJson = response.headers.containsValue("application/json") ? json.decode(utf8.decode(response.bodyBytes)) : response.body;
+      var responseJson = response.headers.containsValue("application/json")
+          ? json.decode(utf8.decode(response.bodyBytes))
+          : response.body;
       result = responseJson;
       if (response.statusCode >= 400) {
         throw Exception(result["message"]);
