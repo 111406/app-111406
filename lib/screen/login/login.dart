@@ -241,8 +241,8 @@ class _LoginPageState extends State<LoginPage> {
                                 prefs.setString("ethsum", ethsum.toString());
                               });
                               if (prefs.getBool('routeTointro') == true) {
-                                // _timer.cancel();
-                                // EasyLoading.dismiss();
+                                _timer.cancel();
+                                EasyLoading.dismiss();
                                 Navigator.pushReplacementNamed(
                                     context, IntroPage.routeName);
                                 prefs.setBool('routeTointro', false);

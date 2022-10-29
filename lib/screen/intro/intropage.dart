@@ -634,9 +634,8 @@ class _IntroPageState extends State<IntroPage> {
           onPressed: () {
             launchUrl(
               _urll,
-              // forceSafariVC: false,
-              // forceWebView: false,
-              // universalLinksOnly: true,
+              mode: LaunchMode.externalNonBrowserApplication,
+              // mode: LaunchMode.externalApplication,
             );
           },
           child: const Text('影片連結', style: TextStyle(fontSize: 24)),

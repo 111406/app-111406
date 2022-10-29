@@ -388,6 +388,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _onPressed() async {
+    _loadingCircle();
     final userId = userIdController.text,
         password = passwordController.text,
         confirmPassword = cpasswordController.text,
@@ -460,7 +461,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (institution.isNotEmpty) requestData['institution'] = institution;
 
       try {
-        _loadingCircle();
+        // _loadingCircle();
         final response = await HttpRequest.post(
             '${HttpURL.host}/user/signup', jsonEncode(requestData));
         final prefs = await SharedPreferences.getInstance();
