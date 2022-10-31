@@ -468,6 +468,7 @@ class _RegisterPageState extends State<RegisterPage> {
         prefs.setBool('routeTointro', true);
         _timer.cancel();
         EasyLoading.dismiss();
+        prefs.setInt('introScreen', 7);
         showAlertDialog(context, message: response['message']).then((_) =>
             Navigator.pushNamedAndRemoveUntil(
                 context, LoginPage.routeName, (route) => false));
