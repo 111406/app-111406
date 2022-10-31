@@ -43,16 +43,18 @@ class _ManualState extends State<Manual> {
           IconButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.setInt('returnMainPage', 2);
-              setState(() {
-                manualCon = prefs.getInt('manualControll');
-              });
-              if (manualCon == 1) {
-                Navigator.pushReplacementNamed(context, LoginPage.routeName);
-                manualCon = 0;
-              } else {
-                Navigator.pushReplacementNamed(context, Main.routeName);
-              }
+              try {
+                setState(() {
+                  if (prefs.getInt('manualControll') == 1) {
+                    Navigator.pushReplacementNamed(
+                        context, LoginPage.routeName);
+                    prefs.setInt('manualControll', 0);
+                  } else {
+                    prefs.setInt('returnMainPage', 2);
+                    Navigator.pushReplacementNamed(context, Main.routeName);
+                  }
+                });
+              } catch (e) {}
             },
             icon: const Icon(Icons.arrow_back),
           ),
