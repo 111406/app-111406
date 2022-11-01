@@ -1,237 +1,168 @@
 import 'dart:async';
-import 'dart:math';
-import 'package:flutter_tts/flutter_tts.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:motion_sensors/motion_sensors.dart';
-import 'package:sport_app/chart_data.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/screen/change_password/change_password.dart';
+import 'package:sport_app/screen/choosing/choosing.dart';
+import 'package:sport_app/screen/choosing/choosinghand.dart';
+import 'package:sport_app/screen/forgot_password/forgotpassword.dart';
+import 'package:sport_app/screen/forgot_password/forgotpassword02.dart';
+import 'package:sport_app/screen/intro/intropage.dart';
+import 'package:sport_app/screen/intro/prepare/prepare.dart';
+import 'package:sport_app/screen/intro/prepare/prepare2.dart';
+import 'package:sport_app/screen/intro/warmup/warmuppage.dart';
+import 'package:sport_app/screen/login/login.dart';
+import 'package:sport_app/screen/main_page.dart';
+import 'package:sport_app/screen/intro/training_intropage.dart';
+import 'package:sport_app/screen/manual/manual.dart';
+import 'package:sport_app/screen/regitster/register.dart';
+import 'package:sport_app/screen/intro/restpage.dart';
+import 'package:sport_app/screen/testing/testpage.dart';
+import 'package:sport_app/screen/testing/testpage2.dart';
+import 'package:sport_app/screen/result/testresultpage.dart';
+import 'package:sport_app/screen/training/trainingpage.dart';
+import 'package:sport_app/screen/user_info/user_info.dart';
+import 'package:sport_app/screen/user_info/user_info_edit.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sport_app/utils/app_config.dart';
+import 'package:sport_app/utils/http_request.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'model/user_todo.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  configLoading();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String userId = prefs.getString('userId') ?? '';
+  String token = prefs.getString('token') ?? '';
+
+  if (userId != '' && token != '') loadTrainingData(prefs, userId, token);
+
+  runApp(
+    (userId != '' && token != '')
+        ? MyApp(userId: userId, token: token)
+        : const MyApp(userId: '', token: ''),
+  );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
 }
 
-class _MyAppState extends State<MyApp> {
-  FlutterTts flutterTts = FlutterTts();
-  var _angleP = 0;
-  var _angleR = 0;
-  var _deltaSum = 0;
-  var _times = 0;
-  var _mode = "three";
-  var _isAdded = false;
-  var _displayAngle = 0;
-  var _timer = 30;
-  var _timerStart = false;
-  final List<ChartData> _angleList = [];
-  var _startTime = 0;
+Future<void> loadTrainingData(
+    SharedPreferences prefs, String userId, String token) async {
+  bool checkComplete = true;
+  List checkCompleteList = [];
+  await prefs.remove("trainingState");
+  final todoList = <UserTodo>[];
+  final todoMap = {};
+  await HttpRequest.get('${HttpURL.host}/target/$userId')
+      .then((response) async {
+    final dataList = response['data'] as List;
+    if (dataList.isNotEmpty) {
+      // 有本周訓練資料
+      for (var data in response['data']) {
+        var todo = UserTodo.fromJson(data);
+        checkCompleteList.add(todo.complete);
 
-  @override
-  void initState() {
-    super.initState();
-    motionSensors.accelerometer.listen((AccelerometerEvent event) {
-      setState(() {
-        calcAngles(event.x, event.y, event.z);
-      });
-    });
-  }
-
-  Future _s() async {
-    await flutterTts.speak('$_times');
-  }
-
-  void setUpdateInterval(int interval) {
-    motionSensors.accelerometerUpdateInterval = interval;
-    setState(() {});
-  }
-
-  var period = const Duration(seconds: 1);
-
-  void setTimerEvent() {
-    _timerStart = true;
-    _timer--;
-    _startTime = DateTime.now().millisecondsSinceEpoch;
-    Timer.periodic(period, (timer) {
-      if (_timer < 1) {
-        timer.cancel();
-        _timerStart = false;
-      } else {
-        _timer--;
+        todoMap[todo.targetDate] = todo;
+        todoList.add(todo);
       }
-      setState(() {});
-    });
+      checkComplete = checkCompleteList.contains(false);
+
+      await prefs.setString("todoMap", json.encode(todoMap));
+
+      // TODO 訓練表部分待調整
+      if (checkComplete) {
+        prefs.setString("userTodo",
+            json.encode(todoList.firstWhere((element) => !element.complete)));
+      }
+    } else {
+      // 檢查是不是剛做完檢測，因為不會馬上指派任務
+      await HttpRequest.get('${HttpURL.host}/target/started/$userId')
+          .then((response) {
+        final isHadTarget = response['data'];
+        prefs.remove("todoList");
+        prefs.remove("userTodo");
+        if (isHadTarget) {
+          // 如果是剛檢測完會跑到這
+          prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
+        } else {
+          // 代表還沒做檢測
+          prefs.setString("trainingState", AppConfig.CANNOT_TRAINING);
+        }
+      });
+    }
+  });
+  if (!checkComplete) {
+    // 進到這裡表示本周任務已完成
+    prefs.setString("trainingState", AppConfig.TRAINING_FINISH);
   }
+}
+
+class MyApp extends StatelessWidget {
+  final String userId;
+  final String token;
+
+  const MyApp({
+    Key? key,
+    required this.userId,
+    required this.token,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    setUpdateInterval(Duration.microsecondsPerSecond ~/ 60);
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Motion Sensors'),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('運動次數'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('$_times次'),
-                ],
-              ),
-              const Text('當前角度'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('$_displayAngle°'),
-                ],
-              ),
-              const Text('剩餘時間'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('$_timer'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 16)),
-                    onPressed: () {
-                      setTimerEvent();
-                      setState(() {
-                        _mode = "three";
-                        _times = 0;
-                        _timer = 30;
-                      });
-                    },
-                    child: const Text('三角肌群'),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 16)),
-                    onPressed: () {
-                      setTimerEvent();
-                      setState(() {
-                        _mode = "two";
-                        _times = 0;
-                        _timer = 30;
-                      });
-                    },
-                    child: const Text('二頭肌群'),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 16)),
-                    onPressed: () {
-                      setTimerEvent();
-                      setState(() {
-                        _mode = "slide";
-                        _times = 0;
-                        _timer = 30;
-                      });
-                    },
-                    child: const Text('滑牆運動'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('zh', 'TW'),
+      ],
+      title: '肌動GO',
+      home: const LoginPage(),
+      initialRoute:
+          (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
+      routes: {
+        Main.routeName: (context) => const Main(),
+        Manual.routeName: (context) => const Manual(),
+        ChoosingPage.routeName: (context) => const ChoosingPage(),
+        UserInfoPage.routeName: (context) => const UserInfoPage(),
+        UserInfoEditPage.routeName: (context) => const UserInfoEditPage(),
+        ForgotPassword.routeName: (context) => const ForgotPassword(),
+        ForgotPassword02.routeName: (context) => const ForgotPassword02(),
+        Prepare.routeName: (context) => const Prepare(),
+        Prepare2.routeName: (context) => const Prepare2(),
+        LoginPage.routeName: (context) => const LoginPage(),
+        RegisterPage.routeName: (context) => const RegisterPage(),
+        IntroPage.routeName: (context) => const IntroPage(),
+        TestPage.routeName: (context) => const TestPage(),
+        TestPage2.routeName: (context) => const TestPage2(),
+        TestResultPage.routeName: (context) => const TestResultPage(),
+        TrainingPage.routeName: (context) => const TrainingPage(),
+        WarmupPage.routeName: (context) => const WarmupPage(),
+        ChangePassword.routeName: (context) => const ChangePassword(),
+        TrainingIntroPage.routeName: (context) => const TrainingIntroPage(),
+        ChoosingHandPage.routeName: (context) => const ChoosingHandPage(),
+        RestPage.routeName: (context) => const RestPage(),
+      },
+      builder: EasyLoading.init(),
     );
-  }
-
-  void calcAngles(double accelX, double accelY, double accelZ) {
-    var deltaP = 0, deltaR = 0;
-    var pitch =
-        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
-            .round();
-    var roll =
-        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
-            .round();
-
-    if (_mode == "three") {
-      _displayAngle = pitch;
-      deltaP = pitch - _angleP;
-
-      if (deltaP <= 0) {
-        _deltaSum = 0;
-        _isAdded = false;
-      }
-
-      if (!_isAdded) {
-        if (deltaP >= 0) {
-          _deltaSum += deltaP;
-          deltaP = 0;
-        }
-      }
-
-      _angleP = pitch.round();
-
-      if (_deltaSum > 25 && deltaP < 20) {
-        _times += 1;
-        _s();
-        _deltaSum = 0;
-        _isAdded = true;
-      }
-
-      debugPrint("pitch: $pitch");
-      debugPrint("deltaP: $deltaP");
-      debugPrint("_deltaSum: $_deltaSum");
-      debugPrint("_isAdded: $_isAdded");
-    } else if (_mode == "two") {
-      _displayAngle = roll;
-      deltaR = roll - _angleR;
-
-      if (deltaR >= 0) {
-        _deltaSum += deltaR;
-        deltaR = 0;
-      } else {
-        _deltaSum = 0;
-      }
-
-      _angleR = roll.round();
-
-      if (_deltaSum > 55) {
-        _times += 1;
-        _s();
-        _deltaSum = 0;
-      }
-    } else if (_mode == "slide") {
-      _displayAngle = roll;
-      deltaR = roll - _angleR;
-
-      if (deltaR >= -5) {
-        deltaR = deltaR >= 0 ? deltaR : 0;
-        _deltaSum += deltaR;
-        deltaR = 0;
-      } else {
-        _deltaSum = 0;
-      }
-
-      _angleR = roll.round();
-
-      if (_deltaSum > 75) {
-        _times += 1;
-        _s();
-        _deltaSum = 0;
-      }
-    }
-
-    if (_timerStart) {
-      int now = DateTime.now().millisecondsSinceEpoch;
-      double sec = (now - _startTime) / 1000;
-      var data = ChartData(sec, _displayAngle);
-      _angleList.add(data);
-    }
   }
 }
