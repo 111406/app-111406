@@ -50,16 +50,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _loadPrefs() async {
-    todoMapString = _prefs.then((SharedPreferences pref) {
-      return pref.getString('todoMap') ?? '{}';
-    });
+    try {
+      todoMapString = _prefs.then((SharedPreferences pref) {
+        return pref.getString('todoMap') ?? '{}';
+      });
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('changePage', true);
-    setState(() {
-      todoMap = jsonDecode(prefs.getString('todoMap') ?? "{}");
-      _ethsum = prefs.getString("ethsum") ?? "";
-    });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('changePage', true);
+      setState(() {
+        todoMap = jsonDecode(prefs.getString('todoMap') ?? "{}");
+        _ethsum = prefs.getString("ethsum") ?? "";
+      });
+    } catch (e) {}
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
