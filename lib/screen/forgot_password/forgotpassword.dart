@@ -85,21 +85,30 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 "email": "$email"
                               }""";
                             if (_countdownTime == 0 && email.isNotEmpty) {
-                              await HttpRequest.post(
-                                      '${HttpURL.host}/mail/code', requestData)
-                                  .then(
-                                (response) async {
-                                  showAlertDialog(
-                                    context,
-                                    title: '',
-                                    message: '驗證碼已傳送',
-                                  );
-                                },
-                              );
-                              setState(() {
-                                _countdownTime = 60;
-                              });
-                              startCountdownTimer();
+                              try {
+                                await HttpRequest.post(
+                                        '${HttpURL.host}/mail/code',
+                                        requestData)
+                                    .then(
+                                  (response) async {
+                                    showAlertDialog(
+                                      context,
+                                      title: '',
+                                      message: '驗證碼已傳送',
+                                    );
+                                    setState(() {
+                                      _countdownTime = 60;
+                                    });
+                                    startCountdownTimer();
+                                  },
+                                );
+                              } on Exception catch (e) {
+                                showAlertDialog(
+                                  context,
+                                  title: '',
+                                  message: '請輸入已註冊之電子郵件',
+                                );
+                              }
                             } else if (email.isEmpty) {
                               showAlertDialog(
                                 context,
