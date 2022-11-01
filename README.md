@@ -22,3 +22,5 @@
     ```
     ![](https://i.imgur.com/HewJVTQ.jpg)
 5. 進入上面提示apk所在資料夾，下載apk：
+    ![](https://i.imgur.com/gwAVvcK.jpg)
+    ![](https://i.imgur.com/TlAXvHb.png)
