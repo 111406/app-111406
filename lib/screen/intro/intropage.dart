@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_app/main.dart';
 import 'package:sport_app/screen/intro/warmup/warmuppage.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
@@ -78,6 +79,7 @@ class _IntroPageState extends State<IntroPage> {
   bool _mode4 = false;
   bool _mode5 = false;
   bool _mode6 = false;
+  bool _mode7 = false;
   //
   var mode = 8;
   var introScreen = 8;
@@ -89,7 +91,9 @@ class _IntroPageState extends State<IntroPage> {
   bool deltoidOfs = true;
   bool quadricepsOfs = true;
   bool quadricepschairOfs = true;
+  bool mainOfs = true;
   bool _startBtn1 = true;
+  bool _returnMainpageBtnOfs = true;
   //
 
   Widget _switchCheckbox() {
@@ -112,12 +116,14 @@ class _IntroPageState extends State<IntroPage> {
                   _mode4 = false;
                   _mode5 = false;
                   _mode6 = false;
+                  _mode7 = false;
                   bicepsOfs = true;
                   testOfs = false;
                   trainOfs = true;
                   deltoidOfs = true;
                   quadricepsOfs = true;
                   quadricepschairOfs = true;
+                  mainOfs = true;
                 });
               },
               child: const Text(
@@ -142,12 +148,14 @@ class _IntroPageState extends State<IntroPage> {
                   _mode4 = false;
                   _mode5 = false;
                   _mode6 = false;
+                  _mode7 = false;
                   bicepsOfs = true;
                   testOfs = true;
                   trainOfs = false;
                   deltoidOfs = true;
                   quadricepsOfs = true;
                   quadricepschairOfs = true;
+                  mainOfs = true;
                 });
               },
               child: const Text(
@@ -176,12 +184,14 @@ class _IntroPageState extends State<IntroPage> {
                   _mode4 = false;
                   _mode5 = false;
                   _mode6 = false;
+                  _mode7 = false;
                   bicepsOfs = false;
                   testOfs = true;
                   trainOfs = true;
                   deltoidOfs = true;
                   quadricepsOfs = true;
                   quadricepschairOfs = true;
+                  mainOfs = true;
                 });
               },
               child: const Text(
@@ -210,12 +220,14 @@ class _IntroPageState extends State<IntroPage> {
                   _mode4 = true;
                   _mode5 = false;
                   _mode6 = false;
+                  _mode7 = false;
                   bicepsOfs = true;
                   testOfs = true;
                   trainOfs = true;
                   deltoidOfs = false;
                   quadricepsOfs = true;
                   quadricepschairOfs = true;
+                  mainOfs = true;
                 });
               },
               child: const Text(
@@ -253,12 +265,14 @@ class _IntroPageState extends State<IntroPage> {
                   _mode4 = false;
                   _mode5 = true;
                   _mode6 = false;
+                  _mode7 = false;
                   bicepsOfs = true;
                   testOfs = true;
                   trainOfs = true;
                   deltoidOfs = true;
                   quadricepsOfs = false;
                   quadricepschairOfs = true;
+                  mainOfs = true;
                 });
               },
               child: const Text(
@@ -287,12 +301,14 @@ class _IntroPageState extends State<IntroPage> {
                   _mode4 = false;
                   _mode5 = false;
                   _mode6 = true;
+                  _mode7 = false;
                   bicepsOfs = true;
                   testOfs = true;
                   trainOfs = true;
                   deltoidOfs = true;
                   quadricepsOfs = true;
                   quadricepschairOfs = false;
+                  mainOfs = true;
                 });
               },
               child: const Text(
@@ -301,6 +317,42 @@ class _IntroPageState extends State<IntroPage> {
               ),
               style: ElevatedButton.styleFrom(
                 primary: _mode6 ? secondColor : primaryColor,
+                elevation: 5,
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Container(
+            padding: const EdgeInsets.only(
+              top: 5,
+            ),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _mode1 = false;
+                  _mode2 = false;
+                  _mode3 = false;
+                  _mode4 = false;
+                  _mode5 = false;
+                  _mode6 = false;
+                  _mode7 = true;
+                  bicepsOfs = true;
+                  testOfs = true;
+                  trainOfs = true;
+                  deltoidOfs = true;
+                  quadricepsOfs = true;
+                  quadricepschairOfs = true;
+                  mainOfs = false;
+                });
+              },
+              child: const Text(
+                "主頁",
+                style: TextStyle(fontSize: 20),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: _mode7 ? secondColor : primaryColor,
                 elevation: 5,
               ),
             ),
@@ -320,6 +372,22 @@ class _IntroPageState extends State<IntroPage> {
             Navigator.pushReplacementNamed(context, WarmupPage.routeName);
           },
           child: const Text('開始熱身', style: TextStyle(fontSize: 24)),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
+        ),
+      ),
+    );
+  }
+
+  Widget _returnMainpageBtn(BuildContext context) {
+    return Offstage(
+      offstage: _returnMainpageBtnOfs,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 1.5,
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, Main.routeName);
+          },
+          child: const Text('我都了解，返回主頁', style: TextStyle(fontSize: 24)),
           style: ElevatedButton.styleFrom(primary: primaryColor),
         ),
       ),
@@ -493,6 +561,53 @@ class _IntroPageState extends State<IntroPage> {
     );
   }
 
+  Widget _mainTutorialScreen(
+    BuildContext context,
+  ) {
+    //對應主業按鈕
+    return Offstage(
+      offstage: mainOfs,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ImageSlideshow(
+            width: MediaQuery.of(context).size.width / 1.05,
+            height: MediaQuery.of(context).size.height / 1.8,
+            children: [
+              Image.network(
+                'https://cdn.discordapp.com/attachments/1033254616411951154/1036555989127806986/00.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/1033254616411951154/1036555989543047218/01.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/1033254616411951154/1036555990063136778/02.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/1033254616411951154/1036555990461599754/03.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/1033254616411951154/1036555990847455262/04.png',
+                fit: BoxFit.contain,
+              ),
+              Image.network(
+                'https://cdn.discordapp.com/attachments/1033254616411951154/1036555991342399508/05.png',
+                fit: BoxFit.contain,
+              ),
+            ],
+            onPageChanged: (value) {},
+            autoPlayInterval: 30000,
+            isLoop: false,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _testTutorialScreen01(
     BuildContext context,
   ) {
@@ -512,7 +627,7 @@ class _IntroPageState extends State<IntroPage> {
                 fit: BoxFit.contain,
               ),
               Image.network(
-                'https://cdn.discordapp.com/attachments/1033254616411951154/1033254975922520114/02.png',
+                'https://cdn.discordapp.com/attachments/1033254616411951154/1034495991312822302/02.png',
                 fit: BoxFit.contain,
               ),
               Image.network(
@@ -563,7 +678,7 @@ class _IntroPageState extends State<IntroPage> {
             height: MediaQuery.of(context).size.height / 1.8,
             children: [
               Image.network(
-                'https://cdn.discordapp.com/attachments/800700545169883189/1030793723195445278/01.png',
+                'https://cdn.discordapp.com/attachments/1033254616411951154/1033254928501723166/01.png',
                 fit: BoxFit.contain,
               ),
               Image.network(
@@ -625,6 +740,9 @@ class _IntroPageState extends State<IntroPage> {
     if (quadricepschairOfs == false) {
       _urll = Uri.parse('https://www.youtube.com/watch?v=8_1Qpq4WPbY');
     }
+    if (mainOfs == false) {
+      _urll = Uri.parse('https://www.youtube.com/watch?v=Uw_3z7wSBqA');
+    }
 
     return Offstage(
       offstage: false,
@@ -663,6 +781,7 @@ class _IntroPageState extends State<IntroPage> {
           deltoidOfs = true;
           quadricepsOfs = true;
           quadricepschairOfs = true;
+          mainOfs = true;
         }
         if (mode == 1) {
           _startBtn1 = false;
@@ -672,6 +791,7 @@ class _IntroPageState extends State<IntroPage> {
           deltoidOfs = true;
           quadricepsOfs = true;
           quadricepschairOfs = true;
+          mainOfs = true;
         }
         if (mode == 2) {
           _startBtn1 = false;
@@ -681,6 +801,7 @@ class _IntroPageState extends State<IntroPage> {
           deltoidOfs = true;
           quadricepsOfs = true;
           quadricepschairOfs = true;
+          mainOfs = true;
         }
         if (mode == 4) {
           _startBtn1 = false;
@@ -690,6 +811,7 @@ class _IntroPageState extends State<IntroPage> {
           deltoidOfs = false;
           quadricepsOfs = true;
           quadricepschairOfs = true;
+          mainOfs = true;
         }
         if (mode == 5) {
           _startBtn1 = false;
@@ -699,6 +821,7 @@ class _IntroPageState extends State<IntroPage> {
           deltoidOfs = true;
           quadricepsOfs = false;
           quadricepschairOfs = true;
+          mainOfs = true;
         }
         if (mode == 6) {
           _startBtn1 = false;
@@ -708,7 +831,33 @@ class _IntroPageState extends State<IntroPage> {
           deltoidOfs = true;
           quadricepsOfs = true;
           quadricepschairOfs = false;
+          mainOfs = true;
         }
+        if (mode == 7) {
+          _startBtn1 = true;
+          switchBtnofs = false;
+          bicepsOfs = true;
+          testOfs = true;
+          deltoidOfs = true;
+          quadricepsOfs = true;
+          quadricepschairOfs = true;
+          mainOfs = false;
+          _returnMainpageBtnOfs = false;
+          _mode1 = false;
+          _mode7 = true;
+        }
+        if (mode == 8) {
+          _startBtn1 = true;
+          switchBtnofs = false;
+          bicepsOfs = true;
+          testOfs = false;
+          deltoidOfs = true;
+          quadricepsOfs = true;
+          quadricepschairOfs = true;
+          mainOfs = true;
+          _returnMainpageBtnOfs = true;
+        }
+
         prefs.remove('introScreen');
       });
     } catch (error) {}
@@ -744,11 +893,13 @@ class _IntroPageState extends State<IntroPage> {
               _deltoidTutorialScreen02(context),
               _quadricepsTutorialScreen(context),
               _quadricepschairTutorialScreen(context),
+              _mainTutorialScreen(context),
               // _CurrentAngle(),
               // _ResetZero(context),
               const SizedBox(height: 20),
               _startBtn(context),
               _videoHyperlinkbtn(context),
+              _returnMainpageBtn(context),
             ],
           ),
         ],
