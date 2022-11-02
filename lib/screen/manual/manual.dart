@@ -32,33 +32,22 @@ class _ManualState extends State<Manual> {
   }
 
   AppBar buildAppBar() {
-    int? manualCon;
     return AppBar(
       backgroundColor: secondColor,
       centerTitle: true,
       elevation: 0,
       title: const Text('使用須知'),
-      leading: Row(
-        children: [
-          IconButton(
-            onPressed: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              try {
-                setState(() {
-                  if (prefs.getInt('manualControll') == 1) {
-                    Navigator.pushReplacementNamed(
-                        context, LoginPage.routeName);
-                    prefs.setInt('manualControll', 0);
-                  } else {
-                    prefs.setInt('returnMainPage', 2);
-                    Navigator.pushReplacementNamed(context, Main.routeName);
-                  }
-                });
-              } catch (e) {}
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
-        ],
+      leading: IconButton(
+        onPressed: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          if (prefs.getInt('manualControll') == 1) {
+            await prefs.setInt('manualControll', 0);
+            Navigator.pushReplacementNamed(context, LoginPage.routeName);
+          } else {
+            Navigator.pop(context);
+          }
+        },
+        icon: const Icon(Icons.arrow_back),
       ),
     );
   }
