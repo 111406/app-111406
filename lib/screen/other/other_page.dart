@@ -51,7 +51,7 @@ class _OtherPageState extends State<OtherPage> {
           const SizedBox(height: 5),
           InkWell(
             onTap: () {
-              Navigator.pushReplacementNamed(context, Manual.routeName);
+              Navigator.pushNamed(context, Manual.routeName);
             },
             child: Ink(
               height: 48,
