@@ -34,8 +34,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
 
   @override
   void initState() {
-    super.initState();
     _loadPrefs();
+    super.initState();
   }
 
   @override
