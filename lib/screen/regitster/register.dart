@@ -82,8 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: SingleChildScrollView(
                 // physics: const NeverScrollableScrollPhysics(),
                 child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
                   child: Column(
                     children: [
                       appLogo(),
@@ -98,10 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             icon: Icons.account_box_rounded,
                             controller: userIdController,
                             keyboardType: TextInputType.name,
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[a-zA-Z0-9]"))
-                            ],
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]"))],
                           ),
                           const SizedBox(height: 10),
                           textField(
@@ -149,8 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               const SizedBox(height: 10),
                               Container(
-                                padding:
-                                    const EdgeInsets.only(left: 20, right: 20),
+                                padding: const EdgeInsets.only(left: 20, right: 20),
                                 decoration: BoxDecoration(
                                   border: Border.all(color: primaryColor),
                                   borderRadius: BorderRadius.circular(5),
@@ -192,19 +187,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   child: Row(
                                     children: [
-                                      const Icon(Icons.account_box_rounded,
-                                          color: primaryColor),
+                                      const Icon(Icons.account_box_rounded, color: primaryColor),
                                       const SizedBox(width: 10),
                                       Text(
-                                        (initBirth)
-                                            ? DateFormat('yyyy / MM / dd')
-                                                .format(birth)
-                                            : '請選擇出生年月日(西元)',
+                                        (initBirth) ? DateFormat('yyyy / MM / dd').format(birth) : '請選擇出生年月日(西元)',
                                         style: TextStyle(
                                           fontSize: 18,
-                                          color: (initBirth)
-                                              ? Colors.black
-                                              : textColor,
+                                          color: (initBirth) ? Colors.black : textColor,
                                         ),
                                       ),
                                     ],
@@ -222,10 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
                             ),
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9.]"))
-                            ],
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
                           ),
                           const SizedBox(height: 10),
                           textField(
@@ -233,12 +219,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             hintText: '請輸入體重 (公斤)',
                             icon: Icons.account_box_rounded,
                             controller: weightController,
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9.]"))
-                            ],
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
                           ),
                         ],
                       ),
@@ -264,21 +246,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             child: Column(
                               children: [
-                                radioButton(
-                                    text: '高血壓',
-                                    groupValue: controller.hypertension,
-                                    updateGroupValue:
-                                        controller.setHypertension),
-                                radioButton(
-                                    text: '高血糖',
-                                    groupValue: controller.hyperglycemia,
-                                    updateGroupValue:
-                                        controller.setHyperglycemia),
-                                radioButton(
-                                    text: '高血脂',
-                                    groupValue: controller.hyperlipidemia,
-                                    updateGroupValue:
-                                        controller.setHyperlipidemia),
+                                radioButton(text: '高血壓', groupValue: controller.hypertension, updateGroupValue: controller.setHypertension),
+                                radioButton(text: '高血糖', groupValue: controller.hyperglycemia, updateGroupValue: controller.setHyperglycemia),
+                                radioButton(text: '高血脂', groupValue: controller.hyperlipidemia, updateGroupValue: controller.setHyperlipidemia),
                               ],
                             ),
                           ),
@@ -399,12 +369,8 @@ class _RegisterPageState extends State<RegisterPage> {
         reference = referenceController.text,
         institution = institutionController.text;
 
-    bool _textFieldIsNotEmpty = userId.isNotEmpty &&
-        password.isNotEmpty &&
-        confirmPassword.isNotEmpty &&
-        email.isNotEmpty &&
-        height.isNotEmpty &&
-        weight.isNotEmpty;
+    bool _textFieldIsNotEmpty =
+        userId.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty && email.isNotEmpty && height.isNotEmpty && weight.isNotEmpty;
 
     // bool _threeHighIsNotNull = (hypertension != null) &&
     //     (hypertension != null) &&
@@ -425,8 +391,10 @@ class _RegisterPageState extends State<RegisterPage> {
     Object accountrawData = {};
 
     await HttpRequest.post(
-            "${HttpURL.ethHost}/addAccount", jsonEncode(accountrawData))
-        .then((response) {
+      "${HttpURL.ethHost}/addAccount",
+      jsonEncode(accountrawData),
+      actionMessage: 'eth add account',
+    ).then((response) {
       walletAddress = response['walletAddress'];
       privateKey = response['privateKey'];
       sum = int.parse(response['sum']);
@@ -462,16 +430,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
       try {
         // _loadingCircle();
-        final response = await HttpRequest.post(
-            '${HttpURL.host}/user/signup', jsonEncode(requestData));
+        final response = await HttpRequest.post('${HttpURL.host}/user/signup', jsonEncode(requestData));
         final prefs = await SharedPreferences.getInstance();
         prefs.setBool('routeTointro', true);
         _timer.cancel();
         EasyLoading.dismiss();
         prefs.setInt('introScreen', 7);
-        showAlertDialog(context, message: response['message']).then((_) =>
-            Navigator.pushNamedAndRemoveUntil(
-                context, LoginPage.routeName, (route) => false));
+        showAlertDialog(context, message: response['message'])
+            .then((_) => Navigator.pushNamedAndRemoveUntil(context, LoginPage.routeName, (route) => false));
       } on Exception catch (e) {
         _timer.cancel();
         EasyLoading.dismiss();
