@@ -195,7 +195,7 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
         await prefs.setInt('introScreen', 2);
       }
       if (part == TrainingPart.deltoid.value) {
-        await prefs.setInt('introScreen', 3);
+        await prefs.setInt('introScreen', 4);
       }
       Navigator.pushReplacementNamed(context, IntroPage.routeName);
     }
