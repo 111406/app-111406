@@ -82,8 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: SingleChildScrollView(
                 // physics: const NeverScrollableScrollPhysics(),
                 child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
                   child: Column(
                     children: [
                       appLogo(),
@@ -98,10 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             icon: Icons.account_box_rounded,
                             controller: userIdController,
                             keyboardType: TextInputType.name,
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[a-zA-Z0-9]"))
-                            ],
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]"))],
                           ),
                           const SizedBox(height: 10),
                           textField(
@@ -149,8 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               const SizedBox(height: 10),
                               Container(
-                                padding:
-                                    const EdgeInsets.only(left: 20, right: 20),
+                                padding: const EdgeInsets.only(left: 20, right: 20),
                                 decoration: BoxDecoration(
                                   border: Border.all(color: primaryColor),
                                   borderRadius: BorderRadius.circular(5),
@@ -192,19 +187,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   child: Row(
                                     children: [
-                                      const Icon(Icons.account_box_rounded,
-                                          color: primaryColor),
+                                      const Icon(Icons.account_box_rounded, color: primaryColor),
                                       const SizedBox(width: 10),
                                       Text(
-                                        (initBirth)
-                                            ? DateFormat('yyyy / MM / dd')
-                                                .format(birth)
-                                            : '請選擇出生年月日(西元)',
+                                        (initBirth) ? DateFormat('yyyy / MM / dd').format(birth) : '請選擇出生年月日(西元)',
                                         style: TextStyle(
                                           fontSize: 18,
-                                          color: (initBirth)
-                                              ? Colors.black
-                                              : textColor,
+                                          color: (initBirth) ? Colors.black : textColor,
                                         ),
                                       ),
                                     ],
@@ -222,10 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
                             ),
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9.]"))
-                            ],
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
                           ),
                           const SizedBox(height: 10),
                           textField(
@@ -233,12 +219,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             hintText: '請輸入體重 (公斤)',
                             icon: Icons.account_box_rounded,
                             controller: weightController,
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            formatter: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9.]"))
-                            ],
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            formatter: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
                           ),
                         ],
                       ),
@@ -264,21 +246,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             child: Column(
                               children: [
-                                radioButton(
-                                    text: '高血壓',
-                                    groupValue: controller.hypertension,
-                                    updateGroupValue:
-                                        controller.setHypertension),
-                                radioButton(
-                                    text: '高血糖',
-                                    groupValue: controller.hyperglycemia,
-                                    updateGroupValue:
-                                        controller.setHyperglycemia),
-                                radioButton(
-                                    text: '高血脂',
-                                    groupValue: controller.hyperlipidemia,
-                                    updateGroupValue:
-                                        controller.setHyperlipidemia),
+                                radioButton(text: '高血壓', groupValue: controller.hypertension, updateGroupValue: controller.setHypertension),
+                                radioButton(text: '高血糖', groupValue: controller.hyperglycemia, updateGroupValue: controller.setHyperglycemia),
+                                radioButton(text: '高血脂', groupValue: controller.hyperlipidemia, updateGroupValue: controller.setHyperlipidemia),
                               ],
                             ),
                           ),
@@ -334,7 +304,7 @@ class _RegisterPageState extends State<RegisterPage> {
     //讀取
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', false);
-    late double _progress;
+    double _progress = 0;
     EasyLoading.instance
       ..backgroundColor = primaryColor
       ..textColor = Colors.white
@@ -346,7 +316,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ..maskType = EasyLoadingMaskType.custom
       ..userInteractions = false;
 
-    _progress = 0;
     // _timer.cancel();
     _timer = Timer.periodic(
       const Duration(milliseconds: 500),
@@ -355,7 +324,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _progress += 0.05;
 
         if (_progress >= 1) {
-          _timer.cancel();
+          timer.cancel();
           EasyLoading.dismiss();
         }
       },
@@ -388,7 +357,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _onPressed() async {
-    _loadingCircle();
+    await _loadingCircle();
     final userId = userIdController.text,
         password = passwordController.text,
         confirmPassword = cpasswordController.text,
@@ -399,12 +368,8 @@ class _RegisterPageState extends State<RegisterPage> {
         reference = referenceController.text,
         institution = institutionController.text;
 
-    bool _textFieldIsNotEmpty = userId.isNotEmpty &&
-        password.isNotEmpty &&
-        confirmPassword.isNotEmpty &&
-        email.isNotEmpty &&
-        height.isNotEmpty &&
-        weight.isNotEmpty;
+    bool _textFieldIsNotEmpty =
+        userId.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty && email.isNotEmpty && height.isNotEmpty && weight.isNotEmpty;
 
     // bool _threeHighIsNotNull = (hypertension != null) &&
     //     (hypertension != null) &&
@@ -419,20 +384,41 @@ class _RegisterPageState extends State<RegisterPage> {
         title: '密碼與確認密碼不相同',
         message: '請重新輸入',
       );
+      _timer.cancel();
+      EasyLoading.dismiss();
+      return;
     }
 
-    // add account
-    Object accountrawData = {};
-
-    await HttpRequest.post(
-            "${HttpURL.ethHost}/addAccount", jsonEncode(accountrawData))
-        .then((response) {
-      walletAddress = response['walletAddress'];
-      privateKey = response['privateKey'];
-      sum = int.parse(response['sum']);
-    });
-
     if (_textFieldIsNotEmpty && _birthIsNotEmpty && _passwordCheck) {
+      double heightNumber = double.parse(height);
+      if (heightNumber < 130 || heightNumber > 200) {
+        showAlertDialog(context, message: "請輸入身高正常範圍(130 ~ 200)");
+        _timer.cancel();
+        EasyLoading.dismiss();
+        return;
+      }
+
+      double weightNumber = double.parse(weight);
+      if (weightNumber < 30 || weightNumber > 150) {
+        showAlertDialog(context, message: "請輸入體重正常範圍(30 ~ 150)");
+        _timer.cancel();
+        EasyLoading.dismiss();
+        return;
+      }
+
+      // add account
+      Object accountrawData = {};
+
+      await HttpRequest.post(
+        "${HttpURL.ethHost}/addAccount",
+        jsonEncode(accountrawData),
+        actionMessage: 'eth add account',
+      ).then((response) {
+        walletAddress = response['walletAddress'];
+        privateKey = response['privateKey'];
+        sum = int.parse(response['sum']);
+      });
+
       Gender gender = controller.gender ? Gender.female : Gender.male;
       Map otherDetail = {
         "isHadHypertension": controller.hypertension,
@@ -456,25 +442,17 @@ class _RegisterPageState extends State<RegisterPage> {
         "other_detail": jsonEncode(otherDetail)
       };
 
-      // TODO wrap to method
       if (reference.isNotEmpty) requestData['reference'] = reference;
       if (institution.isNotEmpty) requestData['institution'] = institution;
 
       try {
-        // _loadingCircle();
-        final response = await HttpRequest.post(
-            '${HttpURL.host}/user/signup', jsonEncode(requestData));
+        final response = await HttpRequest.post('${HttpURL.host}/user/signup', jsonEncode(requestData));
         final prefs = await SharedPreferences.getInstance();
         prefs.setBool('routeTointro', true);
-        _timer.cancel();
-        EasyLoading.dismiss();
         prefs.setInt('introScreen', 7);
-        showAlertDialog(context, message: response['message']).then((_) =>
-            Navigator.pushNamedAndRemoveUntil(
-                context, LoginPage.routeName, (route) => false));
+        showAlertDialog(context, message: response['message'])
+            .then((_) => Navigator.pushNamedAndRemoveUntil(context, LoginPage.routeName, (route) => false));
       } on Exception catch (e) {
-        _timer.cancel();
-        EasyLoading.dismiss();
         showAlertDialog(
           context,
           title: '發生錯誤',
@@ -488,5 +466,7 @@ class _RegisterPageState extends State<RegisterPage> {
         message: '請重新輸入',
       );
     }
+    _timer.cancel();
+    EasyLoading.dismiss();
   }
 }
