@@ -81,8 +81,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
               }
 
               double heightNumber = double.parse(_height);
-              if (heightNumber < 50 || heightNumber > 200) {
-                showAlertDialog(context, message: "請輸入身高正常範圍(50 ~ 200)");
+              if (heightNumber < 130 || heightNumber > 200) {
+                showAlertDialog(context, message: "請輸入身高正常範圍(130 ~ 200)");
                 return;
               }
               height = _height;
@@ -134,7 +134,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
 
               double weightNumber = double.parse(_weight);
               if (weightNumber < 30 || weightNumber > 150) {
-                showAlertDialog(context, message: "請輸入體重正常範圍(50 ~ 200)");
+                showAlertDialog(context, message: "請輸入體重正常範圍(30 ~ 150)");
                 return;
               }
               weight = _weight;
@@ -364,15 +364,17 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                         prefs.setString("birthday", birthday);
                       },
                     );
+                    await prefs.setInt('returnMainPage', 1);
+                    showAlertDialog(context, message: '修改成功').then((_) => Navigator.pushReplacementNamed(context, Main.routeName));
                   } on Exception catch (e) {
-                    _timer.cancel();
-                    EasyLoading.dismiss();
                     showAlertDialog(
                       context,
                       title: '發生錯誤',
                       message: '修改失敗',
                     );
                   }
+                  _timer.cancel();
+                  EasyLoading.dismiss();
                 },
               ),
               const SizedBox(height: 10),
@@ -425,11 +427,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
   }
 
   Future<void> _loadingCircle() async {
-    //讀取
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('changeDone', false);
-
-    late double _progress;
+    double _progress = 0;
     EasyLoading.instance
       ..backgroundColor = primaryColor
       ..textColor = Colors.white
@@ -441,7 +439,6 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       ..maskType = EasyLoadingMaskType.custom
       ..userInteractions = false;
 
-    _progress = 0;
     // _timer.cancel();
     _timer = Timer.periodic(
       const Duration(milliseconds: 150),
@@ -450,22 +447,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
         _progress += 0.05;
 
         if (_progress >= 1) {
-          await prefs.setBool('changeDone', true);
           _timer.cancel();
           EasyLoading.dismiss();
-          if (prefs.getBool('changeDone') == true) {
-            showAlertDialog(
-              context,
-              title: '修改成功',
-              message: '',
-            );
-            await prefs.setBool('changeDone', false);
-
-            await prefs.setInt('returnMainPage', 1);
-            Timer(const Duration(seconds: 2), () {
-              Navigator.pushReplacementNamed(context, Main.routeName);
-            });
-          }
         }
       },
     );
