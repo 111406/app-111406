@@ -304,7 +304,7 @@ class _RegisterPageState extends State<RegisterPage> {
     //讀取
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', false);
-    late double _progress;
+    double _progress = 0;
     EasyLoading.instance
       ..backgroundColor = primaryColor
       ..textColor = Colors.white
@@ -316,7 +316,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ..maskType = EasyLoadingMaskType.custom
       ..userInteractions = false;
 
-    _progress = 0;
     // _timer.cancel();
     _timer = Timer.periodic(
       const Duration(milliseconds: 500),
@@ -325,7 +324,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _progress += 0.05;
 
         if (_progress >= 1) {
-          _timer.cancel();
+          timer.cancel();
           EasyLoading.dismiss();
         }
       },
@@ -358,7 +357,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _onPressed() async {
-    _loadingCircle();
+    await _loadingCircle();
     final userId = userIdController.text,
         password = passwordController.text,
         confirmPassword = cpasswordController.text,
@@ -385,22 +384,41 @@ class _RegisterPageState extends State<RegisterPage> {
         title: '密碼與確認密碼不相同',
         message: '請重新輸入',
       );
+      _timer.cancel();
+      EasyLoading.dismiss();
+      return;
     }
 
-    // add account
-    Object accountrawData = {};
-
-    await HttpRequest.post(
-      "${HttpURL.ethHost}/addAccount",
-      jsonEncode(accountrawData),
-      actionMessage: 'eth add account',
-    ).then((response) {
-      walletAddress = response['walletAddress'];
-      privateKey = response['privateKey'];
-      sum = int.parse(response['sum']);
-    });
-
     if (_textFieldIsNotEmpty && _birthIsNotEmpty && _passwordCheck) {
+      double heightNumber = double.parse(height);
+      if (heightNumber < 130 || heightNumber > 200) {
+        showAlertDialog(context, message: "請輸入身高正常範圍(130 ~ 200)");
+        _timer.cancel();
+        EasyLoading.dismiss();
+        return;
+      }
+
+      double weightNumber = double.parse(weight);
+      if (weightNumber < 30 || weightNumber > 150) {
+        showAlertDialog(context, message: "請輸入體重正常範圍(30 ~ 150)");
+        _timer.cancel();
+        EasyLoading.dismiss();
+        return;
+      }
+
+      // add account
+      Object accountrawData = {};
+
+      await HttpRequest.post(
+        "${HttpURL.ethHost}/addAccount",
+        jsonEncode(accountrawData),
+        actionMessage: 'eth add account',
+      ).then((response) {
+        walletAddress = response['walletAddress'];
+        privateKey = response['privateKey'];
+        sum = int.parse(response['sum']);
+      });
+
       Gender gender = controller.gender ? Gender.female : Gender.male;
       Map otherDetail = {
         "isHadHypertension": controller.hypertension,
@@ -424,7 +442,6 @@ class _RegisterPageState extends State<RegisterPage> {
         "other_detail": jsonEncode(otherDetail)
       };
 
-      // TODO wrap to method
       if (reference.isNotEmpty) requestData['reference'] = reference;
       if (institution.isNotEmpty) requestData['institution'] = institution;
 
@@ -433,14 +450,10 @@ class _RegisterPageState extends State<RegisterPage> {
         final response = await HttpRequest.post('${HttpURL.host}/user/signup', jsonEncode(requestData));
         final prefs = await SharedPreferences.getInstance();
         prefs.setBool('routeTointro', true);
-        _timer.cancel();
-        EasyLoading.dismiss();
         prefs.setInt('introScreen', 7);
         showAlertDialog(context, message: response['message'])
             .then((_) => Navigator.pushNamedAndRemoveUntil(context, LoginPage.routeName, (route) => false));
       } on Exception catch (e) {
-        _timer.cancel();
-        EasyLoading.dismiss();
         showAlertDialog(
           context,
           title: '發生錯誤',
@@ -454,5 +467,7 @@ class _RegisterPageState extends State<RegisterPage> {
         message: '請重新輸入',
       );
     }
+    _timer.cancel();
+    EasyLoading.dismiss();
   }
 }

@@ -86,7 +86,6 @@ Future<void> loadTrainingData(
 
       await prefs.setString("todoMap", json.encode(todoMap));
 
-      // TODO 訓練表部分待調整
       if (checkComplete) {
         prefs.setString("userTodo",
             json.encode(todoList.firstWhere((element) => !element.complete)));
