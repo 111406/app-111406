@@ -253,7 +253,9 @@ class _TestPageState2 extends State<TestPage2> {
     timer = Timer.periodic(
       period,
       (_timer) async {
-        _displayTimer = tobeMinused - _timer.tick;
+        setState(() {
+          _displayTimer = tobeMinused - _timer.tick;
+        });
         if (_displayTimer == 0) {
           _loadingCircle();
           final prefs = await SharedPreferences.getInstance();

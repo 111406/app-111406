@@ -248,7 +248,9 @@ class _TestPageState extends State<TestPage> {
     timer = Timer.periodic(
       period,
       (_timer) async {
-        _displayTimer = tobeMinused - _timer.tick;
+        setState(() {
+          _displayTimer = tobeMinused - _timer.tick;
+        });
         if (_displayTimer == 0) {
           final prefs = await SharedPreferences.getInstance();
           String userId = prefs.getString("userId")!;
