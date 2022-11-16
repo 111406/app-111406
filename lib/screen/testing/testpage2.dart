@@ -162,7 +162,7 @@ class _TestPageState2 extends State<TestPage2> {
 
   @override
   Widget build(BuildContext context) {
-    setUpdateInterval(Duration.microsecondsPerSecond ~/ 60);
+    setUpdateInterval(Duration.microsecondsPerSecond ~/ 30);
     return Scaffold(
       body: Stack(
         children: [
