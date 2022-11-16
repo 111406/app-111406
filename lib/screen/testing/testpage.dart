@@ -160,7 +160,7 @@ class _TestPageState extends State<TestPage> {
 
   @override
   Widget build(BuildContext context) {
-    setUpdateInterval(Duration.microsecondsPerSecond ~/ 60);
+    setUpdateInterval(Duration.microsecondsPerSecond ~/ 30);
     return Scaffold(
       body: Stack(
         children: [
@@ -248,7 +248,9 @@ class _TestPageState extends State<TestPage> {
     timer = Timer.periodic(
       period,
       (_timer) async {
-        _displayTimer = tobeMinused - _timer.tick;
+        setState(() {
+          _displayTimer = tobeMinused - _timer.tick;
+        });
         if (_displayTimer == 0) {
           final prefs = await SharedPreferences.getInstance();
           String userId = prefs.getString("userId")!;
