@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/change_password/change_password.dart';
@@ -27,11 +31,20 @@ import 'package:sport_app/screen/user_info/user_info_edit.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sport_app/utils/app_config.dart';
 import 'package:sport_app/utils/http_request.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'model/user_todo.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await _fcmInit();
+
+  if (!kIsWeb) {
+    await setupFlutterNotifications();
+  }
+
   configLoading();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -41,9 +54,7 @@ Future<void> main() async {
   if (userId != '' && token != '') loadTrainingData(prefs, userId, token);
 
   runApp(
-    (userId != '' && token != '')
-        ? MyApp(userId: userId, token: token)
-        : const MyApp(userId: '', token: ''),
+    (userId != '' && token != '') ? MyApp(userId: userId, token: token) : const MyApp(userId: '', token: ''),
   );
 }
 
@@ -63,15 +74,13 @@ void configLoading() {
     ..dismissOnTap = false;
 }
 
-Future<void> loadTrainingData(
-    SharedPreferences prefs, String userId, String token) async {
+Future<void> loadTrainingData(SharedPreferences prefs, String userId, String token) async {
   bool checkComplete = true;
   List checkCompleteList = [];
   await prefs.remove("trainingState");
   final todoList = <UserTodo>[];
   final todoMap = {};
-  await HttpRequest.get('${HttpURL.host}/target/$userId')
-      .then((response) async {
+  await HttpRequest.get('${HttpURL.host}/target/$userId').then((response) async {
     final dataList = response['data'] as List;
     if (dataList.isNotEmpty) {
       // 有本周訓練資料
@@ -87,13 +96,11 @@ Future<void> loadTrainingData(
       await prefs.setString("todoMap", json.encode(todoMap));
 
       if (checkComplete) {
-        prefs.setString("userTodo",
-            json.encode(todoList.firstWhere((element) => !element.complete)));
+        prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));
       }
     } else {
       // 檢查是不是剛做完檢測，因為不會馬上指派任務
-      await HttpRequest.get('${HttpURL.host}/target/started/$userId')
-          .then((response) {
+      await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
         final isHadTarget = response['data'];
         prefs.remove("todoList");
         prefs.remove("userTodo");
@@ -136,8 +143,7 @@ class MyApp extends StatelessWidget {
       ],
       title: '肌動GO',
       home: const LoginPage(),
-      initialRoute:
-          (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
+      initialRoute: (userId != '' && token != '') ? Main.routeName : LoginPage.routeName,
       routes: {
         Main.routeName: (context) => const Main(),
         Manual.routeName: (context) => const Manual(),
@@ -162,6 +168,130 @@ class MyApp extends StatelessWidget {
         RestPage.routeName: (context) => const RestPage(),
       },
       builder: EasyLoading.init(),
+    );
+  }
+}
+
+/// init firebase and cloud messaging
+Future<void> _fcmInit() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  //iOS啟用前台通知
+  if (Platform.isIOS) {
+    // Required to display a heads up notification
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  FirebaseMessaging.onMessage.listen(showFlutterNotification);
+  // await FCMUtils.getToken();
+
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  // await messaging.requestPermission(
+  //   alert: true,
+  //   announcement: false,
+  //   badge: true,
+  //   carPlay: false,
+  //   criticalAlert: false,
+  //   provisional: false,
+  //   sound: true,
+  // );
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await setupFlutterNotifications();
+  showFlutterNotification(message);
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+
+  debugPrint("Handling a background message: ${message.messageId}");
+}
+
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+/// Create a [AndroidNotificationChannel] for heads up notifications
+late AndroidNotificationChannel channel;
+
+bool isFlutterLocalNotificationsInitialized = false;
+
+final StreamController<String?> selectNotificationStream = StreamController<String?>.broadcast();
+
+Future<void> setupFlutterNotifications() async {
+  if (isFlutterLocalNotificationsInitialized) {
+    return;
+  }
+  channel = const AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    description: 'This channel is used for important notifications.', // description
+    importance: Importance.high,
+  );
+
+  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  /// Create an Android Notification Channel.
+  ///
+  /// We use this channel in the `AndroidManifest.xml` file to override the
+  /// default FCM channel to enable heads up notifications.
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  /// Update the iOS foreground notification presentation options to allow
+  /// heads up notifications.
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  isFlutterLocalNotificationsInitialized = true;
+}
+
+void showFlutterNotification(RemoteMessage message) {
+  RemoteNotification? notification = message.notification;
+  AndroidNotification? android = message.notification?.android;
+  final title = message.data['title'];
+  final body = message.data['body'];
+  if (notification != null && android != null && !kIsWeb) {
+    flutterLocalNotificationsPlugin.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
+          icon: 'app_icon',
+        ),
+      ),
+    );
+  } else if (title != null && body != null) {
+    flutterLocalNotificationsPlugin.show(
+      notification.hashCode,
+      title,
+      body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
+          icon: 'app_icon',
+        ),
+      ),
     );
   }
 }
