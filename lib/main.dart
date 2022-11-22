@@ -190,19 +190,6 @@ Future<void> _fcmInit() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   FirebaseMessaging.onMessage.listen(showFlutterNotification);
-  // await FCMUtils.getToken();
-
-  // FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  // await messaging.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
 }
 
 @pragma('vm:entry-point')
