@@ -24,81 +24,84 @@ class _ChoosingPageState extends State<ChoosingPage> {
   late dynamic targetTime;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: buildAppBar(),
-      body: Column(
-        children: [
-          const SizedBox(height: 70),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.symmetric(horizontal: 35),
-            child: const Text(
-              '選擇訓練部位',
-              style: TextStyle(
-                fontSize: 28,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: buildAppBar(),
+        body: Column(
+          children: [
+            const SizedBox(height: 70),
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.symmetric(horizontal: 35),
+              child: const Text(
+                '選擇訓練部位',
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 35),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.symmetric(horizontal: 35),
-            child: const Text(
-              '上半身肌肉(上肢部分)',
-              style: TextStyle(
-                fontSize: 22,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+            const SizedBox(height: 35),
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.symmetric(horizontal: 35),
+              child: const Text(
+                '上半身肌肉(上肢部分)',
+                style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: InkWell(
-              onTap: () {
-                goNextPage(TrainingPart.biceps.value);
-              },
-              child: Ink(child: bicepsBtn()),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: InkWell(
-              onTap: () {
-                goNextPage(TrainingPart.deltoid.value);
-              },
-              child: Ink(child: deltaBtn()),
-            ),
-          ),
-          const SizedBox(height: 35),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.symmetric(horizontal: 35),
-            child: const Text(
-              '下半身肌肉(下肢部分)',
-              style: TextStyle(
-                fontSize: 22,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+            const SizedBox(height: 20),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              child: InkWell(
+                onTap: () {
+                  goNextPage(TrainingPart.biceps.value);
+                },
+                child: Ink(child: bicepsBtn()),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: InkWell(
-              onTap: () {
-                goNextPage(TrainingPart.quadriceps.value);
-              },
-              child: Ink(child: squatBtn()),
+            const SizedBox(height: 20),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              child: InkWell(
+                onTap: () {
+                  goNextPage(TrainingPart.deltoid.value);
+                },
+                child: Ink(child: deltaBtn()),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 35),
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.symmetric(horizontal: 35),
+              child: const Text(
+                '下半身肌肉(下肢部分)',
+                style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              child: InkWell(
+                onTap: () {
+                  goNextPage(TrainingPart.quadriceps.value);
+                },
+                child: Ink(child: squatBtn()),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
