@@ -272,28 +272,31 @@ class _TrainingPageState extends State<TrainingPage> {
   @override
   Widget build(BuildContext context) {
     setUpdateInterval(Duration.microsecondsPerSecond ~/ 60);
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(height: MediaQuery.of(context).size.width / 6),
-              _title(),
-              const SizedBox(height: 25),
-              _setLeftTitle(),
-              const SizedBox(height: 30),
-              _setLeft(todoSet),
-              const SizedBox(height: 60),
-              // _targetNumberTitle(),
-              // _targetNumber(),
-              const SizedBox(height: 60),
-              _countNumberTitle(),
-              _countNumber(remainingNum),
-              const SizedBox(height: 60),
-              _endBtn(context),
-            ],
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.width / 6),
+                _title(),
+                const SizedBox(height: 25),
+                _setLeftTitle(),
+                const SizedBox(height: 30),
+                _setLeft(todoSet),
+                const SizedBox(height: 60),
+                // _targetNumberTitle(),
+                // _targetNumber(),
+                const SizedBox(height: 60),
+                _countNumberTitle(),
+                _countNumber(remainingNum),
+                const SizedBox(height: 60),
+                _endBtn(context),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

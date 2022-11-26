@@ -327,36 +327,39 @@ class _TestResultPageState extends State<TestResultPage> {
 
     Get.put<TestResultController>(TestResultController());
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: GetBindWidget(
-          bind: controller,
-          child: GetBuilder<TestResultController>(
-            builder: (controller) => Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.width / 6,
-                ),
-                _title(),
-                const SizedBox(height: 25),
-                _resultTitle(),
-                const SizedBox(height: 30),
-                _testMode(context, controller),
-                const SizedBox(height: 15),
-                _resultNumber(context, controller.currentRecord.times),
-                const SizedBox(height: 15),
-                _resultAnalyze(context, controller.currentRecord.testResult),
-                const SizedBox(height: 15),
-                _resultPR(context, controller.currentRecord.pr),
-                const SizedBox(height: 15),
-                if (!isHasDiff) _resultGap(context, controller.currentRecord.difference),
-                if (!isHasDiff) const SizedBox(height: 30),
-                // 顯示角度變化圖表
-                // _resultChart(context, chartData),
-                // const SizedBox(height: 30),
-                _endBtn(context),
-                const SizedBox(height: 100),
-              ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: GetBindWidget(
+            bind: controller,
+            child: GetBuilder<TestResultController>(
+              builder: (controller) => Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.width / 6,
+                  ),
+                  _title(),
+                  const SizedBox(height: 25),
+                  _resultTitle(),
+                  const SizedBox(height: 30),
+                  _testMode(context, controller),
+                  const SizedBox(height: 15),
+                  _resultNumber(context, controller.currentRecord.times),
+                  const SizedBox(height: 15),
+                  _resultAnalyze(context, controller.currentRecord.testResult),
+                  const SizedBox(height: 15),
+                  _resultPR(context, controller.currentRecord.pr),
+                  const SizedBox(height: 15),
+                  if (!isHasDiff) _resultGap(context, controller.currentRecord.difference),
+                  if (!isHasDiff) const SizedBox(height: 30),
+                  // 顯示角度變化圖表
+                  // _resultChart(context, chartData),
+                  // const SizedBox(height: 30),
+                  _endBtn(context),
+                  const SizedBox(height: 100),
+                ],
+              ),
             ),
           ),
         ),

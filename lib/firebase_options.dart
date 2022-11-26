@@ -66,11 +66,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA9STAVc7mRTA2jUc49kYC0fRUrWh-_1Ek',
-    appId: '1:467210161136:ios:c249db1a5b74946a1beb35',
+    appId: '1:467210161136:ios:b89ec9ec9c7aec511beb35',
     messagingSenderId: '467210161136',
     projectId: 'sport-go-app',
     storageBucket: 'sport-go-app.appspot.com',
-    iosClientId: '467210161136-3t5skk8m3kmnb6csjp9ffmo3n9rc1jm0.apps.googleusercontent.com',
-    iosBundleId: 'com.example.1.test',
+    iosClientId: '467210161136-bgru3vf8qfg66upig3nqf93gqs25g6eh.apps.googleusercontent.com',
+    iosBundleId: 'com.ntub.111406',
   );
 }

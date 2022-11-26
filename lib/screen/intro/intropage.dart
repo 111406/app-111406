@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/main.dart';
 import 'package:sport_app/screen/intro/warmup/warmuppage.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
@@ -877,10 +876,11 @@ class _IntroPageState extends State<IntroPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: SingleChildScrollView(
-        child: Stack(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: buildAppBar(),
+        body: Stack(
           children: [
             Column(
               children: [
