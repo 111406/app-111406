@@ -1,4 +1,4 @@
-///註冊第一頁
+///註冊頁
 
 import 'dart:async';
 import 'dart:convert';
@@ -421,13 +421,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
       Gender gender = controller.gender ? Gender.female : Gender.male;
       Map otherDetail = {
-        "isHadHypertension": controller.hypertension,
-        "isHadHyperglycemia": controller.hyperglycemia,
-        "isHadHyperlipidemia": controller.hyperlipidemia,
-        "isHadExerciseHabits": controller.exerciseHabits,
+        "hasHypertension": controller.hypertension,
+        "hasHyperglycemia": controller.hyperglycemia,
+        "hasHyperlipidemia": controller.hyperlipidemia,
+        "hasExerciseHabits": controller.exerciseHabits,
       };
 
-      // TODO 欄位驗證
       Map requestData = {
         "user_id": userId,
         "password": password,
@@ -439,7 +438,7 @@ class _RegisterPageState extends State<RegisterPage> {
         "eth_account": walletAddress,
         "eth_password": privateKey,
         "eth_sum": sum,
-        "other_detail": jsonEncode(otherDetail)
+        "other_detail": otherDetail
       };
 
       if (reference.isNotEmpty) requestData['reference'] = reference;

@@ -50,6 +50,7 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String userId = prefs.getString('userId') ?? '';
   String token = prefs.getString('token') ?? '';
+  prefs.setBool("loading", true);
 
   if (userId != '' && token != '') loadTrainingData(prefs, userId, token);
 
@@ -118,6 +119,8 @@ Future<void> loadTrainingData(SharedPreferences prefs, String userId, String tok
     // 進到這裡表示本周任務已完成
     prefs.setString("trainingState", AppConfig.TRAINING_FINISH);
   }
+  
+  prefs.setBool("loading", false);
 }
 
 class MyApp extends StatelessWidget {
