@@ -16,8 +16,10 @@ class UserInfoPage extends StatefulWidget {
 class _UserInfoPageState extends State<UserInfoPage> {
   var userId = '載入中';
   var birth = '19750101';
-  var _height = '載入中';
-  var _weight = '載入中';
+  // var _height = '載入中';
+  // var _weight = '載入中';
+  double _height = 170;
+  double _weight = 70;
   var _gender = '載入中';
   var _ethsum = '載入中';
 
@@ -31,8 +33,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = prefs.getString("userId") ?? "";
-      _height = (prefs.getDouble("height") ?? 0).toString();
-      _weight = (prefs.getDouble("weight") ?? 0).toString();
+      _height = (prefs.getDouble("height") ?? 0);
+      _weight = (prefs.getDouble("weight") ?? 0);
       _gender = prefs.getString("gender") ?? "";
       birth = prefs.getString("birthday") ?? "19750101";
       _ethsum = prefs.getString("ethsum") ?? "";
@@ -249,7 +251,41 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       color: const Color.fromARGB(255, 225, 225, 225)),
                 ),
               ),
-              // const SizedBox(height: 10),
+              const SizedBox(height: 10),
+              Container(
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'BMI',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      calculateBMI(weight: _weight, height: _height),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 20, right: 15),
+                constraints: const BoxConstraints(maxHeight: 56),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      color: const Color.fromARGB(255, 225, 225, 225)),
+                ),
+              ),
+
               // const SizedBox(height: 60),
               // mainBtn(
               //   text: '編輯',
@@ -263,6 +299,22 @@ class _UserInfoPageState extends State<UserInfoPage> {
         ),
       ),
     );
+  }
+
+  String calculateBMI({required double weight, required double height}) {
+    double heightSquare = height * height / 10000;
+    double bmi = weight / heightSquare;
+    String text = "";
+    if (bmi < 18.5) {
+      text = "體重過輕";
+    } else if (18.5 <= bmi && bmi < 24) {
+      text = "健康體重";
+    } else if (24 <= bmi && bmi < 27) {
+      text = "體重過重";
+    } else if (bmi >= 27) {
+      text = "肥胖";
+    }
+    return bmi.toStringAsFixed(2) + " ($text)";
   }
 
   AppBar appBar() {

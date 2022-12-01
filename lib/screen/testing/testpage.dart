@@ -160,29 +160,32 @@ class _TestPageState extends State<TestPage> {
 
   @override
   Widget build(BuildContext context) {
-    setUpdateInterval(Duration.microsecondsPerSecond ~/ 60);
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(height: MediaQuery.of(context).size.width / 6),
-              _title(),
-              const SizedBox(height: 25),
-              _secondLeftTitle(),
-              const SizedBox(height: 30),
-              _secondLeft(_displayTimer),
-              const SizedBox(height: 60),
-              _countNumberTitle(),
-              _countNumber(_times),
-              const SizedBox(height: 60),
-              _angle(_displayAngle),
-              _angleTitle(),
-              const SizedBox(height: 50),
-              _endBtn(context),
-            ],
-          ),
-        ],
+    setUpdateInterval(Duration.microsecondsPerSecond ~/ 30);
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.width / 6),
+                _title(),
+                const SizedBox(height: 25),
+                _secondLeftTitle(),
+                const SizedBox(height: 30),
+                _secondLeft(_displayTimer),
+                const SizedBox(height: 60),
+                _countNumberTitle(),
+                _countNumber(_times),
+                const SizedBox(height: 60),
+                _angle(_displayAngle),
+                _angleTitle(),
+                const SizedBox(height: 50),
+                _endBtn(context),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -248,7 +251,9 @@ class _TestPageState extends State<TestPage> {
     timer = Timer.periodic(
       period,
       (_timer) async {
-        _displayTimer = tobeMinused - _timer.tick;
+        setState(() {
+          _displayTimer = tobeMinused - _timer.tick;
+        });
         if (_displayTimer == 0) {
           final prefs = await SharedPreferences.getInstance();
           String userId = prefs.getString("userId")!;

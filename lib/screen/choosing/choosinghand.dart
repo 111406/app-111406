@@ -23,45 +23,48 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
   late dynamic targetTime;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: buildAppBar(),
-      body: Column(
-        children: [
-          const SizedBox(height: 70),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.symmetric(horizontal: 35),
-            child: const Text(
-              '選擇訓練部位',
-              style: TextStyle(
-                fontSize: 28,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: buildAppBar(),
+        body: Column(
+          children: [
+            const SizedBox(height: 70),
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.symmetric(horizontal: 35),
+              child: const Text(
+                '選擇訓練部位',
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 35),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: InkWell(
-              onTap: () {
-                goNextPage("left");
-              },
-              child: Ink(child: leftHandBtn()),
+            const SizedBox(height: 35),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              child: InkWell(
+                onTap: () {
+                  goNextPage("left");
+                },
+                child: Ink(child: leftHandBtn()),
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: InkWell(
-              onTap: () {
-                goNextPage("right");
-              },
-              child: Ink(child: rightHandBtn()),
+            const SizedBox(height: 20),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              child: InkWell(
+                onTap: () {
+                  goNextPage("right");
+                },
+                child: Ink(child: rightHandBtn()),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -195,7 +198,7 @@ class _ChoosingHandPageState extends State<ChoosingHandPage> {
         await prefs.setInt('introScreen', 2);
       }
       if (part == TrainingPart.deltoid.value) {
-        await prefs.setInt('introScreen', 3);
+        await prefs.setInt('introScreen', 4);
       }
       Navigator.pushReplacementNamed(context, IntroPage.routeName);
     }

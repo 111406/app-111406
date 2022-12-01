@@ -206,46 +206,25 @@ Widget _endBtn(BuildContext context) {
           onPressed: () async {
             final prefs = await SharedPreferences.getInstance();
             String userId = prefs.getString("userId")!;
-            prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
 
             // 確認是否還有訓練未做完，有的話就不會新增訓練計劃表
-            final responseData =
-                await HttpRequest.get("${HttpURL.host}/target/existed/$userId");
+            final responseData = await HttpRequest.get("${HttpURL.host}/target/existed/$userId");
             bool checkExisted = responseData["data"];
             if (!checkExisted) {
-              // TODO 改寫至後端?
+              prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
               List userTodoList = [];
               DateTime now = DateTime.now();
               DateTime startDateTime = now.add(Duration(days: 8 - now.weekday));
               String startDate = DateFormat('yyyyMMdd').format(startDateTime);
-              String endDate = DateFormat('yyyyMMdd')
-                  .format(startDateTime.add(const Duration(days: 28)));
-              for (int i = 0; i < 8; i++) {
-                DateTime targetDateTime = i % 2 == 0
-                    ? startDateTime.add(Duration(days: 7 * (i ~/ 2)))
-                    : startDateTime.add(Duration(days: 3 + 7 * (i ~/ 2)));
-                String targetDate =
-                    DateFormat('yyyyMMdd').format(targetDateTime);
-                // TODO 目前為預設值，做資料分析才能做出完整計畫，可能需要額外增表去對照，待調整
-                dynamic userTodo = {
-                  "target_date": targetDate,
-                  "target_times": [
-                    {"times": 15, "set": 2, "total": 30, "part": 0},
-                    {"times": 8, "set": 1, "total": 8, "part": 1},
-                    {"times": 15, "set": 2, "total": 30, "part": 2}
-                  ],
-                  "complete": false
-                };
-                userTodoList.add(userTodo);
-              }
+              String endDate = DateFormat('yyyyMMdd').format(startDateTime.add(const Duration(days: 28)));
+
               Target target = Target(
                 userId,
                 startDate,
                 endDate,
                 userTodoList,
               );
-              await HttpRequest.post(
-                  "${HttpURL.host}/target", jsonEncode(target.toJson()));
+              await HttpRequest.post("${HttpURL.host}/target", jsonEncode(target.toJson()));
             }
 
             Navigator.pushReplacementNamed(context, Main.routeName);
@@ -272,13 +251,10 @@ Widget _testMode(BuildContext context, TestResultController controller) {
           child: ElevatedButton(
             onPressed: () async {
               currentState = "up";
-              controller.setCurrentRecord(
-                  currentState, testResultList[currentState]);
+              controller.setCurrentRecord(currentState, testResultList[currentState]);
             },
             child: const Text("上肢"),
-            style: controller.checkCurrentState("up")
-                ? _hasPressedButton()
-                : _hasNotPressedButton(),
+            style: controller.checkCurrentState("up") ? _hasPressedButton() : _hasNotPressedButton(),
           ),
         ),
         SizedBox(
@@ -287,13 +263,10 @@ Widget _testMode(BuildContext context, TestResultController controller) {
           child: ElevatedButton(
             onPressed: () async {
               currentState = "down";
-              controller.setCurrentRecord(
-                  currentState, testResultList[currentState]);
+              controller.setCurrentRecord(currentState, testResultList[currentState]);
             },
             child: const Text("下肢"),
-            style: controller.checkCurrentState("down")
-                ? _hasPressedButton()
-                : _hasNotPressedButton(),
+            style: controller.checkCurrentState("down") ? _hasPressedButton() : _hasNotPressedButton(),
           ),
         ),
       ],
@@ -344,8 +317,7 @@ class _TestResultPageState extends State<TestResultPage> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     Record bicepsTestResult = Record.fromJson(jsonDecode(args['bicepsData']));
-    Record quadricepsTestResult =
-        Record.fromJson(jsonDecode(args['quadricepsData']));
+    Record quadricepsTestResult = Record.fromJson(jsonDecode(args['quadricepsData']));
     testResultList["up"] = bicepsTestResult;
     testResultList["down"] = quadricepsTestResult;
 
@@ -355,37 +327,39 @@ class _TestResultPageState extends State<TestResultPage> {
 
     Get.put<TestResultController>(TestResultController());
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: GetBindWidget(
-          bind: controller,
-          child: GetBuilder<TestResultController>(
-            builder: (controller) => Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.width / 6,
-                ),
-                _title(),
-                const SizedBox(height: 25),
-                _resultTitle(),
-                const SizedBox(height: 30),
-                _testMode(context, controller),
-                const SizedBox(height: 15),
-                _resultNumber(context, controller.currentRecord.times),
-                const SizedBox(height: 15),
-                _resultAnalyze(context, controller.currentRecord.testResult),
-                const SizedBox(height: 15),
-                _resultPR(context, controller.currentRecord.pr),
-                const SizedBox(height: 15),
-                if (!isHasDiff)
-                  _resultGap(context, controller.currentRecord.difference),
-                if (!isHasDiff) const SizedBox(height: 30),
-                // 顯示角度變化圖表
-                // _resultChart(context, chartData),
-                // const SizedBox(height: 30),
-                _endBtn(context),
-                const SizedBox(height: 100),
-              ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: GetBindWidget(
+            bind: controller,
+            child: GetBuilder<TestResultController>(
+              builder: (controller) => Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.width / 6,
+                  ),
+                  _title(),
+                  const SizedBox(height: 25),
+                  _resultTitle(),
+                  const SizedBox(height: 30),
+                  _testMode(context, controller),
+                  const SizedBox(height: 15),
+                  _resultNumber(context, controller.currentRecord.times),
+                  const SizedBox(height: 15),
+                  _resultAnalyze(context, controller.currentRecord.testResult),
+                  const SizedBox(height: 15),
+                  _resultPR(context, controller.currentRecord.pr),
+                  const SizedBox(height: 15),
+                  if (!isHasDiff) _resultGap(context, controller.currentRecord.difference),
+                  if (!isHasDiff) const SizedBox(height: 30),
+                  // 顯示角度變化圖表
+                  // _resultChart(context, chartData),
+                  // const SizedBox(height: 30),
+                  _endBtn(context),
+                  const SizedBox(height: 100),
+                ],
+              ),
             ),
           ),
         ),

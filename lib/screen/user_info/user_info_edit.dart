@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,8 +35,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
 
   @override
   void initState() {
-    super.initState();
     _loadPrefs();
+    super.initState();
   }
 
   @override
@@ -65,6 +66,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
         controller: heightController,
         keyboardType: TextInputType.number,
         maxLines: 1,
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
       ),
       actions: [
         ElevatedButton(
@@ -72,10 +74,19 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
           style: ElevatedButton.styleFrom(primary: primaryColor),
           onPressed: () {
             setState(() {
-              if (heightController.text.isNotEmpty) {
-                height = double.parse(heightController.text).toString();
-                Navigator.pop(context);
+              final _height = heightController.text;
+              if (_height.isEmpty) {
+                showAlertDialog(context, message: "請輸入身高");
+                return;
               }
+
+              double heightNumber = double.parse(_height);
+              if (heightNumber < 130 || heightNumber > 200) {
+                showAlertDialog(context, message: "請輸入身高正常範圍(130 ~ 200)");
+                return;
+              }
+              height = _height;
+              Navigator.pop(context);
             });
           },
         ),
@@ -107,6 +118,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
         controller: weightController,
         keyboardType: TextInputType.number,
         maxLines: 1,
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9.]"))],
       ),
       actions: [
         ElevatedButton(
@@ -114,10 +126,19 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
           style: ElevatedButton.styleFrom(primary: primaryColor),
           onPressed: () {
             setState(() {
-              if (weightController.text.isNotEmpty) {
-                weight = double.parse(weightController.text).toString();
-                Navigator.pop(context);
+              final _weight = weightController.text;
+              if (_weight.isEmpty) {
+                showAlertDialog(context, message: "請輸入體重");
+                return;
               }
+
+              double weightNumber = double.parse(_weight);
+              if (weightNumber < 30 || weightNumber > 150) {
+                showAlertDialog(context, message: "請輸入體重正常範圍(30 ~ 150)");
+                return;
+              }
+              weight = _weight;
+              Navigator.pop(context);
             });
           },
         ),
@@ -205,8 +226,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 225, 225, 225)),
+                  border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
                 ),
               ),
               // const SizedBox(height: 10),
@@ -280,8 +300,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 225, 225, 225)),
+                  border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
                 ),
               ),
               const SizedBox(height: 10),
@@ -320,16 +339,14 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 225, 225, 225)),
+                  border: Border.all(color: const Color.fromARGB(255, 225, 225, 225)),
                 ),
               ),
               const SizedBox(height: 60),
               mainBtn(
                 text: "完成",
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
                   String birthday = DateFormat('yyyyMMdd').format(birth);
 
                   String requestData = """{
@@ -340,32 +357,31 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
 
                   try {
                     _loadingCircle();
-                    await HttpRequest.post(
-                            '${HttpURL.host}/user/update/$userId', requestData)
-                        .then(
+                    await HttpRequest.post('${HttpURL.host}/user/update/$userId', requestData).then(
                       (response) async {
                         prefs.setDouble("height", double.parse(height));
                         prefs.setDouble("weight", double.parse(weight));
                         prefs.setString("birthday", birthday);
                       },
                     );
+                    await prefs.setInt('returnMainPage', 1);
+                    showAlertDialog(context, message: '修改成功').then((_) => Navigator.pushReplacementNamed(context, Main.routeName));
                   } on Exception catch (e) {
-                    _timer.cancel();
-                    EasyLoading.dismiss();
                     showAlertDialog(
                       context,
                       title: '發生錯誤',
                       message: '修改失敗',
                     );
                   }
+                  _timer.cancel();
+                  EasyLoading.dismiss();
                 },
               ),
               const SizedBox(height: 10),
               mainBtn(
                 text: '取消',
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
                   await prefs.setInt('returnMainPage', 1);
                   Navigator.pushReplacementNamed(context, Main.routeName);
                 },
@@ -411,11 +427,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
   }
 
   Future<void> _loadingCircle() async {
-    //讀取
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('changeDone', false);
-
-    late double _progress;
+    double _progress = 0;
     EasyLoading.instance
       ..backgroundColor = primaryColor
       ..textColor = Colors.white
@@ -427,7 +439,6 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
       ..maskType = EasyLoadingMaskType.custom
       ..userInteractions = false;
 
-    _progress = 0;
     // _timer.cancel();
     _timer = Timer.periodic(
       const Duration(milliseconds: 150),
@@ -436,22 +447,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
         _progress += 0.05;
 
         if (_progress >= 1) {
-          await prefs.setBool('changeDone', true);
           _timer.cancel();
           EasyLoading.dismiss();
-          if (prefs.getBool('changeDone') == true) {
-            showAlertDialog(
-              context,
-              title: '修改成功',
-              message: '',
-            );
-            await prefs.setBool('changeDone', false);
-
-            await prefs.setInt('returnMainPage', 1);
-            Timer(const Duration(seconds: 2), () {
-              Navigator.pushReplacementNamed(context, Main.routeName);
-            });
-          }
         }
       },
     );

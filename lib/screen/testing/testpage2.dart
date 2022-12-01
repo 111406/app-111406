@@ -14,6 +14,7 @@ import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/result/testresultpage.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
 
 import '../../enum/gender.dart';
@@ -162,29 +163,32 @@ class _TestPageState2 extends State<TestPage2> {
 
   @override
   Widget build(BuildContext context) {
-    setUpdateInterval(Duration.microsecondsPerSecond ~/ 60);
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(height: MediaQuery.of(context).size.width / 6),
-              _title(),
-              const SizedBox(height: 25),
-              _secondLeftTitle(),
-              const SizedBox(height: 30),
-              _secondLeft(_displayTimer),
-              const SizedBox(height: 60),
-              _countNumberTitle(),
-              _countNumber(_times),
-              const SizedBox(height: 60),
-              _angle(_displayAngle),
-              _angleTitle(),
-              const SizedBox(height: 50),
-              _endBtn(context),
-            ],
-          ),
-        ],
+    setUpdateInterval(Duration.microsecondsPerSecond ~/ 30);
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.width / 6),
+                _title(),
+                const SizedBox(height: 25),
+                _secondLeftTitle(),
+                const SizedBox(height: 30),
+                _secondLeft(_displayTimer),
+                const SizedBox(height: 60),
+                _countNumberTitle(),
+                _countNumber(_times),
+                const SizedBox(height: 60),
+                _angle(_displayAngle),
+                _angleTitle(),
+                const SizedBox(height: 50),
+                _endBtn(context),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -253,7 +257,9 @@ class _TestPageState2 extends State<TestPage2> {
     timer = Timer.periodic(
       period,
       (_timer) async {
-        _displayTimer = tobeMinused - _timer.tick;
+        setState(() {
+          _displayTimer = tobeMinused - _timer.tick;
+        });
         if (_displayTimer == 0) {
           _loadingCircle();
           final prefs = await SharedPreferences.getInstance();
@@ -279,24 +285,30 @@ class _TestPageState2 extends State<TestPage2> {
               "angles": ${jsonEncode(_angleList)}
             }
         """;
-          String bicepsRequestData =
-              prefs.getString(TrainingPart.biceps.string)!;
-          dynamic bicepsResponse = await HttpRequest.post(
-              "${HttpURL.host}/record", bicepsRequestData);
-          dynamic bicepsData = jsonEncode(bicepsResponse['data']);
+          try {
+            String bicepsRequestData = prefs.getString(TrainingPart.biceps.string)!;
+            dynamic bicepsResponse = await HttpRequest.post("${HttpURL.host}/record", bicepsRequestData);
+            dynamic bicepsData = jsonEncode(bicepsResponse['data']);
 
-          dynamic quadricepsResponse = await HttpRequest.post(
-              "${HttpURL.host}/record", quadricepsReqeustData);
-          dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
-          prefs.remove(TrainingPart.biceps.string);
-          Navigator.pushReplacementNamed(
-            context,
-            TestResultPage.routeName,
-            arguments: {
-              "bicepsData": bicepsData,
-              "quadricepsData": quadricepsData
-            },
-          );
+            dynamic quadricepsResponse = await HttpRequest.post("${HttpURL.host}/record", quadricepsReqeustData);
+            dynamic quadricepsData = jsonEncode(quadricepsResponse['data']);
+            prefs.remove(TrainingPart.biceps.string);
+            Navigator.pushReplacementNamed(
+              context,
+              TestResultPage.routeName,
+              arguments: {"bicepsData": bicepsData, "quadricepsData": quadricepsData},
+            );
+          } catch (e) {
+            await showAlertDialog(
+              context,
+              title: '錯誤',
+              message: e.toString().split(' ')[1],
+            );
+            Navigator.pushReplacementNamed(
+              context,
+              Main.routeName,
+            );
+          }
         }
       },
     );

@@ -3,7 +3,22 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpRequest {
-  static Future<dynamic> post(String url, String requestData) async {
+  static Future<void> _sendLog(String requestUrl, String message) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
+    final userId = prefs.getString('userId') ?? 'guest';
+    final requestData = {'user_id': userId, 'message': message, 'request_url': requestUrl};
+    http.post(
+      Uri.parse('${HttpURL.host}/log'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': token,
+      },
+      body: jsonEncode(requestData),
+    );
+  }
+
+  static Future<dynamic> post(String url, String requestData, {String? actionMessage}) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
     dynamic result;
@@ -15,9 +30,7 @@ class HttpRequest {
             },
             body: requestData)
         .then((response) {
-      var responseJson = response.headers.containsValue("application/json")
-          ? json.decode(utf8.decode(response.bodyBytes))
-          : response.body;
+      var responseJson = response.headers.containsValue("application/json") ? json.decode(utf8.decode(response.bodyBytes)) : response.body;
       result = responseJson;
       if (response.statusCode >= 400) {
         throw Exception(result["message"]);
@@ -25,6 +38,7 @@ class HttpRequest {
       if (response.headers['token'] != null) {
         prefs.setString('token', response.headers['token']!);
       }
+      _sendLog(url, actionMessage ?? result['message']);
     });
     return result;
   }
@@ -48,6 +62,7 @@ class HttpRequest {
       if (response.headers['token'] != null) {
         prefs.setString('token', response.headers['token']!);
       }
+      _sendLog(url, result['message']);
     });
     return result;
   }
@@ -72,6 +87,7 @@ class HttpRequest {
       if (response.headers['token'] != null) {
         prefs.setString('token', response.headers['token']!);
       }
+      _sendLog(url, result['message']);
     });
     return result;
   }

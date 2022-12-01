@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/main.dart';
 import 'package:sport_app/screen/intro/warmup/warmuppage.dart';
 import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
@@ -877,32 +876,35 @@ class _IntroPageState extends State<IntroPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              const SizedBox(height: 1),
-              _switchCheckbox(),
-              _switchCheckbox1(),
-              const SizedBox(height: 10),
-              _bicepsTutorialScreen(context),
-              _testTutorialScreen01(context),
-              _trainTutorialScreen01(context),
-              _deltoidTutorialScreen02(context),
-              _quadricepsTutorialScreen(context),
-              _quadricepschairTutorialScreen(context),
-              _mainTutorialScreen(context),
-              // _CurrentAngle(),
-              // _ResetZero(context),
-              const SizedBox(height: 20),
-              _startBtn(context),
-              _videoHyperlinkbtn(context),
-              _returnMainpageBtn(context),
-            ],
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: buildAppBar(),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                const SizedBox(height: 1),
+                _switchCheckbox(),
+                _switchCheckbox1(),
+                const SizedBox(height: 10),
+                _bicepsTutorialScreen(context),
+                _testTutorialScreen01(context),
+                _trainTutorialScreen01(context),
+                _deltoidTutorialScreen02(context),
+                _quadricepsTutorialScreen(context),
+                _quadricepschairTutorialScreen(context),
+                _mainTutorialScreen(context),
+                // _CurrentAngle(),
+                // _ResetZero(context),
+                const SizedBox(height: 20),
+                _startBtn(context),
+                _videoHyperlinkbtn(context),
+                _returnMainpageBtn(context),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

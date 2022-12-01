@@ -12,6 +12,7 @@ import 'package:sport_app/screen/manual/manual.dart';
 import 'package:sport_app/screen/regitster/register.dart';
 import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
+import 'package:sport_app/utils/app_utils.dart';
 import 'package:sport_app/utils/http_request.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:async';
@@ -92,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool onClick = false;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -128,8 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   text: '忘記密碼',
                   alignment: Alignment.centerRight,
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, ForgotPassword.routeName);
+                    Navigator.pushReplacementNamed(context, ForgotPassword.routeName);
                   },
                 ),
                 const SizedBox(height: 20),
@@ -139,137 +140,121 @@ class _LoginPageState extends State<LoginPage> {
                   // 登入按鈕
                   text: '登入',
                   onPressed: () async {
-                    if (!_agree) {
-                      showAlertDialog(
-                        context,
-                        title: "登入失敗",
-                        message: "請勾選同意條款聲明",
-                      );
-                    } else {
-                      final userId = userIdController.text;
-                      final password = passwordController.text;
-                      String requestData = """{
+                    if (!onClick) {
+                      onClick = true;
+                      if (!_agree) {
+                        showAlertDialog(
+                          context,
+                          title: "登入失敗",
+                          message: "請勾選同意條款聲明",
+                        );
+                      } else {
+                        final userId = userIdController.text;
+                        final password = passwordController.text;
+                        final fcmToken = await AppUtils.getToken();
+                        String requestData = """{
                         "user_id": "$userId",
-                        "password": "${passwordController.text}"
+                        "password": "${passwordController.text}",
+                        "registration_token": "$fcmToken"
                         }""";
-                      bool _textFieldIsNotEmpty =
-                          (userId.isNotEmpty && password.isNotEmpty);
-                      if (_textFieldIsNotEmpty) {
-                        try {
-                          _loadingCircle();
-                          // final prefs = await SharedPreferences.getInstance();
-                          //prefs.clear(); 我先蛀掉 CHEESE
-                          await HttpRequest.post(
-                                  '${HttpURL.host}/user/login', requestData)
-                              .then(
-                            (response) async {
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setString("userId", userId);
-                              prefs.setBool('isLoginForFirstTime', true);
-                              bool checkComplete = true;
-                              List checkCompleteList = [];
-                              await prefs.remove("trainingState");
-                              final todoList = <UserTodo>[];
-                              final todoMap = {};
-                              await HttpRequest.get(
-                                      '${HttpURL.host}/target/$userId')
-                                  .then((response) async {
-                                final dataList = response['data'] as List;
-                                if (dataList.isNotEmpty) {
-                                  // 有本周訓練資料
-                                  for (var data in response['data']) {
-                                    var todo = UserTodo.fromJson(data);
-                                    checkCompleteList.add(todo.complete);
+                        bool _textFieldIsNotEmpty = (userId.isNotEmpty && password.isNotEmpty);
+                        if (_textFieldIsNotEmpty) {
+                          try {
+                            _loadingCircle();
+                            await HttpRequest.post('${HttpURL.host}/user/login', requestData).then(
+                              (response) async {
+                                final prefs = await SharedPreferences.getInstance();
+                                prefs.setString("userId", userId);
+                                prefs.setBool('isLoginForFirstTime', true);
+                                bool checkComplete = true;
+                                List checkCompleteList = [];
+                                await prefs.remove("trainingState");
+                                final todoList = <UserTodo>[];
+                                final todoMap = {};
+                                await HttpRequest.get('${HttpURL.host}/target/$userId').then((response) async {
+                                  final dataList = response['data'] as List;
+                                  if (dataList.isNotEmpty) {
+                                    // 有本周訓練資料
+                                    for (var data in response['data']) {
+                                      var todo = UserTodo.fromJson(data);
+                                      checkCompleteList.add(todo.complete);
 
-                                    todoMap[todo.targetDate] = todo;
-                                    todoList.add(todo);
-                                  }
-                                  checkComplete =
-                                      checkCompleteList.contains(false);
-
-                                  await prefs.setString(
-                                      "todoMap", json.encode(todoMap));
-
-                                  // TODO 訓練表部分待調整
-                                  if (checkComplete) {
-                                    prefs.setString(
-                                        "userTodo",
-                                        json.encode(todoList.firstWhere(
-                                            (element) => !element.complete)));
-                                  }
-                                } else {
-                                  // 檢查是不是剛做完檢測，因為不會馬上指派任務
-                                  await HttpRequest.get(
-                                          '${HttpURL.host}/target/started/$userId')
-                                      .then((response) {
-                                    final isHadTarget = response['data'];
-                                    prefs.remove("todoList");
-                                    prefs.remove("userTodo");
-                                    if (isHadTarget) {
-                                      // 如果是剛檢測完會跑到這
-                                      prefs.setString("trainingState",
-                                          AppConfig.WAITING_TRAINING);
-                                    } else {
-                                      // 代表還沒做檢測
-                                      prefs.setString("trainingState",
-                                          AppConfig.CANNOT_TRAINING);
+                                      todoMap[todo.targetDate] = todo;
+                                      todoList.add(todo);
                                     }
-                                  });
+                                    checkComplete = checkCompleteList.contains(false);
+
+                                    await prefs.setString("todoMap", json.encode(todoMap));
+
+                                    // TODO 訓練表部分待調整
+                                    if (checkComplete) {
+                                      prefs.setString("userTodo", json.encode(todoList.firstWhere((element) => !element.complete)));
+                                    }
+                                  } else {
+                                    // 檢查是不是剛做完檢測，因為不會馬上指派任務
+                                    await HttpRequest.get('${HttpURL.host}/target/started/$userId').then((response) {
+                                      final isHadTarget = response['data'];
+                                      prefs.remove("todoList");
+                                      prefs.remove("userTodo");
+                                      if (isHadTarget) {
+                                        // 如果是剛檢測完會跑到這
+                                        prefs.setString("trainingState", AppConfig.WAITING_TRAINING);
+                                      } else {
+                                        // 代表還沒做檢測
+                                        prefs.setString("trainingState", AppConfig.CANNOT_TRAINING);
+                                      }
+                                    });
+                                  }
+                                });
+                                if (!checkComplete) {
+                                  // 進到這裡表示本周任務已完成
+                                  prefs.setString("trainingState", AppConfig.TRAINING_FINISH);
                                 }
-                              });
-                              if (!checkComplete) {
-                                // 進到這裡表示本周任務已完成
-                                prefs.setString(
-                                    "trainingState", AppConfig.TRAINING_FINISH);
-                              }
 
-                              // TODO check
-                              await HttpRequest.get(
-                                      '${HttpURL.host}/user/$userId')
-                                  .then((response) {
-                                var height = response['data']['height'] ?? .0;
-                                var weight = response['data']['weight'] ?? .0;
-                                var birth = response['data']['birthday'];
-                                var gender = response['data']['gender'];
-                                var ethsum = response['data']['eth_sum'];
+                                // TODO check
+                                await HttpRequest.get('${HttpURL.host}/user/$userId').then((response) {
+                                  var height = response['data']['height'] ?? .0;
+                                  var weight = response['data']['weight'] ?? .0;
+                                  var birth = response['data']['birthday'];
+                                  var gender = response['data']['gender'];
+                                  var ethsum = response['data']['eth_sum'];
 
-                                prefs.setDouble("height", height);
-                                prefs.setDouble("weight", weight);
-                                prefs.setString("birthday", birth);
-                                prefs.setString("gender", gender);
-                                prefs.setString("ethsum", ethsum.toString());
-                              });
-                              if (prefs.getBool('routeTointro') == true) {
-                                _timer.cancel();
-                                EasyLoading.dismiss();
-                                Navigator.pushReplacementNamed(
-                                    context, IntroPage.routeName);
-                                prefs.setBool('routeTointro', false);
-                              } else {
-                                _timer.cancel();
-                                EasyLoading.dismiss();
-                                Navigator.pushReplacementNamed(
-                                    context, Main.routeName);
-                              }
-                            },
-                          );
-                        } on Exception catch (e) {
-                          _timer.cancel();
-                          EasyLoading.dismiss();
+                                  prefs.setDouble("height", height);
+                                  prefs.setDouble("weight", weight);
+                                  prefs.setString("birthday", birth);
+                                  prefs.setString("gender", gender);
+                                  prefs.setString("ethsum", ethsum.toString());
+                                });
+                                if (prefs.getBool('routeTointro') == true) {
+                                  _timer.cancel();
+                                  EasyLoading.dismiss();
+                                  Navigator.pushReplacementNamed(context, IntroPage.routeName);
+                                  prefs.setBool('routeTointro', false);
+                                } else {
+                                  _timer.cancel();
+                                  EasyLoading.dismiss();
+                                  Navigator.pushReplacementNamed(context, Main.routeName);
+                                }
+                              },
+                            );
+                          } on Exception catch (e) {
+                            _timer.cancel();
+                            EasyLoading.dismiss();
+                            showAlertDialog(
+                              context,
+                              title: '帳號或密碼錯誤',
+                              message: '請重新輸入',
+                            );
+                          }
+                        } else {
                           showAlertDialog(
                             context,
-                            title: '帳號或密碼錯誤',
+                            title: '輸入框不得為空白',
                             message: '請重新輸入',
                           );
                         }
-                      } else {
-                        showAlertDialog(
-                          context,
-                          title: '輸入框不得為空白',
-                          message: '請重新輸入',
-                        );
                       }
+                      onClick = false;
                     }
                   },
                 ),
@@ -279,8 +264,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.clear();
-                    Navigator.pushReplacementNamed(
-                        context, RegisterPage.routeName);
+                    Navigator.pushReplacementNamed(context, RegisterPage.routeName);
                   },
                 )
               ],

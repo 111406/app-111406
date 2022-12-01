@@ -109,25 +109,28 @@ class _PrepareState2 extends State<Prepare2> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(height: MediaQuery.of(context).size.width / 6),
-              _title(),
-              const SizedBox(height: 20),
-              _countNumberTitle(),
-              const SizedBox(height: 30),
-              _poseTitle(),
-              const SizedBox(height: 30),
-              // _WarmUpGit(),
-              _tutorialScreen(context),
-              const SizedBox(height: 30),
-              _startBtn(context),
-            ],
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.width / 6),
+                _title(),
+                const SizedBox(height: 20),
+                _countNumberTitle(),
+                const SizedBox(height: 30),
+                _poseTitle(),
+                const SizedBox(height: 30),
+                // _WarmUpGit(),
+                _tutorialScreen(context),
+                const SizedBox(height: 30),
+                _startBtn(context),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

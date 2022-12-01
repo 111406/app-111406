@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app/screen/choosing/choosing.dart';
@@ -33,8 +34,7 @@ class _HomePageState extends State<HomePage> {
   // late final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day - 7);
   // late final kLastDay = DateTime(kToday.year, kToday.month, kToday.day + 7);
   late final kFirstDay = kToday.subtract(Duration(days: kToday.weekday - 1));
-  late final kLastDay =
-      kToday.add(Duration(days: DateTime.daysPerWeek - kToday.weekday));
+  late final kLastDay = kToday.add(Duration(days: DateTime.daysPerWeek - kToday.weekday));
   CalendarFormat _calendarFormat = CalendarFormat.week;
   Map<CalendarFormat, String> availableCalendarFormats = const {
     // CalendarFormat.month: 'Month',
@@ -44,24 +44,60 @@ class _HomePageState extends State<HomePage> {
   late DateTime _selectedDay = _focusedDay;
 
   @override
-  initState() {
-    super.initState();
+  void initState() {
     _loadPrefs();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> _loadPrefs() async {
-    try {
-      todoMapString = _prefs.then((SharedPreferences pref) {
-        return pref.getString('todoMap') ?? '{}';
-      });
+    _loadingCircle();
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('changePage', true);
+    todoMapString = _setDefault();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('changePage', true);
+    int timeoutCheck = 0;
+    while (prefs.getBool('loading') ?? false) {
+      await Future.delayed(const Duration(seconds: 3));
+      timeoutCheck += 3;
+      if (timeoutCheck > 20) break;
+    }
+
+    todoMapString = _prefs.then((SharedPreferences pref) async {
+      return pref.getString('todoMap') ?? '{}';
+    });
+
+    if (mounted) {
       setState(() {
         todoMap = jsonDecode(prefs.getString('todoMap') ?? "{}");
         _ethsum = prefs.getString("ethsum") ?? "";
       });
-    } catch (e) {}
+    }
+    //讀取結束
+    EasyLoading.dismiss();
+  }
+
+  Future<String> _setDefault() async {
+    return '{}';
+  }
+
+  Future<void> _loadingCircle() async {
+    EasyLoading.instance
+      ..backgroundColor = primaryColor
+      ..textColor = Colors.white
+      ..progressColor = Colors.white
+      ..maskColor = Colors.white70
+      ..displayDuration = const Duration(milliseconds: 10000)
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorType = EasyLoadingIndicatorType.circle
+      ..maskType = EasyLoadingMaskType.custom
+      ..userInteractions = false;
+
+    EasyLoading.show(status: '載入中...');
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -141,18 +177,15 @@ class _HomePageState extends State<HomePage> {
                           availableCalendarFormats: availableCalendarFormats,
                           // availableGestures: AvailableGestures.all,
                           onDaySelected: _onDaySelected,
-                          selectedDayPredicate: (day) =>
-                              isSameDay(_selectedDay, day),
-                          onPageChanged: (focusedDay) =>
-                              _focusedDay = focusedDay,
+                          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                          onPageChanged: (focusedDay) => _focusedDay = focusedDay,
                           onFormatChanged: (format) {
                             if (_calendarFormat != format) {
                               setState(() => _calendarFormat = format);
                             }
                           },
                           eventLoader: (day) {
-                            if (todoMap.keys
-                                .contains(DateFormat('yyyyMMdd').format(day))) {
+                            if (todoMap.keys.contains(DateFormat('yyyyMMdd').format(day))) {
                               return [1];
                             }
                             return [];
@@ -169,8 +202,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         FutureBuilder<String>(
                           future: todoMapString,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<String> snapshot) {
+                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                             switch (snapshot.connectionState) {
                               case ConnectionState.waiting:
                                 return const CircularProgressIndicator();
@@ -185,8 +217,7 @@ class _HomePageState extends State<HomePage> {
                                       child: TabBarTable(
                                         size: size,
                                         selectedDay: _selectedDay,
-                                        todoMap: jsonDecode(
-                                            snapshot.data.toString()),
+                                        todoMap: jsonDecode(snapshot.data.toString()),
                                       ),
                                     ),
                                   );
@@ -216,25 +247,19 @@ class _HomePageState extends State<HomePage> {
                       child: InkWell(
                         onTap: () async {
                           final prefs = await SharedPreferences.getInstance();
-                          final trainingState =
-                              prefs.getString("trainingState");
+                          final trainingState = prefs.getString("trainingState");
                           switch (trainingState) {
                             case AppConfig.CANNOT_TRAINING:
-                              showAlertDialog(context,
-                                  message: "請先進行運動測試再回來做訓練喔！");
+                              showAlertDialog(context, message: "請先進行運動測試再回來做訓練喔！");
                               break;
                             case AppConfig.TRAINING_FINISH:
-                              showCheckDialog(context,
-                                  message: "您目前的訓練已完成，是否要建立新的訓練？",
-                                  func: addUserTodo);
+                              showCheckDialog(context, message: "您目前的訓練已完成，是否要建立新的訓練？", func: addUserTodo);
                               break;
                             case AppConfig.WAITING_TRAINING:
-                              showAlertDialog(context,
-                                  message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
+                              showAlertDialog(context, message: "恭喜您完成測驗，請等待至隔周即可開始任務！");
                               break;
                             default:
-                              Navigator.pushReplacementNamed(
-                                  context, ChoosingPage.routeName);
+                              Navigator.pushReplacementNamed(context, ChoosingPage.routeName);
                           }
                         },
                         child: Ink(child: trainingBtn()),
@@ -382,8 +407,7 @@ class _HomePageState extends State<HomePage> {
               color: const Color(0x50292D32),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.play_arrow_rounded,
-                size: 30, color: Colors.black),
+            child: const Icon(Icons.play_arrow_rounded, size: 30, color: Colors.black),
           )
         ],
       ),
@@ -484,8 +508,7 @@ class _HomePageState extends State<HomePage> {
     final userId = prefs.getString("userId");
     String targetDate = DateFormat('yyyyMMdd').format(DateTime.now());
     try {
-      final responseData = await HttpRequest.patch(
-          '${HttpURL.host}/target/add/todo/$userId/$targetDate', null);
+      final responseData = await HttpRequest.patch('${HttpURL.host}/target/add/todo/$userId/$targetDate', null);
       prefs.setString("userTodo", jsonEncode(responseData['data']));
 
       Map todoMap = jsonDecode(prefs.getString("todoMap")!);

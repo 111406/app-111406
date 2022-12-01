@@ -7,6 +7,7 @@ import 'package:sport_app/screen/login/login.dart';
 import 'package:sport_app/screen/intro/intropage.dart';
 import 'package:sport_app/screen/manual/manual.dart';
 import 'package:sport_app/theme/color.dart';
+import 'package:sport_app/utils/http_request.dart';
 
 class OtherPage extends StatefulWidget {
   const OtherPage({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class _OtherPageState extends State<OtherPage> {
           const SizedBox(height: 5),
           InkWell(
             onTap: () {
-              Navigator.pushReplacementNamed(context, Manual.routeName);
+              Navigator.pushNamed(context, Manual.routeName);
             },
             child: Ink(
               height: 48,
@@ -95,7 +96,8 @@ class _OtherPageState extends State<OtherPage> {
             onTap: () async {
               Navigator.pushReplacementNamed(context, LoginPage.routeName);
               SharedPreferences prefs = await SharedPreferences.getInstance();
-              // prefs.setString("userId", '');
+              final userId = prefs.getString("userId");
+              await HttpRequest.get("${HttpURL.host}/user/logout/$userId");
               prefs.getKeys().forEach((element) async {
                 if (element != "userId") await prefs.remove(element);
               });
