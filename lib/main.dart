@@ -50,7 +50,6 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String userId = prefs.getString('userId') ?? '';
   String token = prefs.getString('token') ?? '';
-  prefs.setBool("loading", true);
 
   if (userId != '' && token != '') loadTrainingData(prefs, userId, token);
 
@@ -76,6 +75,7 @@ void configLoading() {
 }
 
 Future<void> loadTrainingData(SharedPreferences prefs, String userId, String token) async {
+  prefs.setBool("loading", true);
   bool checkComplete = true;
   List checkCompleteList = [];
   await prefs.remove("trainingState");
