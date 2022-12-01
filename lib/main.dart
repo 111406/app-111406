@@ -50,7 +50,6 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String userId = prefs.getString('userId') ?? '';
   String token = prefs.getString('token') ?? '';
-  prefs.setBool("loading", true);
 
   if (userId != '' && token != '') loadTrainingData(prefs, userId, token);
 
@@ -66,16 +65,17 @@ void configLoading() {
     ..loadingStyle = EasyLoadingStyle.dark
     ..indicatorSize = 45.0
     ..radius = 10.0
-    ..progressColor = Colors.yellow
+    ..progressColor = Colors.white
     ..backgroundColor = Colors.green
-    ..indicatorColor = Colors.yellow
-    ..textColor = Colors.yellow
+    ..indicatorColor = Colors.white
+    ..textColor = Colors.white
     ..maskColor = Colors.blue.withOpacity(0.5)
     ..userInteractions = true
     ..dismissOnTap = false;
 }
 
 Future<void> loadTrainingData(SharedPreferences prefs, String userId, String token) async {
+  prefs.setBool("loading", true);
   bool checkComplete = true;
   List checkCompleteList = [];
   await prefs.remove("trainingState");
@@ -184,11 +184,29 @@ Future<void> _fcmInit() async {
   //iOS啟用前台通知
   if (Platform.isIOS) {
     // Required to display a heads up notification
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
     );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      debugPrint('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      debugPrint('User granted provisional permission');
+    } else {
+      debugPrint('User declined or has not accepted permission');
+    }
   }
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 

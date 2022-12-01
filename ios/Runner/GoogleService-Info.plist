@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>467210161136-bgru3vf8qfg66upig3nqf93gqs25g6eh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.467210161136-bgru3vf8qfg66upig3nqf93gqs25g6eh</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA9STAVc7mRTA2jUc49kYC0fRUrWh-_1Ek</string>
+	<key>GCM_SENDER_ID</key>
+	<string>467210161136</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ntub.111406</string>
+	<key>PROJECT_ID</key>
+	<string>sport-go-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sport-go-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:467210161136:ios:b89ec9ec9c7aec511beb35</string>
+</dict>
+</plist>

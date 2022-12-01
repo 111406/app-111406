@@ -60,10 +60,13 @@ class _HomePageState extends State<HomePage> {
     todoMapString = _setDefault();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('changePage', true);
+    int timeoutCheck = 0;
     while (prefs.getBool('loading') ?? false) {
       await Future.delayed(const Duration(seconds: 3));
+      timeoutCheck += 3;
+      if (timeoutCheck > 20) break;
     }
-    
+
     todoMapString = _prefs.then((SharedPreferences pref) async {
       return pref.getString('todoMap') ?? '{}';
     });
