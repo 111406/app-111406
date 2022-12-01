@@ -48,12 +48,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyB89ia-DLWn6CKwgQzeQyM10yFmWH2fVnA',
-    appId: '1:467210161136:web:d04baa42abe27e9c1beb35',
+    appId: '1:467210161136:web:c2781d4039fb07a01beb35',
     messagingSenderId: '467210161136',
     projectId: 'sport-go-app',
     authDomain: 'sport-go-app.firebaseapp.com',
     storageBucket: 'sport-go-app.appspot.com',
-    measurementId: 'G-5DPM386F8G',
+    measurementId: 'G-ZYP6HBP2TF',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
