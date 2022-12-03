@@ -12,8 +12,9 @@ import 'package:sport_app/enum/gender.dart';
 import 'package:sport_app/model/chart_data.dart';
 import 'package:sport_app/enum/training_part.dart';
 import 'package:sport_app/screen/intro/prepare/prepare2.dart';
-import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/theme/color.dart';
+
+import '../components/button.dart';
 
 TrainingPart _part = TrainingPart.biceps;
 var _timerStart = false;
@@ -113,25 +114,6 @@ Widget _angleTitle() {
   );
 }
 
-Widget _endBtn(BuildContext context) {
-  return Container(
-    alignment: Alignment.center,
-    child: GestureDetector(
-      onLongPress: () {
-        Navigator.pushReplacementNamed(context, Main.routeName);
-      },
-      child: const Text(
-        '長按結束',
-        style: TextStyle(
-          color: primaryColor,
-          fontSize: 20,
-          decoration: TextDecoration.underline,
-        ),
-      ),
-    ),
-  );
-}
-
 class _TestPageState extends State<TestPage> {
   FlutterTts flutterTts = FlutterTts();
   var _times = 0, _displayAngle = 0, _startTime = 0, _checkAddNum = 0.0;
@@ -181,7 +163,7 @@ class _TestPageState extends State<TestPage> {
                 _angle(_displayAngle),
                 _angleTitle(),
                 const SizedBox(height: 50),
-                _endBtn(context),
+                endBtn(context),
               ],
             ),
           ],

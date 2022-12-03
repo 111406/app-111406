@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/training/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
 
 var _displayTimer = 60;
+import '../components/button.dart';
+
 late Timer timer;
 
 class RestPage extends StatefulWidget {
@@ -74,25 +75,6 @@ Widget _warmUpGit() {
   );
 }
 
-Widget _endBtn(BuildContext context) {
-  return Container(
-    alignment: Alignment.center,
-    child: GestureDetector(
-      onLongPress: () {
-        Navigator.pushReplacementNamed(context, Main.routeName);
-      },
-      child: const Text(
-        '長按結束',
-        style: TextStyle(
-          color: primaryColor,
-          fontSize: 20,
-          decoration: TextDecoration.underline,
-        ),
-      ),
-    ),
-  );
-}
-
 class _RestPageState extends State<RestPage> {
   late final int tobeMinused = 60;
 
@@ -129,7 +111,7 @@ class _RestPageState extends State<RestPage> {
                 const SizedBox(height: 30),
                 _secondLeft(_displayTimer),
                 const SizedBox(height: 35),
-                _endBtn(context),
+                endBtn(context),
               ],
             ),
           ],

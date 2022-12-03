@@ -14,6 +14,8 @@ import 'package:sport_app/theme/color.dart';
 import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
 
+import '../components/button.dart';
+
 ///訓練頁
 class TrainingPage extends StatefulWidget {
   const TrainingPage({Key? key}) : super(key: key);
@@ -66,21 +68,6 @@ Widget _countNumber(remainingNum) {
       color: primaryColor,
       fontSize: 72,
       fontWeight: FontWeight.bold,
-    ),
-  );
-}
-
-Widget _endBtn(BuildContext context) {
-  return Container(
-    alignment: Alignment.center,
-    child: GestureDetector(
-      onLongPress: () {
-        Navigator.pushReplacementNamed(context, Main.routeName);
-      },
-      child: const Text(
-        '長按結束',
-        style: TextStyle(color: primaryColor, fontSize: 20, decoration: TextDecoration.underline),
-      ),
     ),
   );
 }
@@ -292,7 +279,7 @@ class _TrainingPageState extends State<TrainingPage> {
                 _countNumberTitle(),
                 _countNumber(remainingNum),
                 const SizedBox(height: 60),
-                _endBtn(context),
+                endBtn(context),
               ],
             ),
           ],
