@@ -1,7 +1,6 @@
 ///使用須知
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sport_app/screen/main_page.dart';
 import 'package:sport_app/screen/manual/policy.dart';
 import 'package:sport_app/theme/color.dart';
 
