@@ -132,7 +132,7 @@ class _ForgotPassword02State extends State<ForgotPassword02> {
                         showAlertDialog(
                           context,
                           title: '修改失敗',
-                          message: '',
+                          message: e.toString().split(" ")[1],
                         );
                       }
                     }
