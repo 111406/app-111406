@@ -369,8 +369,8 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
                   } on Exception catch (e) {
                     showAlertDialog(
                       context,
-                      title: '發生錯誤',
-                      message: '修改失敗',
+                      title: '修改失敗',
+                      message: e.toString().split(" ")[1],
                     );
                   }
                   _timer.cancel();

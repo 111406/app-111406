@@ -18,6 +18,7 @@ import 'package:sport_app/utils/alertdialog.dart';
 import 'package:sport_app/utils/http_request.dart';
 
 import '../../enum/gender.dart';
+import '../components/button.dart';
 
 TrainingPart _part = TrainingPart.quadriceps;
 var _timerStart = false;
@@ -117,24 +118,6 @@ Widget _angleTitle() {
   );
 }
 
-Widget _endBtn(BuildContext context) {
-  return Container(
-    alignment: Alignment.center,
-    child: GestureDetector(
-      onLongPress: () {
-        Navigator.pushReplacementNamed(context, Main.routeName);
-      },
-      child: const Text(
-        '長按結束',
-        style: TextStyle(
-            color: primaryColor,
-            fontSize: 20,
-            decoration: TextDecoration.underline),
-      ),
-    ),
-  );
-}
-
 class _TestPageState2 extends State<TestPage2> {
   FlutterTts flutterTts = FlutterTts();
   var _times = 0, _displayAngle = 0, _startTime = 0, _checkAddNum = 0.0;
@@ -146,8 +129,7 @@ class _TestPageState2 extends State<TestPage2> {
   void initState() {
     super.initState();
     _setTimerEvent();
-    subscription =
-        motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    subscription = motionSensors.accelerometer.listen((AccelerometerEvent event) {
       setState(() {
         _calcAngles(event.x, event.y, event.z);
       });
@@ -184,7 +166,7 @@ class _TestPageState2 extends State<TestPage2> {
                 _angle(_displayAngle),
                 _angleTitle(),
                 const SizedBox(height: 50),
-                _endBtn(context),
+                endBtn(context),
               ],
             ),
           ],
@@ -195,12 +177,8 @@ class _TestPageState2 extends State<TestPage2> {
 
   ///計算roll, pitch角度
   void _calcAngles(double accelX, double accelY, double accelZ) {
-    var pitch =
-        (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi)
-            .floor();
-    var roll =
-        (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi)
-            .floor();
+    var pitch = (180 * atan2(accelX, sqrt(accelY * accelY + accelZ * accelZ)) / pi).floor();
+    var roll = (180 * atan2(accelY, sqrt(accelX * accelX + accelZ * accelZ)) / pi).floor();
 
     _checkPart(_part, pitch, roll);
   }
@@ -211,8 +189,8 @@ class _TestPageState2 extends State<TestPage2> {
 
     roll += 90;
     _displayAngle = roll;
-    isMinAngle = roll < 65;
-    isMaxAngle = roll > 87;
+    isMinAngle = roll < 30;
+    isMaxAngle = roll > 77;
 
     _addTimes(_displayAngle, isMinAngle, isMaxAngle);
   }

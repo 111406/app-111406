@@ -106,7 +106,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 showAlertDialog(
                                   context,
                                   title: '',
-                                  message: '請輸入已註冊之電子郵件',
+                                  message: e.toString().split(" ")[1],
                                 );
                               }
                             } else if (email.isEmpty) {
@@ -175,8 +175,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       } on Exception catch (e) {
                         showAlertDialog(
                           context,
-                          title: '驗證碼錯誤',
-                          message: '請重新輸入驗證碼',
+                          title: '錯誤',
+                          message: e.toString().split(" ")[1],
                         );
                       }
                     } else {
