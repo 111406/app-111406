@@ -189,8 +189,8 @@ class _TestPageState2 extends State<TestPage2> {
 
     roll += 90;
     _displayAngle = roll;
-    isMinAngle = roll < 65;
-    isMaxAngle = roll > 87;
+    isMinAngle = roll < 30;
+    isMaxAngle = roll > 77;
 
     _addTimes(_displayAngle, isMinAngle, isMaxAngle);
   }
