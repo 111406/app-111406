@@ -193,12 +193,11 @@ class _TrainingPageState extends State<TrainingPage> {
     if (todoSet > 0) {
       prefs.setInt("set", todoSet);
       prefs.setInt("actualTotalTimes", actualTotalTimes);
+      prefs.setInt("lastSpendingTime", getSpendingTime(prefs));
       Navigator.pushReplacementNamed(context, RestPage.routeName);
     } else {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final trainingEndTime = DateTime.now();
-      final trainingStartTime = DateTime.fromMillisecondsSinceEpoch(prefs.getInt("trainingStartTime")!);
-      final spendingTime = trainingEndTime.difference(trainingStartTime).inSeconds;
+      int lastSpendingTime = prefs.getInt("lastSpendingTime") ?? 0;
+      int spendingTime = getSpendingTime(prefs) + lastSpendingTime;
       final preActualTotalTimes = prefs.getInt("actualTotalTimes") ?? 0;
       final fails = actualTotalTimes + preActualTotalTimes - targetTotalTimes;
       Map<String, dynamic> requestData = {"part": part.value, "times": targetTotalTimes, "spending_time": spendingTime, "fails": fails};
@@ -248,6 +247,12 @@ class _TrainingPageState extends State<TrainingPage> {
         Navigator.pushReplacementNamed(context, Main.routeName);
       });
     }
+  }
+
+  int getSpendingTime(SharedPreferences prefs) {
+    final trainingEndTime = DateTime.now();
+    final trainingStartTime = DateTime.fromMillisecondsSinceEpoch(prefs.getInt("trainingStartTime")!);
+    return trainingEndTime.difference(trainingStartTime).inSeconds;
   }
 
   @override
