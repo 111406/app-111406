@@ -137,9 +137,9 @@ class _TrainingPageState extends State<TrainingPage> {
       case TrainingPart.quadriceps:
         roll += 90;
         angle = roll;
-        isMinAngle = roll < 65;
-        isMaxAngle = roll > 87;
-        isActed = roll > 80;
+        isMinAngle = roll < 30;
+        isMaxAngle = roll > 77;
+        isActed = roll > 60;
 
         break;
     }
