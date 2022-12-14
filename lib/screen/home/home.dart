@@ -507,8 +507,12 @@ class _HomePageState extends State<HomePage> {
     prefs.remove("trainingState");
     final userId = prefs.getString("userId");
     String targetDate = DateFormat('yyyyMMdd').format(DateTime.now());
+    Map requestData = {
+      "user_id": userId,
+      "target_date": targetDate
+    };
     try {
-      final responseData = await HttpRequest.patch('${HttpURL.host}/target/add/todo/$userId/$targetDate', null);
+      final responseData = await HttpRequest.post('${HttpURL.host}/target/add/todo', jsonEncode(requestData));
       prefs.setString("userTodo", jsonEncode(responseData['data']));
 
       Map todoMap = jsonDecode(prefs.getString("todoMap")!);
