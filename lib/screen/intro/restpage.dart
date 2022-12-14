@@ -2,10 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sport_app/screen/training/trainingpage.dart';
 import 'package:sport_app/theme/color.dart';
-
-var _displayTimer = 60;
 import '../components/button.dart';
 
+var _displayTimer = 60;
 late Timer timer;
 
 class RestPage extends StatefulWidget {
